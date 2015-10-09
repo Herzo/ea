@@ -15,6 +15,9 @@ public:
     explicit CFreeDialog(QWidget *parent = 0);
     ~CFreeDialog();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::CFreeDialog *ui;
 };

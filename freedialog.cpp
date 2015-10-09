@@ -12,3 +12,9 @@ CFreeDialog::~CFreeDialog()
 {
     delete ui;
 }
+
+void CFreeDialog::on_pushButton_clicked()
+{
+    QPixmap imgTick(":/images/tick.png");
+    ui->imgMark->setPixmap(imgTick);
+}

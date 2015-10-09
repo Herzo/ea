@@ -4,7 +4,6 @@
  * 
  * Created on 20 September 2015, 6:35 PM
  */
-#include "window.h"
  #include <QtGui>
 
  #include <QAction>
@@ -27,65 +26,68 @@
 #include <QMetaEnum>
 #include <QDebug>
 
-#include "window.h"
+#include "optionsdialog.h"
 #include "o1khan.h"
+#include "changeuserdialog.h"
 
 const char MY_CLIENT_ID[] = "uCj7JaPgnqVPaPDD";
 const char MY_CLIENT_SECRET[] = "FcwDL3xeY826yGUY";
 
-Window::Window()
+COptionsDialog::COptionsDialog()
 {
     createIconGroupBox();
     createMessageGroupBox();
 
-    iconLabel->setMinimumWidth(durationLabel->sizeHint().width());
+    m_pIconLabel->setMinimumWidth(m_pDurationLabel->sizeHint().width());
 
     createActions();
     createTrayIcon();
 
-    connect(showMessageButton, SIGNAL(clicked()), this, SLOT(showMessage()));
-    connect(showIconCheckBox, SIGNAL(toggled(bool)),
-            trayIcon, SLOT(setVisible(bool)));
-    connect(iconComboBox, SIGNAL(currentIndexChanged(int)),
+    connect(m_pShowMessageButton, SIGNAL(clicked()), this, SLOT(showMessage()));
+//    connect(m_pShowIconCheckBox, SIGNAL(toggled(bool)),
+//            m_pTrayIcon, SLOT(showMessage()));
+    connect(m_pShowIconCheckBox, SIGNAL(toggled(bool)),
+            m_pTrayIcon, SLOT(setVisible(bool)));
+    connect(m_pIconComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(setIcon(int)));
-    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    connect(m_pTrayIcon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+    connect(m_pTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    o1 = new O1Khan(this);
-    o1->setClientId(MY_CLIENT_ID);
-    o1->setClientSecret(MY_CLIENT_SECRET);
-    connect(o1, SIGNAL(linkedChanged()), this, SLOT(onLinkedChanged()));
-    connect(o1, SIGNAL(linkingFailed()), this, SLOT(onLinkingFailed()));
-    connect(o1, SIGNAL(linkingSucceeded()), this, SLOT(onLinkingSucceeded()));
-    connect(o1, SIGNAL(openBrowser(QUrl)), this, SLOT(onOpenBrowser(QUrl)));
-    connect(o1, SIGNAL(closeBrowser()), this, SLOT(onCloseBrowser()));
+    m_pOAuthKhan = new O1Khan(this);
+    m_pOAuthKhan->setClientId(MY_CLIENT_ID);
+    m_pOAuthKhan->setClientSecret(MY_CLIENT_SECRET);
+    connect(m_pOAuthKhan, SIGNAL(linkedChanged()), this, SLOT(onLinkedChanged()));
+    connect(m_pOAuthKhan, SIGNAL(linkingFailed()), this, SLOT(onLinkingFailed()));
+    connect(m_pOAuthKhan, SIGNAL(linkingSucceeded()), this, SLOT(onLinkingSucceeded()));
+    connect(m_pOAuthKhan, SIGNAL(openBrowser(QUrl)), this, SLOT(onOpenBrowser(QUrl)));
+    connect(m_pOAuthKhan, SIGNAL(closeBrowser()), this, SLOT(onCloseBrowser()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(iconGroupBox);
-    mainLayout->addWidget(messageGroupBox);
+    mainLayout->addWidget(m_pIconGroupBox);
+    mainLayout->addWidget(m_pMessageGroupBox);
     setLayout(mainLayout);
 
-    iconComboBox->setCurrentIndex(1);
-    trayIcon->show();
+    m_pIconComboBox->setCurrentIndex(1);
+    m_pTrayIcon->show();
 
-    setWindowTitle(tr("Systray"));
+    setWindowTitle(tr("Einstein's Agent"));
     resize(400, 300);
 }
 
-void Window::setVisible(bool visible)
+void COptionsDialog::setVisible(bool visible)
 {
-    minimizeAction->setEnabled(visible);
-    maximizeAction->setEnabled(!isMaximized());
-    restoreAction->setEnabled(isMaximized() || !visible);
+    m_pMinimizeAction->setEnabled(visible);
+    m_pMaximizeAction->setEnabled(!isMaximized());
+    m_pRestoreAction->setEnabled(isMaximized() || !visible);
     QDialog::setVisible(visible);
 }
 
-void Window::closeEvent(QCloseEvent *event)
+void COptionsDialog::closeEvent(QCloseEvent *event)
 {
-    if (trayIcon->isVisible()) {
-        QMessageBox::information(this, tr("Systray"),
-                                 tr("The program will keep running in the "
+    if (m_pTrayIcon->isVisible()) {
+        QMessageBox::information(this, tr("Einstein's Agent"),
+                                 tr("Einstein's Agent will keep running in the "
                                     "system tray. To terminate the program, "
                                     "choose <b>Quit</b> in the context menu "
                                     "of the system tray entry."));
@@ -94,22 +96,22 @@ void Window::closeEvent(QCloseEvent *event)
     }
 }
 
-void Window::setIcon(int index)
+void COptionsDialog::setIcon(int index)
 {
-    QIcon icon = iconComboBox->itemIcon(index);
-    trayIcon->setIcon(icon);
+    QIcon icon = m_pIconComboBox->itemIcon(index);
+    m_pTrayIcon->setIcon(icon);
     setWindowIcon(icon);
 
-    trayIcon->setToolTip(iconComboBox->itemText(index));
+    m_pTrayIcon->setToolTip(m_pIconComboBox->itemText(index));
 }
 
-void Window::iconActivated(QSystemTrayIcon::ActivationReason reason)
+void COptionsDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
-        iconComboBox->setCurrentIndex((iconComboBox->currentIndex() + 1)
-                                      % iconComboBox->count());
+        m_pIconComboBox->setCurrentIndex((m_pIconComboBox->currentIndex() + 1)
+                                      % m_pIconComboBox->count());
         break;
     case QSystemTrayIcon::MiddleClick:
         showMessage();
@@ -119,130 +121,134 @@ void Window::iconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-void Window::showMessage()
+void COptionsDialog::showMessage()
 {
-    QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon(
-            typeComboBox->itemData(typeComboBox->currentIndex()).toInt());
-    trayIcon->showMessage(titleEdit->text(), bodyEdit->toPlainText(), icon,
-                          durationSpinBox->value() * 1000);
+    CChangeUserDialog dl;
+    dl.exec();
+
+//    QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon(
+//            m_pTypeComboBox->itemData(m_pTypeComboBox->currentIndex()).toInt());
+//    m_pTrayIcon->showMessage(m_pTitleEdit->text(), m_pBodyEdit->toPlainText(), icon,
+//                          m_pDurationSpinBox->value() * 1000);
 }
 
-void Window::messageClicked()
+void COptionsDialog::messageClicked()
 {
-    QMessageBox::information(0, tr("Systray"),
+    QMessageBox::information(0, tr("Einstein's Agent"),
                              tr("Sorry, I already gave what help I could.\n"
                                 "Maybe you should try asking a human?"));
 }
 
-void Window::createIconGroupBox()
+void COptionsDialog::createIconGroupBox()
 {
-    iconGroupBox = new QGroupBox(tr("Tray Icon"));
+    m_pIconGroupBox = new QGroupBox(tr("Active User"));
 
-    iconLabel = new QLabel("Icon:");
+    m_pIconLabel = new QLabel("Icon:");
 
-    iconComboBox = new QComboBox;
-    iconComboBox->addItem(QIcon(":/images/bad.svg"), tr("Bad"));
-    iconComboBox->addItem(QIcon(":/images/heart.svg"), tr("Heart"));
-    iconComboBox->addItem(QIcon(":/images/trash.svg"), tr("Trash"));
+    m_pIconComboBox = new QComboBox;
+    m_pIconComboBox->addItem(QIcon(":/images/running.svg"), tr("Running"));
+    m_pIconComboBox->addItem(QIcon(":/images/play43.svg"), tr("Heart"));
+    m_pIconComboBox->addItem(QIcon(":/images/trash.svg"), tr("Trash"));
 
-    showIconCheckBox = new QCheckBox(tr("Show icon"));
-    showIconCheckBox->setChecked(true);
+    m_pShowIconCheckBox = new QCheckBox(tr("Show icon"));
+    m_pShowIconCheckBox->setChecked(true);
 
     QHBoxLayout *iconLayout = new QHBoxLayout;
-    iconLayout->addWidget(iconLabel);
-    iconLayout->addWidget(iconComboBox);
+    iconLayout->addWidget(m_pIconLabel);
+    iconLayout->addWidget(m_pIconComboBox);
     iconLayout->addStretch();
-    iconLayout->addWidget(showIconCheckBox);
-    iconGroupBox->setLayout(iconLayout);
+    iconLayout->addWidget(m_pShowIconCheckBox);
+    m_pIconGroupBox->setLayout(iconLayout);
 }
 
-void Window::createMessageGroupBox()
+void COptionsDialog::createMessageGroupBox()
 {
-    messageGroupBox = new QGroupBox(tr("Balloon Message"));
+    m_pMessageGroupBox = new QGroupBox(tr("Balloon Message"));
 
-    typeLabel = new QLabel(tr("Type:"));
+    m_pTypeLabel = new QLabel(tr("Type:"));
 
-    typeComboBox = new QComboBox;
-    typeComboBox->addItem(tr("None"), QSystemTrayIcon::NoIcon);
-    typeComboBox->addItem(style()->standardIcon(
+    m_pTypeComboBox = new QComboBox;
+    m_pTypeComboBox->addItem(tr("None"), QSystemTrayIcon::NoIcon);
+    m_pTypeComboBox->addItem(style()->standardIcon(
             QStyle::SP_MessageBoxInformation), tr("Information"),
             QSystemTrayIcon::Information);
-    typeComboBox->addItem(style()->standardIcon(
+    m_pTypeComboBox->addItem(style()->standardIcon(
             QStyle::SP_MessageBoxWarning), tr("Warning"),
             QSystemTrayIcon::Warning);
-    typeComboBox->addItem(style()->standardIcon(
+    m_pTypeComboBox->addItem(style()->standardIcon(
             QStyle::SP_MessageBoxCritical), tr("Critical"),
             QSystemTrayIcon::Critical);
-    typeComboBox->setCurrentIndex(1);
+    m_pTypeComboBox->setCurrentIndex(1);
 
-    durationLabel = new QLabel(tr("Duration:"));
+    m_pDurationLabel = new QLabel(tr("Duration:"));
 
-    durationSpinBox = new QSpinBox;
-    durationSpinBox->setRange(5, 60);
-    durationSpinBox->setSuffix(" s");
-    durationSpinBox->setValue(15);
+    m_pDurationSpinBox = new QSpinBox;
+    m_pDurationSpinBox->setRange(0, 10000);
+    m_pDurationSpinBox->setSuffix(" s");
+    m_pDurationSpinBox->setValue(1000);
+    m_pDurationSpinBox->setSingleStep(1000);
 
-    durationWarningLabel = new QLabel(tr("(some systems might ignore this "
+    m_pDurationWarningLabel = new QLabel(tr("(some systems might ignore this "
                                          "hint)"));
-    durationWarningLabel->setIndent(10);
+    m_pDurationWarningLabel->setIndent(10);
 
-    titleLabel = new QLabel(tr("Title:"));
+    m_pTitleLabel = new QLabel(tr("Title:"));
 
-    titleEdit = new QLineEdit(tr("Cannot connect to network"));
+    m_pTitleEdit = new QLineEdit(tr("Cannot connect to network"));
 
-    bodyLabel = new QLabel(tr("Body:"));
+    m_pBodyLabel = new QLabel(tr("Body:"));
 
-    bodyEdit = new QTextEdit;
-    bodyEdit->setPlainText(tr("Don't believe me. Honestly, I don't have a "
+    m_pBodyEdit = new QTextEdit;
+    m_pBodyEdit->setPlainText(tr("Don't believe me. Honestly, I don't have a "
                               "clue.\nClick this balloon for details."));
 
-    showMessageButton = new QPushButton(tr("Show Message"));
-    showMessageButton->setDefault(true);
+    m_pShowMessageButton = new QPushButton(tr("Show Message"));
+    m_pShowMessageButton->setDefault(true);
 
     QGridLayout *messageLayout = new QGridLayout;
-    messageLayout->addWidget(typeLabel, 0, 0);
-    messageLayout->addWidget(typeComboBox, 0, 1, 1, 2);
-    messageLayout->addWidget(durationLabel, 1, 0);
-    messageLayout->addWidget(durationSpinBox, 1, 1);
-    messageLayout->addWidget(durationWarningLabel, 1, 2, 1, 3);
-    messageLayout->addWidget(titleLabel, 2, 0);
-    messageLayout->addWidget(titleEdit, 2, 1, 1, 4);
-    messageLayout->addWidget(bodyLabel, 3, 0);
-    messageLayout->addWidget(bodyEdit, 3, 1, 2, 4);
-    messageLayout->addWidget(showMessageButton, 5, 4);
+    messageLayout->addWidget(m_pTypeLabel, 0, 0);
+    messageLayout->addWidget(m_pTypeComboBox, 0, 1, 1, 2);
+    messageLayout->addWidget(m_pDurationLabel, 1, 0);
+    messageLayout->addWidget(m_pDurationSpinBox, 1, 1);
+    messageLayout->addWidget(m_pDurationWarningLabel, 1, 2, 1, 3);
+    messageLayout->addWidget(m_pTitleLabel, 2, 0);
+    messageLayout->addWidget(m_pTitleEdit, 2, 1, 1, 4);
+    messageLayout->addWidget(m_pBodyLabel, 4, 0);
+    messageLayout->addWidget(m_pBodyEdit, 4, 1, 2, 4);
+    messageLayout->addWidget(m_pShowMessageButton, 3, 2);
     messageLayout->setColumnStretch(3, 1);
     messageLayout->setRowStretch(4, 1);
-    messageGroupBox->setLayout(messageLayout);
+    m_pMessageGroupBox->setLayout(messageLayout);
 }
 
-void Window::createActions()
+void COptionsDialog::createActions()
 {
-    minimizeAction = new QAction(tr("Mi&nimize"), this);
-    connect(minimizeAction, SIGNAL(triggered()), this, SLOT(hide()));
+    m_pMinimizeAction = new QAction(tr("Mi&nimize"), this);
+    connect(m_pMinimizeAction, SIGNAL(triggered()), this, SLOT(hide()));
 
-    maximizeAction = new QAction(tr("Ma&ximize"), this);
-    connect(maximizeAction, SIGNAL(triggered()), this, SLOT(showMaximized()));
+    m_pMaximizeAction = new QAction(tr("Ma&ximize"), this);
+    connect(m_pMaximizeAction, SIGNAL(triggered()), this, SLOT(showMaximized()));
 
-    restoreAction = new QAction(tr("&Restore"), this);
-    connect(restoreAction, SIGNAL(triggered()), this, SLOT(showNormal()));
+    m_pRestoreAction = new QAction(tr("&Restore"), this);
+    connect(m_pRestoreAction, SIGNAL(triggered()), this, SLOT(showNormal()));
 
-    quitAction = new QAction(tr("&Quit"), this);
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    m_pQuitAction = new QAction(tr("&Quit"), this);
+    connect(m_pQuitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
-void Window::createTrayIcon()
+void COptionsDialog::createTrayIcon()
 {
-    trayIconMenu = new QMenu(this);
-    trayIconMenu->addAction(minimizeAction);
-    trayIconMenu->addAction(maximizeAction);
-    trayIconMenu->addAction(restoreAction);
-    trayIconMenu->addSeparator();
-    trayIconMenu->addAction(quitAction);
+    m_pTrayIconMenu = new QMenu(this);
+    m_pTrayIconMenu->addAction(m_pMinimizeAction);
+    m_pTrayIconMenu->addAction(m_pMaximizeAction);
+    m_pTrayIconMenu->addAction(m_pRestoreAction);
+    m_pTrayIconMenu->addSeparator();
+    m_pTrayIconMenu->addAction(m_pQuitAction);
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setContextMenu(trayIconMenu);
+    m_pTrayIcon = new QSystemTrayIcon(this);
+    m_pTrayIcon->setContextMenu(m_pTrayIconMenu);
 }
-void Window::onOpenBrowser(const QUrl &url) {
+void COptionsDialog::onOpenBrowser(const QUrl &url) {
     // Open a web browser or a web view with the given URL.
     // The user will interact with this browser window to
     // enter login name, password, and authorize your application

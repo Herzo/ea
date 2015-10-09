@@ -1,5 +1,5 @@
 QT += core gui network script
-HEADERS       = window.h \
+HEADERS       = \
     ../qt/o2/src/o1.h \
     ../qt/o2/src/o1dropbox.h \
     ../qt/o2/src/o1flickr.h \
@@ -19,9 +19,11 @@ HEADERS       = window.h \
     ../qt/o2/src/o2skydrive.h \
     ../qt/o2/src/oxtwitter.h \
     ../qt/o2/src/simplecrypt.h \
-    o1khan.h
+    o1khan.h \
+    optionsdialog.h \
+    changeuserdialog.h \
+    freedialog.h
 SOURCES       = main.cpp \
-                window.cpp \
     ../qt/o2/src/o1.cpp \
     ../qt/o2/src/o1requestor.cpp \
     ../qt/o2/src/o2.cpp \
@@ -35,7 +37,10 @@ SOURCES       = main.cpp \
     ../qt/o2/src/o2skydrive.cpp \
     ../qt/o2/src/oxtwitter.cpp \
     ../qt/o2/src/simplecrypt.cpp \
-    o1khan.cpp
+    o1khan.cpp \
+    optionsdialog.cpp \
+    changeuserdialog.cpp \
+    freedialog.cpp
 RESOURCES     = systray.qrc
 QT           += xml svg
 
@@ -65,5 +70,9 @@ maemo5: include($$QT_SOURCE_TREE/examples/maemo5pkgrules.pri)
 symbian: warning(This example does not work on Symbian platform)
 maemo5: warning(This example does not work on Maemo platform)
 simulator: warning(This example does not work on Simulator platform)
+
+FORMS += \
+    changeuserdialog.ui \
+    freedialog.ui
 
 

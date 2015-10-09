@@ -25,12 +25,12 @@ class QPushButton;
 class QSpinBox;
 class QTextEdit;
 
-class Window : public QDialog
+class COptionsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    Window();
+    COptionsDialog();
 
     void setVisible(bool visible);
 
@@ -67,31 +67,31 @@ private:
     void createActions();
     void createTrayIcon();
 
-    QGroupBox *iconGroupBox;
-    QLabel *iconLabel;
-    QComboBox *iconComboBox;
-    QCheckBox *showIconCheckBox;
+    QGroupBox *m_pIconGroupBox;
+    QLabel *m_pIconLabel;
+    QComboBox *m_pIconComboBox;
+    QCheckBox *m_pShowIconCheckBox;
 
-    QGroupBox *messageGroupBox;
-    QLabel *typeLabel;
-    QLabel *durationLabel;
-    QLabel *durationWarningLabel;
-    QLabel *titleLabel;
-    QLabel *bodyLabel;
-    QComboBox *typeComboBox;
-    QSpinBox *durationSpinBox;
-    QLineEdit *titleEdit;
-    QTextEdit *bodyEdit;
-    QPushButton *showMessageButton;
+    QGroupBox *m_pMessageGroupBox;
+    QLabel *m_pTypeLabel;
+    QLabel *m_pDurationLabel;
+    QLabel *m_pDurationWarningLabel;
+    QLabel *m_pTitleLabel;
+    QLabel *m_pBodyLabel;
+    QComboBox *m_pTypeComboBox;
+    QSpinBox *m_pDurationSpinBox;
+    QLineEdit *m_pTitleEdit;
+    QTextEdit *m_pBodyEdit;
+    QPushButton *m_pShowMessageButton;
 
-    QAction *minimizeAction;
-    QAction *maximizeAction;
-    QAction *restoreAction;
-    QAction *quitAction;
+    QAction *m_pMinimizeAction;
+    QAction *m_pMaximizeAction;
+    QAction *m_pRestoreAction;
+    QAction *m_pQuitAction;
 
-    QSystemTrayIcon *trayIcon;
-    QMenu *trayIconMenu;
-    O1Khan *o1;
+    QSystemTrayIcon *m_pTrayIcon;
+    QMenu *m_pTrayIconMenu;
+    O1Khan *m_pOAuthKhan;
 };
 
 #endif

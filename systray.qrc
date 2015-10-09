@@ -1,7 +1,13 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/">
-   <file>images/bad.svg</file>
-   <file>images/heart.svg</file>
-   <file>images/trash.svg</file>
-</qresource>
+<RCC>
+    <qresource prefix="/">
+        <file>images/bad.svg</file>
+        <file>images/heart.svg</file>
+        <file>images/trash.svg</file>
+        <file>images/do10.svg</file>
+        <file>images/play43.svg</file>
+        <file>images/running.svg</file>
+        <file>images/Dave_106x150.png</file>
+        <file>images/cross.png</file>
+        <file>images/tick.png</file>
+    </qresource>
 </RCC>
