@@ -18,6 +18,10 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_buttonBox_accepted();
+
+    void on_CloseButton_clicked();
+
 private:
     Ui::CFreeDialog *ui;
 };
