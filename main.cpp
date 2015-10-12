@@ -11,7 +11,7 @@
 
 #include <QtGui>
 
-#include "optionsdialog.h"
+#include "freedialog.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     }
     QApplication::setQuitOnLastWindowClosed(false);
 
-    COptionsDialog window;
+    CFreeDialog window;
     window.show();
     return app.exec();
 }

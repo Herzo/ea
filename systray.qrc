@@ -9,5 +9,6 @@
         <file>images/Dave_106x150.png</file>
         <file>images/cross.png</file>
         <file>images/tick.png</file>
+        <file>images/davesaveworld.png</file>
     </qresource>
 </RCC>
