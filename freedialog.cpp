@@ -2,7 +2,8 @@
 #include <QMessageBox>
 #include <math.h>
 #include <QTimer>
-#include<QDebug>
+#include <QDebug>
+#include <QSettings>
 
 #include "freedialog.h"
 #include "ui_freedialog.h"
@@ -11,6 +12,7 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CFreeDialog)
 {
+    QSettings Settings;
     qsrand(time( NULL ));
     ui->setupUi(this);
     createActions();
@@ -20,13 +22,20 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     m_pTrayIcon->show();
     InitIconStore();
     setIcon("Idle");
+    // ui->GameMinutesCounter->display(qRound(Settings.value("gameminutes",0).toDouble()/100)*10);
+    DisplayGameMinutes();
+    ui->DifficultySlider->setValue(Settings.value("difficulty",10).toInt());
     InitQuestion();
     ui->Answer->installEventFilter(this);
-
+    m_pTimer =new QTimer(this);
+    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(on_Update()));
+    m_pTimer->start(500);
+    InitSkin();
 }
 
 CFreeDialog::~CFreeDialog()
 {
+    delete m_pTimer;
     delete ui;
 }
 
@@ -53,11 +62,11 @@ bool CFreeDialog::eventFilter(QObject *watched, QEvent *event)
      }
 }
 
-void CFreeDialog::on_pushButton_clicked()
-{
-    QPixmap imgTick(":/images/tick.png");
-    ui->imgMark->setPixmap(imgTick);
-}
+//void CFreeDialog::on_pushButton_clicked()
+//{
+//    QPixmap imgTick(":/images/tick.png");
+//    ui->imgMark->setPixmap(imgTick);
+//}
 
 void CFreeDialog::InitIconStore()
 {
@@ -112,10 +121,10 @@ void CFreeDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
         ;
     }
 }
-void CFreeDialog::on_buttonBox_accepted()
-{
+//void CFreeDialog::on_buttonBox_accepted()
+//{
 
-}
+//}
 
 void CFreeDialog::on_CloseButton_clicked()
 {
@@ -134,13 +143,38 @@ void CFreeDialog::createActions()
 
     m_pQuitAction = new QAction(tr("&Quit"), this);
     connect(m_pQuitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    m_pChangeSkin = new QAction(tr("&Change Skin"), this);
+    connect(m_pChangeSkin, SIGNAL(triggered()), this, SLOT(ChangeSkin()));
 }
+void CFreeDialog::ChangeSkin()
+{
+    QString sSkin;
+    QSettings Settings;
+    sSkin=Settings.value("skin",":/images/davesaveworld.png").toString();
+    if(sSkin==":/images/davesaveworld.png")
+        sSkin=":/images/rainboxworld.png";
+    else
+        sSkin=":/images/davesaveworld.png";
+    Settings.setValue("skin",sSkin);
+    InitSkin();
+}
+void CFreeDialog::InitSkin()
+{
+    QSettings Settings;
+    QPixmap img(Settings.value("skin",":/images/davesaveworld.png").toString());
+    ui->Skin->setPixmap(img);
+    ui->ClosedEye->hide();
+}
+
 void CFreeDialog::createTrayIcon()
 {
     m_pTrayIconMenu = new QMenu(this);
     m_pTrayIconMenu->addAction(m_pMinimizeAction);
     m_pTrayIconMenu->addAction(m_pMaximizeAction);
     m_pTrayIconMenu->addAction(m_pRestoreAction);
+    m_pTrayIconMenu->addSeparator();
+    m_pTrayIconMenu->addAction(m_pChangeSkin);
     m_pTrayIconMenu->addSeparator();
     m_pTrayIconMenu->addAction(m_pQuitAction);
 
@@ -151,34 +185,77 @@ void CFreeDialog::createTrayIcon()
 void CFreeDialog::on_NextButton_clicked()
 {
     // Check if they have answered correctly
+    QSettings Settings;
+    double dTotalGameMinutesCounter = Settings.value("totalgameminutes",0).toDouble();
+    double dGameMinutesCounter = Settings.value("gameminutes",0).toDouble();
     int iAnswer=ui->Answer->toPlainText().toInt();
+    double dQuestionsGameMinutes=GetQuestionsGameMinutes();
+    // int iDifficultyBonus=(dTotalGameMinutesCounter/30000000.0)*1000; //
+
     if(iAnswer==m_iAnswer)
     {
         // They answered correctly
-        QPixmap imgTick(":/images/tick.png");
+        QPixmap imgTick(":/images/tick.svg");
         ui->imgMark->setPixmap(imgTick);
-        int iGameMinutes = ui->GameMinutesCounter->value();
-        ui->GameMinutesCounter->display(iGameMinutes+1);
+        dTotalGameMinutesCounter+=dQuestionsGameMinutes;
+        dGameMinutesCounter+=dQuestionsGameMinutes;
+        if((qrand() % 10)==0)
+        {
+            ui->DifficultySlider->setValue(ui->DifficultySlider->value()+1);
+        }
         InitQuestion();
     }else
     {
-        QPixmap imgTick(":/images/cross.png");
+        QPixmap imgTick(":/images/cross.svg");
         ui->imgMark->setPixmap(imgTick);
         ui->Answer->setPlainText(QString::number(iAnswer));
+        dTotalGameMinutesCounter-=dQuestionsGameMinutes;
+        dGameMinutesCounter-=dQuestionsGameMinutes;
+        if((qrand() % 2)==0)
+        {
+            ui->DifficultySlider->setValue(ui->DifficultySlider->value()-1);
+        }
     }
     QTimer::singleShot(1500, this, SLOT(on_RemoveMark()));
     ui->Answer->setFocus();
+
+    Settings.setValue("totalgameminutes",dTotalGameMinutesCounter);
+    Settings.setValue("gameminutes",dGameMinutesCounter);
+    Settings.setValue("difficulty",ui->DifficultySlider->value());
+    DisplayGameMinutes();
 }
 void CFreeDialog::InitQuestion()
 {
     // Generate a new question, and update the dialog
-    int iOperand1=(qrand() % 100); //  (qrand() % (max-min)+1) + min;
-    int iOperand2=(qrand() % 100);
-    int iOperand3=(qrand() % 100);
-    int iOperator=(qrand() % 4);
-    qDebug() << iOperator;
-    int iLocationOfUnknown=(qrand() % 3);
-    qDebug() << iLocationOfUnknown;
+    ui->SecondsRemaining->setValue(119);
+    int iDifficulty=ui->DifficultySlider->value();
+    int iOperand1=(qrand() % iDifficulty); //  (qrand() % (max-min)+1) + min;
+    int iOperand2=(qrand() % iDifficulty); // if min is 0 then just use max + 1
+    int iOperand3=(qrand() % iDifficulty);
+    int iMaxOperators=4;
+    m_dQuestionDifficultyMultiplier=1;
+    if(iDifficulty<60)
+    {
+        iMaxOperators=2;
+    }
+    if(iDifficulty<20)
+    {
+        iMaxOperators=1;
+    }
+    int iMaxPositions=3;
+    if(iDifficulty<80)
+    {
+        iMaxPositions=2;
+    }
+    if(iDifficulty<40)
+    {
+        iMaxPositions=1;
+        if(iOperand1<iOperand2)
+            qSwap<int>(iOperand1,iOperand2);
+    }
+    int iOperator=(qrand() % iMaxOperators);
+    int iLocationOfUnknown=2-(qrand() % iMaxPositions);
+    qDebug() << iOperator << " "<< iLocationOfUnknown;
     QString sOperator="+";
     switch(iOperator)
     {
@@ -189,20 +266,28 @@ void CFreeDialog::InitQuestion()
         case 1:
             sOperator="-";
             iOperand3=iOperand1-iOperand2;
+            m_dQuestionDifficultyMultiplier+=0.05;
         break;
         case 2:
             sOperator="x";
              iOperand1=(qrand() % 11)+1;
              iOperand2=(qrand() % 11)+1;
-            iOperand3=iOperand1*iOperand2;
+             iOperand3=iOperand1*iOperand2;
+             m_dQuestionDifficultyMultiplier+=0.15;
         break;
         case 3:
             sOperator="/";
             iOperand2=(qrand() % 11)+1;
             iOperand3=(qrand() % 11)+1;
             iOperand1=iOperand2*iOperand3;
-
+            m_dQuestionDifficultyMultiplier+=0.25;
     }
+    // If any of the operands are negitive, then we increase m_dQuestionDifficulty
+    if(iOperand1<0||iOperand2<0||iOperand3<0) // neg operands
+        m_dQuestionDifficultyMultiplier+=0.05;
+    if(iOperand1>99||iOperand2>99||iOperand3>99) // large operands
+        m_dQuestionDifficultyMultiplier+=0.05;
+
     ui->Operand1->setText(QString::number(iOperand1));
     ui->Operand2->setText(QString::number(iOperand2));
     ui->Operand3->setText(QString::number(iOperand3));
@@ -213,15 +298,13 @@ void CFreeDialog::InitQuestion()
         // ? + 4 = 10
             ui->Operand1->setText("?");
             m_iAnswer=iOperand1;
-//            iOperator=InverseOperator(iOperator);
-//            m_iAnswer=Operation(iOperand3,iOperator,iOperand2);
+            m_dQuestionDifficultyMultiplier+=0.15;
         break;
         case 1:
         // 6 + ? = 10
             ui->Operand2->setText("?");
             m_iAnswer=iOperand2;
-//            iOperator=InverseOperator(iOperator);
-//            m_iAnswer=Operation(iOperand3,iOperator,iOperand1);
+            m_dQuestionDifficultyMultiplier+=0.15;
         break;
         case 2:
         // 6 + 4 = ?
@@ -272,4 +355,74 @@ return 0;
 void CFreeDialog::on_RemoveMark()
 {
     ui->imgMark->setPixmap(QPixmap());
+}
+
+void CFreeDialog::on_DifficultySlider_valueChanged(int value)
+{
+    int iDifficulty=ui->DifficultySlider->value();
+    QString sDifficultySign="Legend";
+    if(iDifficulty<85)
+    {
+        sDifficultySign="Master";
+    }
+    if(iDifficulty<60)
+    {
+        sDifficultySign="Expert";
+    }
+    if(iDifficulty<40)
+    {
+        sDifficultySign="Advanced";
+    }
+    if(iDifficulty<20)
+    {
+        sDifficultySign="Easy";
+    }
+    ui->DifficultySign->setText(sDifficultySign);
+}
+void CFreeDialog::on_Update()
+{
+    // Called every half second by a qTimer
+    int iSecondsRemaining=ui->SecondsRemaining->value()-1;
+    if(iSecondsRemaining<0)
+        iSecondsRemaining=0;
+    ui->SecondsRemaining->setValue(iSecondsRemaining);
+    ui->QuestionsGameMinutes->display(QString("%1").arg((GetQuestionsGameMinutes()/1000), 0, 'f', 3));
+    // Animate dogs eye
+
+    if((qrand() % 40)==0)
+    {
+
+        QString sSkin;
+        QSettings Settings;
+        sSkin=Settings.value("skin",":/images/davesaveworld.png").toString();
+        if(sSkin==":/images/rainboxworld.png")
+        {
+            // Open eye
+            ui->ClosedEye->hide();
+            QTimer::singleShot(1500, this, SLOT(on_CloseEye()));
+
+        }
+    }
+    // About once per minute, throw a thread off to check if a game is running, and if so, then deduct game minutes accordlingly.
+    // Also, remember to update the status icons
+    // If a game is running and we run out of game minutes, then exit the game.
+}
+void CFreeDialog::on_CloseEye()
+{
+    ui->ClosedEye->show();
+}
+
+void CFreeDialog::DisplayGameMinutes()
+{
+    QSettings Settings;
+    double dGameMinutes=qRound(Settings.value("gameminutes",0).toDouble()/100.0)/10.0;
+    ui->GameMinutesCounter->display(QString("%1").arg(dGameMinutes, 0, 'f', 1));
+}
+double CFreeDialog::GetQuestionsGameMinutes()
+{
+    // Adjust minutes earnt based on the difficutly, which is based on totalgameminutes, and
+    // the time that it took to answer
+    double dTimeBonusMultiplier=1+(ui->SecondsRemaining->value()/120.0);
+    double dQuestionsGameMinutes=1000*m_dQuestionDifficultyMultiplier*dTimeBonusMultiplier;
+    return qRound(1000*dQuestionsGameMinutes)/1000;
 }

@@ -7,8 +7,14 @@
         <file>images/play43.svg</file>
         <file>images/running.svg</file>
         <file>images/Dave_106x150.png</file>
-        <file>images/cross.png</file>
-        <file>images/tick.png</file>
         <file>images/davesaveworld.png</file>
+        <file>images/warning.svg</file>
+        <file>images/bypass.svg</file>
+        <file>images/blocking.svg</file>
+        <file>images/idle.svg</file>
+        <file>images/rainboxworld.png</file>
+        <file>images/tick.svg</file>
+        <file>images/cross.svg</file>
+        <file>images/closedeye.png</file>
     </qresource>
 </RCC>
