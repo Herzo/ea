@@ -4,9 +4,21 @@
 #include <QTimer>
 #include <QDebug>
 #include <QSettings>
+#include <QEvent>
 
 #include "freedialog.h"
+#include "listgames.h"
 #include "ui_freedialog.h"
+
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+#include <X11/X.h>
+#include <unistd.h>
+#include <X11/extensions/XTest.h>
+extern "C" {
+#include <xdo.h>
+}
+
 
 CFreeDialog::CFreeDialog(QWidget *parent) :
     QDialog(parent),
@@ -42,7 +54,7 @@ CFreeDialog::~CFreeDialog()
 
 bool CFreeDialog::eventFilter(QObject *watched, QEvent *event)
 {
-     if (event->type() == QEvent::KeyPress)
+     if (event->type() == 2)  // QEvent::KeyPress==2 namespace clash with xdo
      {
          QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
@@ -146,6 +158,9 @@ void CFreeDialog::createActions()
 
     m_pChangeSkin = new QAction(tr("&Change Skin"), this);
     connect(m_pChangeSkin, SIGNAL(triggered()), this, SLOT(ChangeSkin()));
+
+    m_pIdentifyGames = new QAction(tr("&Identify Games"), this);
+    connect(m_pIdentifyGames, SIGNAL(triggered()), this, SLOT(IdentifyGames()));
 }
 void CFreeDialog::ChangeSkin()
 {
@@ -158,6 +173,12 @@ void CFreeDialog::ChangeSkin()
         sSkin=":/images/davesaveworld.png";
     Settings.setValue("skin",sSkin);
     InitSkin();
+}
+
+void CFreeDialog::IdentifyGames()
+{
+    CListGames dl;
+    dl.exec();
 }
 void CFreeDialog::InitSkin()
 {
@@ -175,6 +196,7 @@ void CFreeDialog::createTrayIcon()
     m_pTrayIconMenu->addAction(m_pRestoreAction);
     m_pTrayIconMenu->addSeparator();
     m_pTrayIconMenu->addAction(m_pChangeSkin);
+    m_pTrayIconMenu->addAction(m_pIdentifyGames);
     m_pTrayIconMenu->addSeparator();
     m_pTrayIconMenu->addAction(m_pQuitAction);
 
@@ -406,6 +428,7 @@ void CFreeDialog::on_Update()
     // About once per minute, throw a thread off to check if a game is running, and if so, then deduct game minutes accordlingly.
     // Also, remember to update the status icons
     // If a game is running and we run out of game minutes, then exit the game.
+    on_ControlGames();
 }
 void CFreeDialog::on_CloseEye()
 {
@@ -425,4 +448,40 @@ double CFreeDialog::GetQuestionsGameMinutes()
     double dTimeBonusMultiplier=1+(ui->SecondsRemaining->value()/120.0);
     double dQuestionsGameMinutes=1000*m_dQuestionDifficultyMultiplier*dTimeBonusMultiplier;
     return qRound(1000*dQuestionsGameMinutes)/1000;
+}
+void CFreeDialog::on_ControlGames()
+{
+    xdo_t* xdo;
+    XID ulWindowId=0;
+
+    xdo = xdo_new(NULL);
+ xdo_close_window(xdo, 146800689);
+    // int iErrorCode = xdo_get_active_window(xdo, &ulWindowId);
+
+    unsigned char *name=0;
+    int name_len=0;
+    int name_type=0;
+   // qDebug() << ulWindowId;
+   // xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
+    /*
+    QString sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
+    qDebug() << ulWindowId << sName;
+    if(sName=="Ubuntu Software Centre" || sName=="Minecraft 1.8.8")
+    {
+        m_ulWindowId=ulWindowId;
+        // QTimer::singleShot(500, this, SLOT(CloseGame()));
+
+        // CloseGame(ulWindowId);
+    }
+    */
+   //  XFree(name);
+ //  xdo_kill_window(xdo, 146800689);
+
+}
+void CFreeDialog::CloseGame()
+{
+    xdo_t* xdo;
+    xdo = xdo_new(NULL);
+    qDebug() <<  xdo_kill_window(xdo, m_ulWindowId);
+
 }

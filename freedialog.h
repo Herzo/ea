@@ -25,7 +25,10 @@ protected:
 
 protected slots:
     void ChangeSkin();
+    void IdentifyGames();
     void on_CloseEye();
+    void on_ControlGames();
+    void CloseGame();
 private slots:
    // void on_pushButton_clicked();
     void setIcon(QString sMode);
@@ -42,6 +45,7 @@ private slots:
 
     void on_Update();
 private:
+    unsigned long m_ulWindowId;
     double m_dQuestionDifficultyMultiplier;
     int m_iAnswer;
     Ui::CFreeDialog *ui;
@@ -52,6 +56,7 @@ private:
     QAction *m_pRestoreAction;
     QAction *m_pQuitAction;
     QAction *m_pChangeSkin;
+    QAction *m_pIdentifyGames;
 
     QSystemTrayIcon *m_pTrayIcon;
     QMenu *m_pTrayIconMenu;
