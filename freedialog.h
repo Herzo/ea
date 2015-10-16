@@ -28,7 +28,7 @@ protected slots:
     void IdentifyGames();
     void on_CloseEye();
     void on_ControlGames();
-    void CloseGame();
+
 private slots:
    // void on_pushButton_clicked();
     void setIcon(QString sMode);

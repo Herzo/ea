@@ -4,12 +4,12 @@
 
 
 
-extern "C" {
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
 #include <unistd.h>
 #include <X11/extensions/XTest.h>
+extern "C" {
 #include <xdo.h>
 }
 
@@ -43,8 +43,8 @@ void CListGames::on_bnIdentifyGame_clicked()
       std::string sName=std::string(reinterpret_cast<char*>(name));
       qDebug() << QString::fromStdString(sName) << " "<< name_len<< " "<< name_type << ulWindowId;
     ui->listGames->addItem(QString::fromStdString(sName));
-    xdo_close_window(xdo, ulWindowId);
-    xdo_kill_window(xdo, ulWindowId);
+//    xdo_close_window(xdo, ulWindowId);
+//    xdo_kill_window(xdo, ulWindowId);
     // XFree(name);
-
+    xdo_free(xdo);
 }

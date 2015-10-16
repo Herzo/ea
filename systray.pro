@@ -78,6 +78,4 @@ FORMS += \
     freedialog.ui \
     listgames.ui
 
-
-
 unix:!macx: LIBS += -lxdo

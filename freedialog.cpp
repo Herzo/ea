@@ -413,6 +413,7 @@ void CFreeDialog::on_Update()
 
     if((qrand() % 40)==0)
     {
+        on_ControlGames();
 
         QString sSkin;
         QSettings Settings;
@@ -428,7 +429,6 @@ void CFreeDialog::on_Update()
     // About once per minute, throw a thread off to check if a game is running, and if so, then deduct game minutes accordlingly.
     // Also, remember to update the status icons
     // If a game is running and we run out of game minutes, then exit the game.
-    on_ControlGames();
 }
 void CFreeDialog::on_CloseEye()
 {
@@ -455,33 +455,23 @@ void CFreeDialog::on_ControlGames()
     XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
- xdo_close_window(xdo, 146800689);
-    // int iErrorCode = xdo_get_active_window(xdo, &ulWindowId);
+    xdo->close_display_when_freed=true;
+    xdo_get_active_window(xdo, &ulWindowId);
 
     unsigned char *name=0;
     int name_len=0;
     int name_type=0;
-   // qDebug() << ulWindowId;
-   // xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
-    /*
+
+    xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
+
     QString sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
     qDebug() << ulWindowId << sName;
     if(sName=="Ubuntu Software Centre" || sName=="Minecraft 1.8.8")
     {
-        m_ulWindowId=ulWindowId;
-        // QTimer::singleShot(500, this, SLOT(CloseGame()));
-
-        // CloseGame(ulWindowId);
+        // xdo_close_window(xdo, ulWindowId);
+        xdo_kill_window(xdo, ulWindowId);
     }
-    */
-   //  XFree(name);
- //  xdo_kill_window(xdo, 146800689);
 
+    xdo_free(xdo);
 }
-void CFreeDialog::CloseGame()
-{
-    xdo_t* xdo;
-    xdo = xdo_new(NULL);
-    qDebug() <<  xdo_kill_window(xdo, m_ulWindowId);
 
-}
