@@ -14,6 +14,7 @@ class CListGames : public QDialog
 public:
     explicit CListGames(QWidget *parent = 0);
     ~CListGames();
+   // bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
     void on_bnIdentifyGame_clicked();

@@ -1,6 +1,9 @@
 #include <QDebug>
 #include <QSettings>
 #include <QShortcut>
+#include <QTimer>
+#include <QEvent>
+#include <QKeyEvent>
 
 #include "listgames.h"
 #include "ui_listgames.h"
@@ -33,15 +36,39 @@ CListGames::CListGames(QWidget *parent) :
         ui->listGames->addItem(sGameWindowTitle);
     }
     Settings.endArray();
+    // ui->listGames->installEventFilter(this);
     // pressing DEL activates the slots only when list widget has focus
-        QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listGames);
-        connect(shortcut, SIGNAL(activated()), this, SLOT(deleteItem()));
+    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listGames);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(deleteItem()));
 }
 
 CListGames::~CListGames()
 {
     delete ui;
 }
+/*
+bool CListGames::eventFilter(QObject *watched, QEvent *event)
+{
+     if (event->type() == 2)  // QEvent::KeyPress==2 namespace clash with xdo
+     {
+         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+         if (keyEvent->key()==Qt::Key_Delete)
+         {
+            QTimer::singleShot(50, this, SLOT(deleteItem()));
+         }
+         else
+         {
+             return QObject::eventFilter(watched, event);
+         }
+         return true;
+     }
+     else
+     {
+         return QObject::eventFilter(watched, event);
+     }
+}
+*/
 void CListGames::deleteItem()
 {
     delete ui->listGames->currentItem();
@@ -52,10 +79,10 @@ void CListGames::on_bnIdentifyGame_clicked()
     QSettings Settings;
 
     xdo_t* xdo;
-    XID ulWindowId=NULL;
+    XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
-    int iErrorCode = xdo_select_window_with_click(xdo, &ulWindowId);
+    xdo_select_window_with_click(xdo, &ulWindowId);
 
     unsigned char *name;
     int name_len;

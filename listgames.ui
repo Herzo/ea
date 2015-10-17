@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Games List</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -32,8 +32,8 @@
   <widget class="QPushButton" name="bnIdentifyGame">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>350</y>
+     <x>390</x>
+     <y>400</y>
      <width>98</width>
      <height>31</height>
     </rect>
@@ -45,11 +45,19 @@
   <widget class="QListWidget" name="listGames">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>40</y>
-     <width>321</width>
-     <height>301</height>
+     <x>180</x>
+     <y>60</y>
+     <width>311</width>
+     <height>331</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(0, 51, 51,90);
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+font-color:yellow;</string>
    </property>
   </widget>
   <widget class="QLabel" name="skin">
@@ -65,7 +73,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="systray.qrc">:/images/rainboxworld.png</pixmap>
+    <pixmap resource="systray.qrc">:/images/gameselection.png</pixmap>
    </property>
   </widget>
   <zorder>skin</zorder>

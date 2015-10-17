@@ -20,8 +20,8 @@ public:
     ~CFreeDialog();
     void setVisible(bool visible);
 
-    bool eventFilter(QObject *watched, QEvent *event);
 protected:
+    bool eventFilter(QObject *watched, QEvent *event);
     void closeEvent(QCloseEvent *event);
 
 protected slots:
@@ -31,11 +31,9 @@ protected slots:
     void on_ControlGames();
 
 private slots:
-   // void on_pushButton_clicked();
-    void setIcon(QString sMode);
+
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
-    // void on_buttonBox_accepted();
 
     void on_CloseButton_clicked();
 
@@ -46,6 +44,7 @@ private slots:
 
     void on_Update();
 private:
+    void setIcon(QString sMode);
     QElapsedTimer m_GamingTimer;
     // unsigned long m_ulLastGamingTime;
     unsigned long m_ulWindowId;

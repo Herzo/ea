@@ -162,6 +162,9 @@ text-align: right;</string>
     <property name="verticalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
     <property name="tabChangesFocus">
      <bool>true</bool>
     </property>
@@ -495,7 +498,7 @@ color:yellow;</string>
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>300</width>
+     <width>483</width>
      <height>90</height>
     </rect>
    </property>
@@ -513,10 +516,10 @@ color:yellow;</string>
   <widget class="QLabel" name="QuestionMinutesBackground">
    <property name="geometry">
     <rect>
-     <x>347</x>
-     <y>17</y>
-     <width>76</width>
-     <height>16</height>
+     <x>525</x>
+     <y>15</y>
+     <width>81</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="autoFillBackground">
