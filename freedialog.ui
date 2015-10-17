@@ -21,7 +21,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>321</width>
+     <width>501</width>
      <height>111</height>
     </rect>
    </property>
@@ -30,6 +30,9 @@
    </property>
    <property name="styleSheet">
     <string notr="true"/>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhTime</set>
    </property>
    <property name="frameShape">
     <enum>QFrame::Box</enum>
@@ -41,10 +44,13 @@
     <number>1</number>
    </property>
    <property name="smallDecimalPoint">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="digitCount">
-    <number>5</number>
+    <number>8</number>
+   </property>
+   <property name="mode">
+    <enum>QLCDNumber::Dec</enum>
    </property>
    <property name="segmentStyle">
     <enum>QLCDNumber::Filled</enum>
@@ -465,7 +471,7 @@ color:yellow;</string>
   <widget class="QLCDNumber" name="QuestionsGameMinutes">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>520</x>
      <y>10</y>
      <width>91</width>
      <height>31</height>

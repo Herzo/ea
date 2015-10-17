@@ -18,8 +18,12 @@ public:
 private slots:
     void on_bnIdentifyGame_clicked();
 
+    void on_buttonBox_accepted();
+    void deleteItem();
+
 private:
     Ui::CListGames *ui;
+    void DeleteItem();
 };
 
 #endif // LISTGAMES_H

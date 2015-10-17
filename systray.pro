@@ -1,4 +1,5 @@
-QT += core gui network script
+unix:!macx: LIBS += -lxdo
+QT += core gui network script widgets
 HEADERS       = \
     ../qt/o2/src/o1.h \
     ../qt/o2/src/o1dropbox.h \
@@ -78,4 +79,3 @@ FORMS += \
     freedialog.ui \
     listgames.ui
 
-unix:!macx: LIBS += -lxdo

@@ -4,6 +4,7 @@
 #include <QSystemTrayIcon>
 #include <QDialog>
 #include <QMap>
+#include <QElapsedTimer>
 class QMenu;
 
 namespace Ui {
@@ -45,6 +46,8 @@ private slots:
 
     void on_Update();
 private:
+    QElapsedTimer m_GamingTimer;
+    // unsigned long m_ulLastGamingTime;
     unsigned long m_ulWindowId;
     double m_dQuestionDifficultyMultiplier;
     int m_iAnswer;
@@ -60,6 +63,7 @@ private:
 
     QSystemTrayIcon *m_pTrayIcon;
     QMenu *m_pTrayIconMenu;
+    QMenu *m_pMenu;
     QMap<QString, std::pair< QIcon, QString> > m_IconStore;
     void InitIconStore();
 
@@ -68,8 +72,9 @@ private:
     int Operation(int iOperand1, int iOperator, int iOperand2);
     QTimer *m_pTimer;
     void DisplayGameMinutes();
-    double GetQuestionsGameMinutes();
+    uint GetQuestionsGameMilliseconds();
     void InitSkin();
+    void DisplayQuestionGameMinutes();
 };
 
 

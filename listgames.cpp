@@ -1,4 +1,7 @@
 #include <QDebug>
+#include <QSettings>
+#include <QShortcut>
+
 #include "listgames.h"
 #include "ui_listgames.h"
 
@@ -20,15 +23,34 @@ CListGames::CListGames(QWidget *parent) :
     ui(new Ui::CListGames)
 {
     ui->setupUi(this);
+    QSettings Settings;
+    ui->listGames->clear();
+    int size = Settings.beginReadArray("games");
+    for (int i = 0; i < size; ++i)
+    {
+        Settings.setArrayIndex(i);
+        QString sGameWindowTitle = Settings.value("windowtitle").toString();
+        ui->listGames->addItem(sGameWindowTitle);
+    }
+    Settings.endArray();
+    // pressing DEL activates the slots only when list widget has focus
+        QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listGames);
+        connect(shortcut, SIGNAL(activated()), this, SLOT(deleteItem()));
 }
 
 CListGames::~CListGames()
 {
     delete ui;
 }
-
+void CListGames::deleteItem()
+{
+    delete ui->listGames->currentItem();
+}
 void CListGames::on_bnIdentifyGame_clicked()
 {
+
+    QSettings Settings;
+
     xdo_t* xdo;
     XID ulWindowId=NULL;
 
@@ -45,6 +67,20 @@ void CListGames::on_bnIdentifyGame_clicked()
     ui->listGames->addItem(QString::fromStdString(sName));
 //    xdo_close_window(xdo, ulWindowId);
 //    xdo_kill_window(xdo, ulWindowId);
-    // XFree(name);
+    // XFree(name); // apt-get install libfreetype6-dev maybe???
     xdo_free(xdo);
+
+}
+
+void CListGames::on_buttonBox_accepted()
+{
+    QSettings settings;
+    settings.beginWriteArray("games");
+    for (int i = 0; i < ui->listGames->count(); ++i)
+    {
+        ui->listGames->setCurrentRow(i);
+        settings.setArrayIndex(i);
+        settings.setValue("windowtitle", ui->listGames->currentItem()->text());
+    }
+    settings.endArray();
 }

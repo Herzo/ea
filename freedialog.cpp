@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include <math.h>
 #include <QTimer>
+#include <QTime>
 #include <QDebug>
 #include <QSettings>
 #include <QEvent>
@@ -9,6 +10,7 @@
 #include "freedialog.h"
 #include "listgames.h"
 #include "ui_freedialog.h"
+
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
@@ -18,12 +20,15 @@
 extern "C" {
 #include <xdo.h>
 }
+// #include <chrono>
 
 
 CFreeDialog::CFreeDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CFreeDialog)
 {
+    m_GamingTimer.invalidate();
+    // m_ulLastGamingTime=0;
     QSettings Settings;
     qsrand(time( NULL ));
     ui->setupUi(this);
@@ -34,7 +39,7 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     m_pTrayIcon->show();
     InitIconStore();
     setIcon("Idle");
-    // ui->GameMinutesCounter->display(qRound(Settings.value("gameminutes",0).toDouble()/100)*10);
+    // ui->GameMinutesCounter->display(qRound(Settings.value("gamemilliseconds",0).toDouble()/100)*10);
     DisplayGameMinutes();
     ui->DifficultySlider->setValue(Settings.value("difficulty",10).toInt());
     InitQuestion();
@@ -43,6 +48,11 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(on_Update()));
     m_pTimer->start(500);
     InitSkin();
+    m_pMenu = new QMenu(this);
+    m_pMenu->addAction(m_pChangeSkin);
+    m_pMenu->addAction(m_pIdentifyGames);
+    QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
+
 }
 
 CFreeDialog::~CFreeDialog()
@@ -95,17 +105,18 @@ void CFreeDialog::setVisible(bool visible)
     m_pMinimizeAction->setEnabled(visible);
     m_pMaximizeAction->setEnabled(!isMaximized());
     m_pRestoreAction->setEnabled(isMaximized() || !visible);
+    m_pTrayIcon->setVisible(true);
     QDialog::setVisible(visible);
 }
 
 void CFreeDialog::closeEvent(QCloseEvent *event)
 {
     if (m_pTrayIcon->isVisible()) {
-        QMessageBox::information(this, tr("Einstein's Agent"),
-                                 tr("Einstein's Agent will keep running in the "
-                                    "system tray. To terminate the program, "
-                                    "choose <b>Quit</b> in the context menu "
-                                    "of the system tray entry."));
+//        QMessageBox::information(this, tr("Einstein's Agent"),
+//                                 tr("Einstein's Agent will keep running in the "
+//                                    "system tray. To terminate the program, "
+//                                    "choose <b>Quit</b> in the context menu "
+//                                    "of the system tray entry."));
         hide();
         event->ignore();
     }
@@ -208,19 +219,19 @@ void CFreeDialog::on_NextButton_clicked()
 {
     // Check if they have answered correctly
     QSettings Settings;
-    double dTotalGameMinutesCounter = Settings.value("totalgameminutes",0).toDouble();
-    double dGameMinutesCounter = Settings.value("gameminutes",0).toDouble();
-    int iAnswer=ui->Answer->toPlainText().toInt();
-    double dQuestionsGameMinutes=GetQuestionsGameMinutes();
-    // int iDifficultyBonus=(dTotalGameMinutesCounter/30000000.0)*1000; //
+    uint dTotalGameMillisecondsCounter = Settings.value("totalgamemilliseconds",0).toUInt();
+    uint dGameMillisecondsCounter = Settings.value("gamemilliseconds",0).toUInt();
+    int iAnswer=ui->Answer->toPlainText().toUInt();
+    double dQuestionsGameMilliseconds=GetQuestionsGameMilliseconds();
+    // int iDifficultyBonus=(dTotalGameMillisecondsCounter/30000000.0)*1000; //
 
     if(iAnswer==m_iAnswer)
     {
         // They answered correctly
         QPixmap imgTick(":/images/tick.svg");
         ui->imgMark->setPixmap(imgTick);
-        dTotalGameMinutesCounter+=dQuestionsGameMinutes;
-        dGameMinutesCounter+=dQuestionsGameMinutes;
+        dTotalGameMillisecondsCounter+=dQuestionsGameMilliseconds;
+        dGameMillisecondsCounter+=dQuestionsGameMilliseconds;
         if((qrand() % 10)==0)
         {
             ui->DifficultySlider->setValue(ui->DifficultySlider->value()+1);
@@ -231,8 +242,8 @@ void CFreeDialog::on_NextButton_clicked()
         QPixmap imgTick(":/images/cross.svg");
         ui->imgMark->setPixmap(imgTick);
         ui->Answer->setPlainText(QString::number(iAnswer));
-        dTotalGameMinutesCounter-=dQuestionsGameMinutes;
-        dGameMinutesCounter-=dQuestionsGameMinutes;
+        dTotalGameMillisecondsCounter-=dQuestionsGameMilliseconds;
+        dGameMillisecondsCounter-=dQuestionsGameMilliseconds;
         if((qrand() % 2)==0)
         {
             ui->DifficultySlider->setValue(ui->DifficultySlider->value()-1);
@@ -241,8 +252,8 @@ void CFreeDialog::on_NextButton_clicked()
     QTimer::singleShot(1500, this, SLOT(on_RemoveMark()));
     ui->Answer->setFocus();
 
-    Settings.setValue("totalgameminutes",dTotalGameMinutesCounter);
-    Settings.setValue("gameminutes",dGameMinutesCounter);
+    Settings.setValue("totalgamemilliseconds",dTotalGameMillisecondsCounter);
+    Settings.setValue("gamemilliseconds",dGameMillisecondsCounter);
     Settings.setValue("difficulty",ui->DifficultySlider->value());
     DisplayGameMinutes();
 }
@@ -408,7 +419,7 @@ void CFreeDialog::on_Update()
     if(iSecondsRemaining<0)
         iSecondsRemaining=0;
     ui->SecondsRemaining->setValue(iSecondsRemaining);
-    ui->QuestionsGameMinutes->display(QString("%1").arg((GetQuestionsGameMinutes()/1000), 0, 'f', 3));
+    DisplayQuestionGameMinutes();
     // Animate dogs eye
 
     if((qrand() % 40)==0)
@@ -438,24 +449,45 @@ void CFreeDialog::on_CloseEye()
 void CFreeDialog::DisplayGameMinutes()
 {
     QSettings Settings;
-    double dGameMinutes=qRound(Settings.value("gameminutes",0).toDouble()/100.0)/10.0;
-    ui->GameMinutesCounter->display(QString("%1").arg(dGameMinutes, 0, 'f', 1));
+    QTime tMinutesSeconds(0,0,0,Settings.value("gamemilliseconds").toUInt());
+    QString sDisplay=tMinutesSeconds.toString("HH:mm:ss");
+    ui->GameMinutesCounter->display(sDisplay);
+    //double dGameMinutes=qRound(Settings.value("gamemilliseconds",0).toDouble()/100.0)/10.0;
+    //ui->GameMinutesCounter->display(QString("%1").arg(dGameMinutes, 0, 'f', 1));
 }
-double CFreeDialog::GetQuestionsGameMinutes()
+
+void CFreeDialog::DisplayQuestionGameMinutes()
 {
-    // Adjust minutes earnt based on the difficutly, which is based on totalgameminutes, and
+    QTime tMinutesSeconds(0,0,0,GetQuestionsGameMilliseconds());
+    QString sDisplay=tMinutesSeconds.toString("mm:ss");
+    ui->QuestionsGameMinutes->display(sDisplay);
+    // ui->QuestionsGameMinutes->display(QString("%1").arg((GetQuestionsGameMilliseconds()/1000), 0, 'f', 3));
+
+}
+
+uint CFreeDialog::GetQuestionsGameMilliseconds()
+{
+    // Adjust minutes earnt based on the difficutly, which is based on totalGameMilliseconds, and
     // the time that it took to answer
     double dTimeBonusMultiplier=1+(ui->SecondsRemaining->value()/120.0);
-    double dQuestionsGameMinutes=1000*m_dQuestionDifficultyMultiplier*dTimeBonusMultiplier;
-    return qRound(1000*dQuestionsGameMinutes)/1000;
+    double dQuestionsGameMilliseconds=60000*m_dQuestionDifficultyMultiplier*dTimeBonusMultiplier;
+    return dQuestionsGameMilliseconds;
+    // return qRound(1000*dQuestionsGameMilliseconds)/1000;
 }
 void CFreeDialog::on_ControlGames()
 {
+    // Deduce the game minutes used since the last check
+    // Check if we have any game minutes avalible
+    // if we are out of game minutes then minimise the game
+    QSettings Settings;
+
+    // Looks like we are out of game minutes
+
     xdo_t* xdo;
     XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
-    xdo->close_display_when_freed=true;
+    // xdo->close_display_when_freed=true;
     xdo_get_active_window(xdo, &ulWindowId);
 
     unsigned char *name=0;
@@ -466,12 +498,58 @@ void CFreeDialog::on_ControlGames()
 
     QString sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
     qDebug() << ulWindowId << sName;
-    if(sName=="Ubuntu Software Centre" || sName=="Minecraft 1.8.8")
+    // Is the currently actitive window a game?
+    bool bPlayingGame=false;
+    int size = Settings.beginReadArray("games");
+    for (int i = 0; i < size; ++i)
     {
+        Settings.setArrayIndex(i);
+        QString sGameWindowTitle = Settings.value("windowtitle").toString();
+        if(sName.contains(sGameWindowTitle,Qt::CaseInsensitive))
+        {
+            // They are playing a game
+            bPlayingGame=true;
+        }
+    }
+    Settings.endArray();
+
+    if(bPlayingGame==true)
+    {
+        int iGameMillisecondsAvalable=Settings.value("gamemilliseconds",0).toInt();
+        if(iGameMillisecondsAvalable>0)
+        {
+            if(!m_GamingTimer.isValid())
+            {
+                m_GamingTimer.start();
+                return;
+            }
+            qint64 ulGamingMilliseconds= m_GamingTimer.elapsed();
+            iGameMillisecondsAvalable=-ulGamingMilliseconds;
+            if(iGameMillisecondsAvalable>0)
+            {
+                Settings.setValue("gamemilliseconds",iGameMillisecondsAvalable);
+                DisplayGameMinutes();
+                m_GamingTimer.restart();
+                return;
+            }
+        }
+        DisplayGameMinutes();
         // xdo_close_window(xdo, ulWindowId);
-        xdo_kill_window(xdo, ulWindowId);
+        // xdo_kill_window(xdo, ulWindowId);
+        xdo_minimize_window(xdo, ulWindowId);
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("No game minutes remaining.");
+        msgBox.setInformativeText("Time to earn some more game minutes.");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        this->raise();
+        this->activateWindow();
+        this->showNormal();
     }
 
     xdo_free(xdo);
+
 }
 

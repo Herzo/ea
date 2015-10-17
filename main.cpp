@@ -12,7 +12,7 @@
 #include <QtGui>
 
 #include "freedialog.h"
-
+// #include "optionsdialog.h"
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(systray);
@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     QApplication::setQuitOnLastWindowClosed(false);
 
     CFreeDialog window;
+    // COptionsDialog window;
     window.show();
     return app.exec();
 }
