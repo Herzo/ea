@@ -510,7 +510,7 @@ void CFreeDialog::on_ControlGames()
     XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
-    // xdo->close_display_when_freed=true;
+    xdo->close_display_when_freed=true;
     xdo_get_active_window(xdo, &ulWindowId);
 
     unsigned char *name=0;
