@@ -82,6 +82,7 @@ void CListGames::on_bnIdentifyGame_clicked()
     XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
+    xdo->close_display_when_freed=true;
     xdo_select_window_with_click(xdo, &ulWindowId);
 
     unsigned char *name;
