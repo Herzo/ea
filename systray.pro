@@ -1,4 +1,4 @@
-unix:!macx: LIBS += -lxdo
+unix:!macx: LIBS += -lxdo -lX11
 QT += core gui network script widgets
 HEADERS       = \
     ../qt/o2/src/o1.h \

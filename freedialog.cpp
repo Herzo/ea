@@ -579,6 +579,7 @@ void CFreeDialog::on_ControlGames()
         this->showNormal();
     }
     setIcon("Idle");
+    XFree(name); // need to add -lX11 to LIBS in project
 
     xdo_free(xdo);
 

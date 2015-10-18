@@ -94,7 +94,7 @@ void CListGames::on_bnIdentifyGame_clicked()
     ui->listGames->addItem(QString::fromStdString(sName));
 //    xdo_close_window(xdo, ulWindowId);
 //    xdo_kill_window(xdo, ulWindowId);
-    // XFree(name); // apt-get install libfreetype6-dev maybe???
+    XFree(name); // need to add -lX11 to LIBS in project
     xdo_free(xdo);
 
 }
