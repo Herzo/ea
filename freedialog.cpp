@@ -437,9 +437,11 @@ void CFreeDialog::on_Update()
     ui->SecondsRemaining->setValue(iSecondsRemaining);
     DisplayQuestionGameMinutes();
     // Animate dogs eye
-
-    if((qrand() % 40)==0)
+    static int iCounter=19;
+//    if((qrand() % 20)==0)
+    if(iCounter-- ==0)
     {
+        iCounter=19;
         on_ControlGames();
 
         QString sSkin;
@@ -453,7 +455,7 @@ void CFreeDialog::on_Update()
 
         }
     }
-    // About once per minute, throw a thread off to check if a game is running, and if so, then deduct game minutes accordlingly.
+
     // Also, remember to update the status icons
     // If a game is running and we run out of game minutes, then exit the game.
 }
