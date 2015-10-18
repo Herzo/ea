@@ -82,6 +82,11 @@ void CListGames::on_bnIdentifyGame_clicked()
     XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
+    if(xdo==NULL)
+    {
+        qDebug() << "xdo could not get a new display";
+        return;
+    }
     xdo->close_display_when_freed=true;
     xdo_select_window_with_click(xdo, &ulWindowId);
 
