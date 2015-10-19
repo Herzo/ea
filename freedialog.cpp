@@ -501,6 +501,20 @@ uint CFreeDialog::GetQuestionsGameMilliseconds()
 }
 void CFreeDialog::on_ControlGames()
 {
+    /*
+     *
+ // link against libX11
+  #include <X11/Xlib.h>
+  Display *display;
+  Window focus;
+  char *window_name;
+  int revert;
+
+  display = XOpenDisplay(NULL);
+  XGetInputFocus(display, &focus, &revert);
+  XFetchName(display, focus, &window_name);
+  XCloseDisplay(display);
+     * */
     // Deduce the game minutes used since the last check
     // Check if we have any game minutes avalible
     // if we are out of game minutes then minimise the game
@@ -510,6 +524,11 @@ void CFreeDialog::on_ControlGames()
     XID ulWindowId=0;
 
     xdo = xdo_new(NULL);
+    if(xdo==NULL)
+    {
+        qDebug() << "xdo could not get a new display";
+        return;
+    }
     xdo->close_display_when_freed=true;
     xdo_get_active_window(xdo, &ulWindowId);
 
