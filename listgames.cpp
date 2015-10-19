@@ -4,12 +4,11 @@
 #include <QTimer>
 #include <QEvent>
 #include <QKeyEvent>
-
 #include "listgames.h"
 #include "ui_listgames.h"
 
 
-
+#ifndef WIN32
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -18,7 +17,11 @@
 extern "C" {
 #include <xdo.h>
 }
-
+#else
+#include <windows.h>
+#include <idwindowdialog.h>
+#include <cassert>
+#endif
 
 
 CListGames::CListGames(QWidget *parent) :
@@ -82,12 +85,12 @@ void CListGames::deleteItem()
 }
 void CListGames::on_bnIdentifyGame_clicked()
 {
-
     QSettings Settings;
+    QString sName;
 
+#ifndef WIN32
     xdo_t* xdo;
     XID ulWindowId=0;
-
     xdo = xdo_new(NULL);
     if(xdo==NULL)
     {
@@ -101,15 +104,60 @@ void CListGames::on_bnIdentifyGame_clicked()
     int name_len;
     int name_type;
 
-      xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
-      std::string sName=std::string(reinterpret_cast<char*>(name));
-      qDebug() << QString::fromStdString(sName) << " "<< name_len<< " "<< name_type << ulWindowId;
-    ui->listGames->addItem(QString::fromStdString(sName));
+    xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
+    sName = QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
+    // qDebug() << QString::fromStdString(sName) << " "<< name_len<< " "<< name_type << ulWindowId;
 //    xdo_close_window(xdo, ulWindowId);
 //    xdo_kill_window(xdo, ulWindowId);
     XFree(name); // need to add -lX11 to LIBS in project
     xdo_free(xdo);
+#else
+    // setOverrideCursor(QCursor(QPixmap("wireless.jpg")));
+    QApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
 
+
+    // load a copy of the cross cursor
+    HCURSOR hcCross = LoadCursor(0, IDC_CROSS);
+    // assert(hcCross);
+    HCURSOR hcCrossCopy = CopyCursor(hcCross);
+    // assert(hcCrossCopy);
+
+    // load a copy of the arrow cursor (so we can restore it)
+    HCURSOR hcArrow = LoadCursor(0, IDC_ARROW);
+    // assert(hcArrow);
+    HCURSOR hcArrowCopy = CopyCursor(hcArrow);
+    // assert(hcArrowCopy);
+
+    // make the system arrow cursor the Cross cursor
+    // NOTE: IDC_ARROW == MAKEINTRESOURCE(OCR_NORMAL)
+    // cout << "Changing normal cursor to Cross cursor" << endl;
+    BOOL ret = SetSystemCursor(hcCrossCopy, 32512);
+    // assert(ret);
+
+    CIdWindowDialog dl;
+    dl.exec();
+    wchar_t wnd_title[512];
+    HWND hwnd=WindowFromPoint(dl.m_ScreenPoint); // get handle of currently active window
+    GetWindowText(hwnd,wnd_title,sizeof(wnd_title));
+    sName=QString::fromStdWString(std::wstring(wnd_title));
+    activateWindow();
+
+    // restore the arrow cursor
+    ret = SetSystemCursor(hcArrowCopy, 32512);
+    assert(ret);
+
+    DestroyCursor(hcCross);
+    DestroyCursor(hcArrow);
+
+
+    QApplication::restoreOverrideCursor();
+#endif
+    // sName="solitaire";
+    sName.trimmed();
+    if(sName!="")
+    {
+        ui->listGames->addItem(sName);
+    }
 }
 
 void CListGames::on_buttonBox_accepted()
@@ -124,3 +172,8 @@ void CListGames::on_buttonBox_accepted()
     }
     settings.endArray();
 }
+
+
+// Thanks to Lim Bio Liong for his excelent Code Project article, which
+// the following code is based on.
+// http://www.codeproject.com/Articles/1698/MS-Spy-style-Window-Finder

@@ -12,7 +12,7 @@
 #include "listgames.h"
 #include "ui_freedialog.h"
 
-
+#ifndef WIN32
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -21,8 +21,9 @@
 extern "C" {
 #include <xdo.h>
 }
-
-// #include <chrono>
+#else
+#include <windows.h>
+#endif
 
 
 CFreeDialog::CFreeDialog(QWidget *parent) :
@@ -32,7 +33,7 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     m_GamingTimer.invalidate();
     // m_ulLastGamingTime=0;
     QSettings Settings;
-    qsrand(time( NULL ));
+    qsrand(QTime::currentTime().msec());
     ui->setupUi(this);
     createActions();
     createTrayIcon();
@@ -65,6 +66,7 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
 
 CFreeDialog::~CFreeDialog()
 {
+    ui->Answer->removeEventFilter(this);
     delete m_pTimer;
     delete ui;
 }
@@ -529,7 +531,12 @@ void CFreeDialog::on_ControlGames()
     // Check if we have any game minutes avalible
     // if we are out of game minutes then minimise the game
     QSettings Settings;
- // Settings.setValue("gamemilliseconds",0);
+    QString sName;
+    unsigned char *name=0;
+    int name_len=0;
+    int name_type=0;
+
+#ifndef WIN32
     xdo_t* xdo;
     XID ulWindowId=0;
 
@@ -541,18 +548,20 @@ void CFreeDialog::on_ControlGames()
     }
     xdo->close_display_when_freed=true;
     xdo_get_active_window(xdo, &ulWindowId);
-
-    unsigned char *name=0;
-    int name_len=0;
-    int name_type=0;
-
     xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
     if(name==NULL)
     {
         qDebug() << "xdo could not get window name";
         return;
     }
-    QString sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
+    sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
+
+#else
+    wchar_t wnd_title[512];
+    HWND hwnd=GetForegroundWindow(); // get handle of currently active window
+    GetWindowText(hwnd,wnd_title,sizeof(wnd_title));
+    sName=QString::fromStdWString(std::wstring(wnd_title));
+#endif
 
     // qDebug() << ulWindowId << sName;
     // Is the currently actitive window a game?
@@ -600,7 +609,11 @@ void CFreeDialog::on_ControlGames()
         DisplayGameMinutes();
         // xdo_close_window(xdo, ulWindowId);
         // xdo_kill_window(xdo, ulWindowId);
+#ifndef WIN32
         xdo_minimize_window(xdo, ulWindowId);
+#else
+        ShowWindow(hwnd,SW_FORCEMINIMIZE);
+#endif
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setText("Oops - No game minutes remaining.");
@@ -612,10 +625,13 @@ void CFreeDialog::on_ControlGames()
         this->activateWindow();
         this->showNormal();
     }
+    m_GamingTimer.invalidate();
     setIcon("Idle");
+#ifndef WIN32
     XFree(name); // need to add -lX11 to LIBS in project
-
     xdo_free(xdo);
+#endif
+
 
 }
 

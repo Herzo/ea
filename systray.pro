@@ -24,7 +24,8 @@ HEADERS       = \
     optionsdialog.h \
     changeuserdialog.h \
     freedialog.h \
-    listgames.h
+    listgames.h \
+    idwindowdialog.h
 SOURCES       = main.cpp \
     ../qt/o2/src/o1.cpp \
     ../qt/o2/src/o1requestor.cpp \
@@ -43,7 +44,8 @@ SOURCES       = main.cpp \
     optionsdialog.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
-    listgames.cpp
+    listgames.cpp \
+    idwindowdialog.cpp
 RESOURCES     = systray.qrc
 QT           += xml svg
 
@@ -77,7 +79,8 @@ simulator: warning(This example does not work on Simulator platform)
 FORMS += \
     changeuserdialog.ui \
     freedialog.ui \
-    listgames.ui
+    listgames.ui \
+    idwindowdialog.ui
 
 DISTFILES += \
     images/gameselectionherzo.png
