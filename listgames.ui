@@ -73,7 +73,7 @@ color:yellow;</string>
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="systray.qrc">:/images/gameselection.png</pixmap>
+    <pixmap resource="systray.qrc">:/images/gameselectionherzo.png</pixmap>
    </property>
   </widget>
   <zorder>skin</zorder>

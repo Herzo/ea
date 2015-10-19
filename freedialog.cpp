@@ -187,13 +187,21 @@ void CFreeDialog::createActions()
 void CFreeDialog::ChangeSkin()
 {
     QString sSkin;
+    QString sSkinGameSelection;
     QSettings Settings;
     sSkin=Settings.value("skin",":/images/davesaveworld.png").toString();
+    sSkinGameSelection=Settings.value("skinlistgames",":/images/gameselectionherzo.png").toString();
     if(sSkin==":/images/davesaveworld.png")
+    {
         sSkin=":/images/rainboxworld.png";
-    else
+        sSkinGameSelection=":/images/gameselectionherzoine.png";
+    }else
+    {
         sSkin=":/images/davesaveworld.png";
+        sSkinGameSelection=":/images/gameselectionherzo.png";
+    }
     Settings.setValue("skin",sSkin);
+    Settings.setValue("skinlistgames",sSkinGameSelection);
     InitSkin();
 }
 
@@ -539,9 +547,14 @@ void CFreeDialog::on_ControlGames()
     int name_type=0;
 
     xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
-
+    if(name==NULL)
+    {
+        qDebug() << "xdo could not get window name";
+        return;
+    }
     QString sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
-    qDebug() << ulWindowId << sName;
+
+    // qDebug() << ulWindowId << sName;
     // Is the currently actitive window a game?
     bool bPlayingGame=false;
     int size = Settings.beginReadArray("games");

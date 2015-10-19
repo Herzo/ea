@@ -79,3 +79,6 @@ FORMS += \
     freedialog.ui \
     listgames.ui
 
+DISTFILES += \
+    images/gameselectionherzo.png
+

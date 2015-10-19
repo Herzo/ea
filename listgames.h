@@ -16,6 +16,9 @@ public:
     ~CListGames();
    // bool eventFilter(QObject *watched, QEvent *event);
 
+protected slots:
+    void InitSkin();
+
 private slots:
     void on_bnIdentifyGame_clicked();
 

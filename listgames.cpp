@@ -40,11 +40,18 @@ CListGames::CListGames(QWidget *parent) :
     // pressing DEL activates the slots only when list widget has focus
     QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listGames);
     connect(shortcut, SIGNAL(activated()), this, SLOT(deleteItem()));
+    InitSkin();
 }
 
 CListGames::~CListGames()
 {
     delete ui;
+}
+void CListGames::InitSkin()
+{
+    QSettings Settings;
+    QPixmap img(Settings.value("skinlistgames",":/images/gameselectionherzo.png").toString());
+    ui->skin->setPixmap(img);
 }
 /*
 bool CListGames::eventFilter(QObject *watched, QEvent *event)

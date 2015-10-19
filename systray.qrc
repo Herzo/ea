@@ -16,6 +16,7 @@
         <file>images/tick.svg</file>
         <file>images/cross.svg</file>
         <file>images/closedeye.png</file>
-        <file>images/gameselection.png</file>
+        <file>images/gameselectionherzoine.png</file>
+        <file>images/gameselectionherzo.png</file>
     </qresource>
 </RCC>
