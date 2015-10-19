@@ -57,7 +57,7 @@ border-style: outset;
 border-width: 2px;
 border-radius: 10px;
 border-color: beige;
-font-color:yellow;</string>
+color:yellow;</string>
    </property>
   </widget>
   <widget class="QLabel" name="skin">

@@ -232,6 +232,8 @@ void CFreeDialog::on_NextButton_clicked()
     QSettings Settings;
     uint dTotalGameMillisecondsCounter = Settings.value("totalgamemilliseconds",0).toUInt();
     uint dGameMillisecondsCounter = Settings.value("gamemilliseconds",0).toUInt();
+    if(ui->Answer->toPlainText()=="")
+        return;
     int iAnswer=ui->Answer->toPlainText().toInt();
     uint dQuestionsGameMilliseconds=GetQuestionsGameMilliseconds();
 

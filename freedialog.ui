@@ -157,7 +157,7 @@ border-color: red;
 text-align: right;</string>
     </property>
     <property name="inputMethodHints">
-     <set>Qt::ImhNoPredictiveText|Qt::ImhPreferNumbers</set>
+     <set>Qt::ImhNoPredictiveText</set>
     </property>
     <property name="verticalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
