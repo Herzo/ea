@@ -15,7 +15,10 @@ class CIdWindowDialog : public QDialog
 
 public:
     // QString m_sWindowName;
+
+#ifdef WIN32
     POINT m_ScreenPoint;
+#endif
     explicit CIdWindowDialog(QWidget *parent = 0);
     ~CIdWindowDialog();
 protected:
