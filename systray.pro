@@ -25,7 +25,8 @@ HEADERS       = \
     changeuserdialog.h \
     freedialog.h \
     listgames.h \
-    idwindowdialog.h
+    idwindowdialog.h \
+    WindowFinder.h
 SOURCES       = main.cpp \
     ../qt/o2/src/o1.cpp \
     ../qt/o2/src/o1requestor.cpp \
@@ -45,7 +46,8 @@ SOURCES       = main.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
     listgames.cpp \
-    idwindowdialog.cpp
+    idwindowdialog.cpp \
+    WindowFinder.cpp
 RESOURCES     = systray.qrc
 QT           += xml svg
 
