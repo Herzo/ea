@@ -559,7 +559,8 @@ void CFreeDialog::on_ControlGames()
 #else
     wchar_t wnd_title[512];
     HWND hwnd=GetForegroundWindow(); // get handle of currently active window
-    GetWindowText(hwnd,wnd_title,sizeof(wnd_title));
+    if(hwnd!=NULL)
+        GetWindowText(hwnd,wnd_title,sizeof(wnd_title));
     sName=QString::fromStdWString(std::wstring(wnd_title));
 #endif
 
