@@ -46,9 +46,9 @@
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>60</y>
+     <y>100</y>
      <width>311</width>
-     <height>331</height>
+     <height>291</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -76,10 +76,36 @@ color:yellow;</string>
     <pixmap resource="systray.qrc">:/images/gameselectionherzo.png</pixmap>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>611</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(0, 51, 51,150);
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: red;
+text-align: right;
+color:yellow;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To tell Einstein's Agent about the games that it should regulate. Start the game as you ussualy do and then return to this window and click Add Game. Your mouse cursor will turn in to a cross. Use it to click on the game's window, and return to this box and click OK.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
   <zorder>skin</zorder>
   <zorder>buttonBox</zorder>
   <zorder>bnIdentifyGame</zorder>
   <zorder>listGames</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources>
   <include location="systray.qrc"/>

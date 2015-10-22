@@ -43,6 +43,8 @@ private slots:
     void on_DifficultySlider_valueChanged(int value);
 
     void on_Update();
+    void on_toolButton_clicked();
+
 private:
     void setIcon(QString sMode);
     QElapsedTimer m_GamingTimer;
@@ -53,6 +55,7 @@ private:
     Ui::CFreeDialog *ui;
     void createActions();
     void createTrayIcon();
+    void createAppMenu();
     QAction *m_pMinimizeAction;
     QAction *m_pMaximizeAction;
     QAction *m_pRestoreAction;

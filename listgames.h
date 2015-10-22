@@ -25,6 +25,7 @@ private slots:
     void on_buttonBox_accepted();
     void deleteItem();
 
+
 private:
     Ui::CListGames *ui;
     void DeleteItem();
