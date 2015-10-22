@@ -7,6 +7,8 @@
 #include <QSettings>
 #include <QEvent>
 #include <QShortcut>
+#include <QMenuBar>
+#include <QLayout>
 
 #include "freedialog.h"
 #include "listgames.h"
@@ -37,6 +39,7 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     ui->setupUi(this);
     createActions();
     createTrayIcon();
+    createAppMenu();
     connect(m_pTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
@@ -52,9 +55,6 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(on_Update()));
     m_pTimer->start(500);
     InitSkin();
-//    m_pMenu = new QMenu(this);
-//    m_pMenu->addAction(m_pChangeSkin);
-//    m_pMenu->addAction(m_pIdentifyGames);
 //    QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
     // pressing Enter activates the slots only when list widget has focus
 //    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->Answer);
@@ -234,6 +234,19 @@ void CFreeDialog::createTrayIcon()
 
     m_pTrayIcon = new QSystemTrayIcon(this);
     m_pTrayIcon->setContextMenu(m_pTrayIconMenu);
+}
+void CFreeDialog::createAppMenu()
+{
+/*
+    QMenuBar* pMenuBar = new QMenuBar(this);
+    QMenu *pMenu=pMenuBar->addMenu(tr("&Options"));
+
+    pMenu->addAction(m_pChangeSkin);
+    pMenu->addAction(m_pIdentifyGames);
+    QLayout *pLayout = layout();
+    pLayout->setMenuBar(pMenuBar);
+*/
+
 }
 
 void CFreeDialog::on_NextButton_clicked()
@@ -635,3 +648,8 @@ void CFreeDialog::on_ControlGames()
 
 }
 
+
+void CFreeDialog::on_toolButton_clicked()
+{
+    IdentifyGames();
+}

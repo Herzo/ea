@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QWidget>
 #include "listgames.h"
 #include "ui_listgames.h"
 
@@ -158,6 +159,7 @@ void CListGames::on_bnIdentifyGame_clicked()
     {
         ui->listGames->addItem(sName);
     }
+    QApplication::setActiveWindow(this);
 }
 
 void CListGames::on_buttonBox_accepted()
@@ -173,7 +175,3 @@ void CListGames::on_buttonBox_accepted()
     settings.endArray();
 }
 
-
-// Thanks to Lim Bio Liong for his excelent Code Project article, which
-// the following code is based on.
-// http://www.codeproject.com/Articles/1698/MS-Spy-style-Window-Finder
