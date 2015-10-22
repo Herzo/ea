@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Einstein's Agent</Name>
+    <Version>0.0.1</Version>
+    <Title>Einstein's Agent Installer</Title>
+    <Publisher>Geobytes, inc.</Publisher>
+    <StartMenuDir>Einstein's Agent</StartMenuDir>
+    <TargetDir>@HomeDir@/Einstein</TargetDir>
+    <AllowSpaceInPath>true</AllowSpaceInPath>
+</Installer>
