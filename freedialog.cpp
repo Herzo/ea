@@ -44,6 +44,9 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
     ui->Answer->installEventFilter(this);
+    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
+    "of speed bonus remaining on this question. </p><p>More challenging questions "
+    "start with a greater time bonus.</p></body></html>"));
     InitIconStore();
     setIcon("Idle");
     // ui->GameMinutesCounter->display(qRound(Settings.value("gamemilliseconds",0).toDouble()/100)*10);
@@ -301,7 +304,6 @@ void CFreeDialog::on_NextButton_clicked()
 void CFreeDialog::InitQuestion()
 {
     // Generate a new question, and update the dialog
-    ui->SecondsRemaining->setValue(119);
     int iDifficulty=ui->DifficultySlider->value();
     int iOperand1=(qrand() % iDifficulty); //  (qrand() % (max-min)+1) + min;
     int iOperand2=(qrand() % iDifficulty); // if min is 0 then just use max + 1
@@ -358,7 +360,7 @@ void CFreeDialog::InitQuestion()
     }
     // If any of the operands are negitive, then we increase m_dQuestionDifficulty
     if(iOperand1<0||iOperand2<0||iOperand3<0) // neg operands
-        m_dQuestionDifficultyMultiplier+=0.05;
+        m_dQuestionDifficultyMultiplier+=0.10;
     if(iOperand1>99||iOperand2>99||iOperand3>99) // large operands
         m_dQuestionDifficultyMultiplier+=0.05;
 
@@ -387,6 +389,7 @@ void CFreeDialog::InitQuestion()
 //            m_iAnswer=Operation(iOperand1,iOperator,iOperand2);
     }
     ui->Answer->setPlainText("");
+    ui->SecondsRemaining->setValue(59*m_dQuestionDifficultyMultiplier);
 }
 int CFreeDialog::InverseOperator(int iOperator)
 {
@@ -519,8 +522,8 @@ uint CFreeDialog::GetQuestionsGameMilliseconds()
 {
     // Adjust minutes earnt based on the difficutly, which is based on totalGameMilliseconds, and
     // the time that it took to answer
-    double dTimeBonusMultiplier=1+(ui->SecondsRemaining->value()/120.0);
-    double dQuestionsGameMilliseconds=60000*m_dQuestionDifficultyMultiplier*dTimeBonusMultiplier;
+    double dTimeBonusMultiplier=1+(ui->SecondsRemaining->value()/60.0);
+    double dQuestionsGameMilliseconds=15000*m_dQuestionDifficultyMultiplier*dTimeBonusMultiplier; // 15000 == 15 sec
     return dQuestionsGameMilliseconds;
     // return qRound(1000*dQuestionsGameMilliseconds)/1000;
 }
@@ -545,11 +548,11 @@ void CFreeDialog::on_ControlGames()
     // if we are out of game minutes then minimise the game
     QSettings Settings;
     QString sName;
+#ifndef WIN32
     unsigned char *name=0;
     int name_len=0;
     int name_type=0;
 
-#ifndef WIN32
     xdo_t* xdo;
     XID ulWindowId=0;
 

@@ -95,7 +95,7 @@ text-align: right;
 color:yellow;</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To tell Einstein's Agent about the games that it should regulate. Start the game as you ussualy do and then return to this window and click Add Game. Your mouse cursor will turn in to a cross. Use it to click on the game's window, and return to this box and click OK.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To tell Einstein's Agent about the games that it should regulate. Start the game that you wish to add as you usually do and then return to this window and click Add Game. Your mouse cursor wil thenl turn into a cross which you can use it to click on the game's window, and the game will be added to the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
