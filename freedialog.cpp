@@ -20,6 +20,7 @@
 #include <X11/X.h>
 #include <unistd.h>
 #include <X11/extensions/XTest.h>
+// #include "xdo.h"
 extern "C" {
 #include <xdo.h>
 }
@@ -532,16 +533,7 @@ void CFreeDialog::on_ControlGames()
     /*
      *
  // link against libX11
-  #include <X11/Xlib.h>
-  Display *display;
-  Window focus;
-  char *window_name;
-  int revert;
 
-  display = XOpenDisplay(NULL);
-  XGetInputFocus(display, &focus, &revert);
-  XFetchName(display, focus, &window_name);
-  XCloseDisplay(display);
      * */
     // Deduce the game minutes used since the last check
     // Check if we have any game minutes avalible
@@ -549,6 +541,7 @@ void CFreeDialog::on_ControlGames()
     QSettings Settings;
     QString sName;
 #ifndef WIN32
+
     unsigned char *name=0;
     int name_len=0;
     int name_type=0;
@@ -568,9 +561,15 @@ void CFreeDialog::on_ControlGames()
     if(name==NULL)
     {
         qDebug() << "xdo could not get window name";
-        return;
+    }else
+    {
+        sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
     }
-    sName=QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
+    XFree(name); // need to add -lX11 to LIBS in project
+    xdo_free(xdo);
+
+    if(sName=="")
+        return;
 
 #else
     wchar_t wnd_title[512];
@@ -627,7 +626,18 @@ void CFreeDialog::on_ControlGames()
         // xdo_close_window(xdo, ulWindowId);
         // xdo_kill_window(xdo, ulWindowId);
 #ifndef WIN32
-        xdo_minimize_window(xdo, ulWindowId);
+        xdo = xdo_new(NULL);
+        if(xdo==NULL)
+        {
+            qDebug() << "xdo could not get a new display on the second call";
+        }else
+        {
+            xdo->close_display_when_freed=true;
+            xdo_minimize_window(xdo, ulWindowId);
+            XFree(name); // need to add -lX11 to LIBS in project
+            xdo_free(xdo);
+        }
+
 #else
         ShowWindow(hwnd,SW_FORCEMINIMIZE);
 #endif
@@ -644,12 +654,6 @@ void CFreeDialog::on_ControlGames()
     }
     m_GamingTimer.invalidate();
     setIcon("Idle");
-#ifndef WIN32
-    XFree(name); // need to add -lX11 to LIBS in project
-    xdo_free(xdo);
-#endif
-
-
 }
 
 

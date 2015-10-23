@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>390</x>
-     <y>400</y>
+     <y>410</y>
      <width>98</width>
      <height>31</height>
     </rect>
@@ -45,10 +45,10 @@
   <widget class="QListWidget" name="listGames">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>100</y>
-     <width>311</width>
-     <height>291</height>
+     <x>150</x>
+     <y>120</y>
+     <width>371</width>
+     <height>281</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -82,8 +82,13 @@ color:yellow;</string>
      <x>20</x>
      <y>10</y>
      <width>611</width>
-     <height>81</height>
+     <height>91</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Verdana</family>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(0, 51, 51,150);

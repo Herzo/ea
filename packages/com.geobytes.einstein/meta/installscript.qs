@@ -63,6 +63,11 @@ Component.prototype.createOperations = function()
                 // Do nothing if key doesn't exist
             }
         }
+        if (installer.value("os") === "x11")
+        {
+        component.addElevatedOperation("CreateDesktopEntry", "/usr/share/applications/einstein.desktop", "Version=0.0.1\nType=Application\nTerminal=false\nExec=@TargetDir@/einstein\nName=Einstein\nIcon=@TargetDir@/einsteinicon.png\nName[en_US]=Einstein");
+        component.addElevatedOperation("Copy", "/usr/share/applications/einstein.desktop", "@HomeDir@/Desktop/einstein.desktop");
+        }
     } catch (e) {
         print(e);
     }

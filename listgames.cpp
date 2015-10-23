@@ -15,14 +15,16 @@
 #include <X11/X.h>
 #include <unistd.h>
 #include <X11/extensions/XTest.h>
+#include <X11/cursorfont.h>
+// #include <xdo.h>
 extern "C" {
 #include <xdo.h>
 }
 #else
 #include <windows.h>
-#include <idwindowdialog.h>
 #include <cassert>
 #endif
+#include <idwindowdialog.h>
 
 
 CListGames::CListGames(QWidget *parent) :
@@ -90,6 +92,10 @@ void CListGames::on_bnIdentifyGame_clicked()
     QString sName;
 
 #ifndef WIN32
+
+    // x_window_cursor_set
+    // x_window_focus
+    // x_window_show
     xdo_t* xdo;
     XID ulWindowId=0;
     xdo = xdo_new(NULL);
@@ -107,11 +113,9 @@ void CListGames::on_bnIdentifyGame_clicked()
 
     xdo_get_window_name(xdo, ulWindowId, &name, &name_len, &name_type);
     sName = QString::fromStdString(std::string(reinterpret_cast<char*>(name)));
-    // qDebug() << QString::fromStdString(sName) << " "<< name_len<< " "<< name_type << ulWindowId;
-//    xdo_close_window(xdo, ulWindowId);
-//    xdo_kill_window(xdo, ulWindowId);
     XFree(name); // need to add -lX11 to LIBS in project
     xdo_free(xdo);
+
 #else
     // setOverrideCursor(QCursor(QPixmap("wireless.jpg")));
     QApplication::setOverrideCursor(QCursor(Qt::CrossCursor));

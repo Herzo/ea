@@ -1,51 +1,19 @@
-unix:!macx: LIBS += -lxdo -lX11
-QT += core gui network script widgets
+unix:!macx: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
+QT += core gui network widgets
 HEADERS       = \
-    ../qt/o2/src/o1.h \
-    ../qt/o2/src/o1dropbox.h \
-    ../qt/o2/src/o1flickr.h \
-    ../qt/o2/src/o1freshbooks.h \
-    ../qt/o2/src/o1requestor.h \
-    ../qt/o2/src/o1twitter.h \
-    ../qt/o2/src/o2.h \
-    ../qt/o2/src/o2abstractstore.h \
-    ../qt/o2/src/o2facebook.h \
-    ../qt/o2/src/o2gft.h \
-    ../qt/o2/src/o2globals.h \
-    ../qt/o2/src/o2hubic.h \
-    ../qt/o2/src/o2reply.h \
-    ../qt/o2/src/o2replyserver.h \
-    ../qt/o2/src/o2requestor.h \
-    ../qt/o2/src/o2settingsstore.h \
-    ../qt/o2/src/o2skydrive.h \
-    ../qt/o2/src/oxtwitter.h \
-    ../qt/o2/src/simplecrypt.h \
-    o1khan.h \
-    optionsdialog.h \
     changeuserdialog.h \
     freedialog.h \
     listgames.h \
-    idwindowdialog.h
+    idwindowdialog.h \
+    xdo.h \
+    xdo_util.h \
+    xdo_version.h
 SOURCES       = main.cpp \
-    ../qt/o2/src/o1.cpp \
-    ../qt/o2/src/o1requestor.cpp \
-    ../qt/o2/src/o2.cpp \
-    ../qt/o2/src/o2facebook.cpp \
-    ../qt/o2/src/o2gft.cpp \
-    ../qt/o2/src/o2hubic.cpp \
-    ../qt/o2/src/o2reply.cpp \
-    ../qt/o2/src/o2replyserver.cpp \
-    ../qt/o2/src/o2requestor.cpp \
-    ../qt/o2/src/o2settingsstore.cpp \
-    ../qt/o2/src/o2skydrive.cpp \
-    ../qt/o2/src/oxtwitter.cpp \
-    ../qt/o2/src/simplecrypt.cpp \
-    o1khan.cpp \
-    optionsdialog.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
     listgames.cpp \
-    idwindowdialog.cpp
+    idwindowdialog.cpp \
+    xdo.c
 RESOURCES     = systray.qrc
 QT           += xml svg
 
@@ -83,5 +51,6 @@ FORMS += \
     idwindowdialog.ui
 
 DISTFILES += \
-    images/gameselectionherzo.png
+    images/gameselectionherzo.png \
+    cpld.bash
 
