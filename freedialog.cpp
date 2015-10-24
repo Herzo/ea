@@ -634,7 +634,7 @@ void CFreeDialog::on_ControlGames()
         {
             xdo->close_display_when_freed=true;
             xdo_minimize_window(xdo, ulWindowId);
-            XFree(name); // need to add -lX11 to LIBS in project
+            // XFree(name); // need to add -lX11 to LIBS in project
             xdo_free(xdo);
         }
 
