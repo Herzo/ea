@@ -9,7 +9,12 @@
 #include <QShortcut>
 #include <QMenuBar>
 #include <QLayout>
-
+#include <QUuid>
+#include <QUrl>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QJson>
+#include <QVariantMap>
 #include "freedialog.h"
 #include "listgames.h"
 #include "ui_freedialog.h"
@@ -30,7 +35,7 @@ extern "C" {
 
 
 CFreeDialog::CFreeDialog(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::CFreeDialog)
 {
     m_GamingTimer.invalidate();
@@ -59,7 +64,8 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(on_Update()));
     m_pTimer->start(500);
     InitSkin();
-//    QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
+    QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
+    QTimer::singleShot(3000, this, SLOT(on_FetchGameFingerprints()));
     // pressing Enter activates the slots only when list widget has focus
 //    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->Answer);
 //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
@@ -123,7 +129,7 @@ void CFreeDialog::setVisible(bool visible)
     m_pMaximizeAction->setEnabled(!isMaximized());
     m_pRestoreAction->setEnabled(isMaximized() || !visible);
     m_pTrayIcon->setVisible(true);
-    QDialog::setVisible(visible);
+    QMainWindow::setVisible(visible);
 }
 
 void CFreeDialog::closeEvent(QCloseEvent *event)
@@ -387,48 +393,9 @@ void CFreeDialog::InitQuestion()
         // 6 + 4 = ?
             ui->Operand3->setText("?");
             m_iAnswer=iOperand3;
-//            m_iAnswer=Operation(iOperand1,iOperator,iOperand2);
     }
     ui->Answer->setPlainText("");
     ui->SecondsRemaining->setValue(59*m_dQuestionDifficultyMultiplier);
-}
-int CFreeDialog::InverseOperator(int iOperator)
-{
-    switch(iOperator)
-    {
-        case 0:
-        // +
-            return 1;
-        case 1:
-        // -
-            return 0;
-        case 2:
-        // x
-            return 3;
-        case 3:
-        // /
-            return 2;
-    }
-return 0;
-}
-int CFreeDialog::Operation(int iOperand1,int iOperator,int iOperand2)
-{
-    switch(iOperator)
-    {
-        case 0:
-        // +
-            return (iOperand1+iOperand2);
-        case 1:
-        // -
-            return (iOperand1-iOperand2);
-        case 2:
-        // x
-            return (iOperand1*iOperand2);
-        case 3:
-        // /
-            return (iOperand1/iOperand2);
-    }
-return 0;
 }
 void CFreeDialog::on_RemoveMark()
 {
@@ -528,6 +495,61 @@ uint CFreeDialog::GetQuestionsGameMilliseconds()
     return dQuestionsGameMilliseconds;
     // return qRound(1000*dQuestionsGameMilliseconds)/1000;
 }
+
+void CFreeDialog::on_FetchGameFingerprints()
+{
+    QSettings Setting;
+    QString sUuId=Setting.value("UuId","notset");
+    if(sUuId=="notset")
+    {
+        // generate a new UUID and save it in settings.
+        sUuId = QUuid::createUuid().toString();
+        Setting.setValue("UuId",sUuId);
+    }
+    // Get the highest game id that we know of
+    QString sMaxGameId = Settings.value("MaxGameId").toString();
+    QNetworkAccessManager *p_NetworkAccessManager = new QNetworkAccessManager(this);
+    connect(p_NetworkAccessManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(on_ServerResponse(QNetworkReply*)));
+
+    QString sUrl=QString("http://einstein.geobytes.com/GetGameFingerPrints?ver=%1&uuid=%2&callback=%3&afterid=%4")
+            .arg(CFreeDialog::GetVersion()).arg(sUuId).arg("GameFingerPrints").arg(sMaxGameId);
+    p_NetworkAccessManager->get(QNetworkRequest(QUrl(sUrl)));
+}
+
+void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
+{
+    if (pReply->error() != QNetworkReply::NoError)
+           return;
+    QString data = (QString) reply->readAll();
+    // data should look something like
+    // GameFingerPrints([["1":"mincraft"],["2":"solitaire"]]);
+    int iPos=data.lastIndexOf(')');
+    if(iPos==-1)
+        return;
+    data.truncate(iPos);
+    QString sFunction=data.split('(').takeFirst();
+    iPos=data.lastIndexOf(')');
+    if(iPos==-1)
+        return;
+    data.truncate(iPos);
+    // data should look something like
+    // [["1":"mincraft"],["2":"solitaire"]]
+    QJson::Parser parser;
+    bool ok;
+    QVariantMap result = parser.parse (data, &ok).toMap();
+
+    if ( ok )
+    {
+        QVariantMap GameData = result["value"].toMap();
+
+        m_id         = GameData["id"].toInt();
+        m_text       = GameData["joke"].toString();
+        m_categories = variantListToStringList(GameData["categories"].toList());
+        m_isValid    = true;
+    }
+}
+
 void CFreeDialog::on_ControlGames()
 {
     /*
@@ -637,7 +659,6 @@ void CFreeDialog::on_ControlGames()
             // XFree(name); // need to add -lX11 to LIBS in project
             xdo_free(xdo);
         }
-
 #else
         ShowWindow(hwnd,SW_FORCEMINIMIZE);
 #endif
@@ -660,4 +681,23 @@ void CFreeDialog::on_ControlGames()
 void CFreeDialog::on_toolButton_clicked()
 {
     IdentifyGames();
+}
+
+void CFreeDialog::on_actionID_Games_triggered()
+{
+    IdentifyGames();
+
+}
+
+void CFreeDialog::on_actionChange_Skin_triggered()
+{
+    ChangeSkin();
+}
+
+void CFreeDialog::on_actionAbout_Einstein_s_Agent_triggered()
+{
+    // Use https://iconverticons.com/online/ to convert svg to ioc format
+    QMessageBox::about(this,"Einstein's Agent","Einstein's Agent 0.0.2 (opensource)\n\nCopyright 2015 Geobytes, inc. All rights reserved.\n\n"\
+                       "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.");
+
 }

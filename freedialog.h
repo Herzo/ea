@@ -2,7 +2,9 @@
 #define FREEDIALOG_H
 
 #include <QSystemTrayIcon>
-#include <QDialog>
+// #include <QDialog>
+#include <QMainWindow>
+
 #include <QMap>
 #include <QElapsedTimer>
 class QMenu;
@@ -11,7 +13,7 @@ namespace Ui {
 class CFreeDialog;
 }
 
-class CFreeDialog : public QDialog
+class CFreeDialog : public QMainWindow
 {
     Q_OBJECT
 
@@ -19,7 +21,9 @@ public:
     explicit CFreeDialog(QWidget *parent = 0);
     ~CFreeDialog();
     void setVisible(bool visible);
-
+    static QString CFreeDialog::GetVersion(){return QString("0.0.2")};
+public slots:
+    void on_ServerReply(QNetworkReply *pReply);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
     void closeEvent(QCloseEvent *event);
@@ -45,6 +49,13 @@ private slots:
     void on_Update();
     void on_toolButton_clicked();
 
+    void on_actionID_Games_triggered();
+
+    void on_actionChange_Skin_triggered();
+
+    void on_actionAbout_Einstein_s_Agent_triggered();
+
+    void on_FetchGameFingerprints();
 private:
     void setIcon(QString sMode);
     QElapsedTimer m_GamingTimer;
@@ -70,8 +81,6 @@ private:
     void InitIconStore();
 
     void InitQuestion();
-    int InverseOperator(int iOperator);
-    int Operation(int iOperand1, int iOperator, int iOperand2);
     QTimer *m_pTimer;
     void DisplayGameMinutes();
     uint GetQuestionsGameMilliseconds();

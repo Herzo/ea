@@ -1,191 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CFreeDialog</class>
- <widget class="QDialog" name="CFreeDialog">
+ <widget class="QMainWindow" name="CFreeDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>648</width>
-    <height>489</height>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Einstein's Agent</string>
   </property>
-  <property name="toolTipDuration">
-   <number>10</number>
-  </property>
-  <widget class="QLCDNumber" name="GameMinutesCounter">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>501</width>
-     <height>111</height>
-    </rect>
+  <widget class="QWidget" name="centralwidget">
+   <property name="toolTipDuration">
+    <number>10</number>
    </property>
-   <property name="toolTip">
-    <string extracomment="Game minutes avalible">Game minutes avalible</string>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="inputMethodHints">
-    <set>Qt::ImhTime</set>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <property name="lineWidth">
-    <number>1</number>
-   </property>
-   <property name="smallDecimalPoint">
-    <bool>false</bool>
-   </property>
-   <property name="digitCount">
-    <number>8</number>
-   </property>
-   <property name="mode">
-    <enum>QLCDNumber::Dec</enum>
-   </property>
-   <property name="segmentStyle">
-    <enum>QLCDNumber::Filled</enum>
-   </property>
-   <property name="value" stdset="0">
-    <double>0.000000000000000</double>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>120</y>
-     <width>411</width>
-     <height>341</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Comic Sans MS</family>
-     <pointsize>21</pointsize>
-    </font>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:yellow</string>
-   </property>
-   <property name="title">
-    <string/>
-   </property>
-   <property name="flat">
-    <bool>true</bool>
-   </property>
-   <widget class="QLabel" name="Unknown">
+   <widget class="QLCDNumber" name="GameMinutesCounter">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>160</y>
-      <width>96</width>
-      <height>84</height>
+      <x>10</x>
+      <y>10</y>
+      <width>501</width>
+      <height>111</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
+    <property name="toolTip">
+     <string extracomment="Game minutes avalible">Game minutes avalible</string>
     </property>
-    <property name="text">
-     <string>?</string>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
+    <property name="inputMethodHints">
+     <set>Qt::ImhTime</set>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="smallDecimalPoint">
+     <bool>false</bool>
+    </property>
+    <property name="digitCount">
+     <number>8</number>
+    </property>
+    <property name="mode">
+     <enum>QLCDNumber::Dec</enum>
+    </property>
+    <property name="segmentStyle">
+     <enum>QLCDNumber::Filled</enum>
+    </property>
+    <property name="value" stdset="0">
+     <double>0.000000000000000</double>
     </property>
    </widget>
-   <widget class="QLabel" name="equals2">
+   <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>20</x>
       <y>160</y>
-      <width>39</width>
-      <height>84</height>
+      <width>411</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>44</pointsize>
+      <family>Comic Sans MS</family>
+      <pointsize>21</pointsize>
      </font>
     </property>
-    <property name="text">
-     <string>=</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="Answer">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>160</y>
-      <width>151</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
-    </property>
-    <property name="cursor" stdset="0">
-     <cursorShape>IBeamCursor</cursorShape>
-    </property>
-    <property name="acceptDrops">
+    <property name="autoFillBackground">
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgba(0, 51, 51,90);
+     <string notr="true">color:yellow</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+    <widget class="QLabel" name="Unknown">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>120</y>
+       <width>96</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>?</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="equals2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>120</y>
+       <width>39</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>=</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="Answer">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>120</y>
+       <width>151</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0, 51, 51,90);
 border-style: outset;
 border-width: 2px;
 border-radius: 10px;
 border-color: red;
 text-align: right;</string>
-    </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhNoPredictiveText</set>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="tabChangesFocus">
-     <bool>true</bool>
-    </property>
-    <property name="plainText">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="NextButton">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>280</y>
-      <width>206</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string extracomment="Careful - incorrect answers cost you game minutes">Careful - incorrect answers cost you game minutes</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: red;
+     </property>
+     <property name="inputMethodHints">
+      <set>Qt::ImhNoPredictiveText</set>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="NextButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>240</y>
+       <width>206</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string extracomment="Careful - incorrect answers cost you game minutes">Careful - incorrect answers cost you game minutes</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: red;
     border-style: outset;
     border-width: 2px;
     border-radius: 10px;
@@ -193,411 +194,488 @@ text-align: right;</string>
     font: bold 14px;
     min-width: 10em;
     padding: 6px;</string>
-    </property>
-    <property name="text">
-     <string>Next &gt;</string>
-    </property>
+     </property>
+     <property name="text">
+      <string>Next &gt;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Operand1">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>20</y>
+       <width>100</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="equals1">
+     <property name="geometry">
+      <rect>
+       <x>248</x>
+       <y>20</y>
+       <width>40</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>=</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Operator">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>20</y>
+       <width>29</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>+</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Operand2">
+     <property name="geometry">
+      <rect>
+       <x>151</x>
+       <y>20</y>
+       <width>100</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Operand3">
+     <property name="geometry">
+      <rect>
+       <x>285</x>
+       <y>20</y>
+       <width>101</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>44</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgMark">
+     <property name="geometry">
+      <rect>
+       <x>285</x>
+       <y>150</y>
+       <width>124</width>
+       <height>118</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <zorder>Unknown</zorder>
+    <zorder>equals2</zorder>
+    <zorder>Answer</zorder>
+    <zorder>NextButton</zorder>
+    <zorder>imgMark</zorder>
+    <zorder>equals1</zorder>
+    <zorder>Operand1</zorder>
+    <zorder>Operand3</zorder>
+    <zorder>Operator</zorder>
+    <zorder>Operand2</zorder>
    </widget>
-   <widget class="QLabel" name="Operand1">
+   <widget class="QPushButton" name="CloseButton">
     <property name="geometry">
      <rect>
-      <x>4</x>
-      <y>60</y>
-      <width>100</width>
-      <height>84</height>
+      <x>530</x>
+      <y>440</y>
+      <width>98</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
-    </property>
     <property name="text">
-     <string>00</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <string>Close</string>
     </property>
    </widget>
-   <widget class="QLabel" name="equals1">
+   <widget class="QLabel" name="Skin">
     <property name="geometry">
      <rect>
-      <x>248</x>
-      <y>60</y>
-      <width>40</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>=</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="Operator">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>60</y>
-      <width>29</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>+</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="Operand2">
-    <property name="geometry">
-     <rect>
-      <x>151</x>
-      <y>60</y>
-      <width>100</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="Operand3">
-    <property name="geometry">
-     <rect>
-      <x>285</x>
-      <y>60</y>
-      <width>101</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>44</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imgMark">
-    <property name="geometry">
-     <rect>
-      <x>285</x>
-      <y>150</y>
-      <width>124</width>
-      <height>118</height>
+      <x>0</x>
+      <y>-70</y>
+      <width>651</width>
+      <height>630</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
+    <property name="pixmap">
+     <pixmap resource="systray.qrc">:/images/rainboxworld.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
    </widget>
-   <zorder>Unknown</zorder>
-   <zorder>equals2</zorder>
-   <zorder>Answer</zorder>
-   <zorder>NextButton</zorder>
-   <zorder>imgMark</zorder>
-   <zorder>equals1</zorder>
-   <zorder>Operand1</zorder>
-   <zorder>Operand3</zorder>
-   <zorder>Operator</zorder>
-   <zorder>Operand2</zorder>
-  </widget>
-  <widget class="QPushButton" name="CloseButton">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>440</y>
-     <width>98</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Close</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="Skin">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>-70</y>
-     <width>651</width>
-     <height>630</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="systray.qrc">:/images/rainboxworld.png</pixmap>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="QuestionBackground">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>180</y>
-     <width>391</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(0, 51, 51,90);
+   <widget class="QLabel" name="QuestionBackground">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>180</y>
+      <width>391</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(0, 51, 51,90);
 border-style: outset;
 border-width: 2px;
 border-radius: 10px;
 border-color: beige;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QSlider" name="DifficultySlider">
-   <property name="geometry">
-    <rect>
-     <x>540</x>
-     <y>80</y>
-     <width>52</width>
-     <height>201</height>
-    </rect>
-   </property>
-   <property name="minimum">
-    <number>10</number>
-   </property>
-   <property name="value">
-    <number>10</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
-   </property>
-   <property name="tickPosition">
-    <enum>QSlider::NoTicks</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="DifficultySign">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>50</y>
-     <width>71</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="toolTip">
-    <string extracomment="The challenge increases as you earn more points, but so does the rewared per correct answer">The challenge increases as you earn more points, but so does the rewared per correct answer</string>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(223, 214, 214,180);
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QSlider" name="DifficultySlider">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>80</y>
+      <width>52</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="value">
+     <number>10</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <property name="tickPosition">
+     <enum>QSlider::NoTicks</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="DifficultySign">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>50</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string extracomment="The challenge increases as you earn more points, but so does the rewared per correct answer">The challenge increases as you earn more points, but so does the rewared per correct answer</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(223, 214, 214,180);
 border-style: outset;
 border-width: 2px;
 border-radius: 10px;
 border-color: beige;
 color:yellow;</string>
-   </property>
-   <property name="text">
-    <string>Easy</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QProgressBar" name="SecondsRemaining">
-   <property name="geometry">
-    <rect>
-     <x>172</x>
-     <y>380</y>
-     <width>201</width>
-     <height>10</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="toolTip">
-    <string extracomment="Speed bonus - the faster you answer the more game minutes earned">Speed bonus - the faster you answer the more game minutes earned</string>
-   </property>
-   <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the amont of speed bonus remaining on this question. &lt;/p&gt;&lt;p&gt;More challenging questions start with a greater time bonus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="maximum">
-    <number>100</number>
-   </property>
-   <property name="value">
-    <number>39</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="invertedAppearance">
-    <bool>false</bool>
-   </property>
-   <property name="textDirection">
-    <enum>QProgressBar::TopToBottom</enum>
-   </property>
-  </widget>
-  <widget class="QLCDNumber" name="QuestionsGameMinutes">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>10</y>
-     <width>91</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
-   </property>
-   <property name="whatsThis">
-    <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
-   </property>
-   <property name="inputMethodHints">
-    <set>Qt::ImhNone</set>
-   </property>
-   <property name="smallDecimalPoint">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="GameMinutesBackground">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>483</width>
-     <height>90</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(0, 51, 51,90);
+    </property>
+    <property name="text">
+     <string>Easy</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="SecondsRemaining">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>380</y>
+      <width>201</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="toolTip">
+     <string extracomment="Speed bonus - the faster you answer the more game minutes earned">Speed bonus - the faster you answer the more game minutes earned</string>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the amont of speed bonus remaining on this question. &lt;/p&gt;&lt;p&gt;More challenging questions start with a greater time bonus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>39</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+    <property name="textDirection">
+     <enum>QProgressBar::TopToBottom</enum>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="QuestionsGameMinutes">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>10</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
+    </property>
+    <property name="whatsThis">
+     <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="smallDecimalPoint">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="GameMinutesBackground">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>483</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(0, 51, 51,90);
 </string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="QuestionMinutesBackground">
-   <property name="geometry">
-    <rect>
-     <x>525</x>
-     <y>15</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(0, 51, 51,90);
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="QuestionMinutesBackground">
+    <property name="geometry">
+     <rect>
+      <x>525</x>
+      <y>15</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(0, 51, 51,90);
 </string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ClosedEye">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>479</x>
+      <y>388</y>
+      <width>35</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="systray.qrc">:/images/closedeye.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="toolButton">
+    <property name="geometry">
+     <rect>
+      <x>614</x>
+      <y>10</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lableSeconds">
+    <property name="geometry">
+     <rect>
+      <x>394</x>
+      <y>104</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>seconds</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lableSeconds_2">
+    <property name="geometry">
+     <rect>
+      <x>239</x>
+      <y>104</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>minutes</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <zorder>Skin</zorder>
+   <zorder>QuestionBackground</zorder>
+   <zorder>CloseButton</zorder>
+   <zorder>DifficultySlider</zorder>
+   <zorder>DifficultySign</zorder>
+   <zorder>GameMinutesBackground</zorder>
+   <zorder>QuestionMinutesBackground</zorder>
+   <zorder>QuestionsGameMinutes</zorder>
+   <zorder>GameMinutesCounter</zorder>
+   <zorder>ClosedEye</zorder>
+   <zorder>toolButton</zorder>
+   <zorder>lableSeconds</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>SecondsRemaining</zorder>
+   <zorder>lableSeconds_2</zorder>
   </widget>
-  <widget class="QLabel" name="ClosedEye">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
+  <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
-     <x>479</x>
-     <y>388</y>
-     <width>35</width>
-     <height>40</height>
+     <x>0</x>
+     <y>0</y>
+     <width>648</width>
+     <height>27</height>
     </rect>
    </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="systray.qrc">:/images/closedeye.png</pixmap>
-   </property>
+   <widget class="QMenu" name="menuIdGames">
+    <property name="title">
+     <string>Configuration</string>
+    </property>
+    <addaction name="actionID_Games"/>
+    <addaction name="actionChange_Skin"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_Einstein_s_Agent"/>
+   </widget>
+   <addaction name="menuIdGames"/>
+   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QToolButton" name="toolButton">
-   <property name="geometry">
-    <rect>
-     <x>614</x>
-     <y>10</y>
-     <width>31</width>
-     <height>31</height>
-    </rect>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionID_Games">
+   <property name="text">
+    <string>Manage Games</string>
+   </property>
+  </action>
+  <action name="actionChange_Skin">
+   <property name="text">
+    <string>Change Skin</string>
+   </property>
+  </action>
+  <action name="actionAbout_Einstein_s_Agent">
+   <property name="icon">
+    <iconset resource="systray.qrc">
+     <normaloff>:/images/emc2icon.ico</normaloff>:/images/emc2icon.ico</iconset>
    </property>
    <property name="text">
-    <string>...</string>
+    <string>About Einstein's Agent</string>
    </property>
-  </widget>
-  <widget class="QLabel" name="Version">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>474</y>
-     <width>54</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>ver. 0.0.1</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <zorder>Skin</zorder>
-  <zorder>QuestionBackground</zorder>
-  <zorder>CloseButton</zorder>
-  <zorder>DifficultySlider</zorder>
-  <zorder>DifficultySign</zorder>
-  <zorder>GameMinutesBackground</zorder>
-  <zorder>QuestionMinutesBackground</zorder>
-  <zorder>QuestionsGameMinutes</zorder>
-  <zorder>GameMinutesCounter</zorder>
-  <zorder>ClosedEye</zorder>
-  <zorder>toolButton</zorder>
-  <zorder>Version</zorder>
-  <zorder>groupBox</zorder>
-  <zorder>SecondsRemaining</zorder>
+  </action>
  </widget>
  <resources>
   <include location="systray.qrc"/>

@@ -18,5 +18,7 @@
         <file>images/closedeye.png</file>
         <file>images/gameselectionherzoine.png</file>
         <file>images/gameselectionherzo.png</file>
+        <file>images/emc2icon.svg</file>
+        <file>images/emc2icon.ico</file>
     </qresource>
 </RCC>

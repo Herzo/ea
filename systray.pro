@@ -1,4 +1,6 @@
 unix:!macx: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
+win32:RC_ICONS += emc2icon.ico
+RC_FILE = myapp.rc
 QT += core gui network widgets
 HEADERS       = \
     changeuserdialog.h \
@@ -7,13 +9,15 @@ HEADERS       = \
     idwindowdialog.h \
     xdo.h \
     xdo_util.h \
-    xdo_version.h
+    xdo_version.h \
+    mainwindow.h
 SOURCES       = main.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
     listgames.cpp \
     idwindowdialog.cpp \
-    xdo.c
+    xdo.c \
+    mainwindow.cpp
 RESOURCES     = systray.qrc
 QT           += xml svg
 
@@ -48,9 +52,11 @@ FORMS += \
     changeuserdialog.ui \
     freedialog.ui \
     listgames.ui \
-    idwindowdialog.ui
+    idwindowdialog.ui \
+    mainwindow.ui
 
 DISTFILES += \
     images/gameselectionherzo.png \
-    cpld.bash
+    cpld.bash \
+    einstein.rc
 
