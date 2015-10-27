@@ -10,14 +10,16 @@ HEADERS       = \
     xdo.h \
     xdo_util.h \
     xdo_version.h \
-    mainwindow.h
+    mainwindow.h \
+    json.h
 SOURCES       = main.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
     listgames.cpp \
     idwindowdialog.cpp \
     xdo.c \
-    mainwindow.cpp
+    mainwindow.cpp \
+    json.cpp
 RESOURCES     = systray.qrc
 QT           += xml svg
 

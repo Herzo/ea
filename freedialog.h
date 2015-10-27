@@ -4,6 +4,7 @@
 #include <QSystemTrayIcon>
 // #include <QDialog>
 #include <QMainWindow>
+#include <QNetworkReply>
 
 #include <QMap>
 #include <QElapsedTimer>
@@ -21,7 +22,7 @@ public:
     explicit CFreeDialog(QWidget *parent = 0);
     ~CFreeDialog();
     void setVisible(bool visible);
-    static QString CFreeDialog::GetVersion(){return QString("0.0.2")};
+    static QString GetVersion(){return QString("0.0.2");};
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
 protected:
@@ -55,7 +56,7 @@ private slots:
 
     void on_actionAbout_Einstein_s_Agent_triggered();
 
-    void on_FetchGameFingerprints();
+    void on_FetchGameFingerPrints();
 private:
     void setIcon(QString sMode);
     QElapsedTimer m_GamingTimer;
