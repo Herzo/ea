@@ -560,9 +560,9 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
     QVariantMap ResponseMap = QtJson::parse(data, ok).toMap();
     if (ok)
     {
-        QString sRequest = QtJson::parse(ResponseMap["Request"].toString(), ok).toString();
-        QString sMaxFingerPrintId = QtJson::parse(ResponseMap["MaxFingerPrintId"].toString(), ok).toString();
-        QVariantList FingerPrints = QtJson::parse(ResponseMap["FingerPrints"].toString(), ok).toList();
+        QString sRequest=ResponseMap["Request"].toString();
+        QString sMaxFingerPrintId=ResponseMap["MaxFingerPrintId"].toString();
+        QVariantList FingerPrints=ResponseMap["FingerPrints"].toList();
         if (ok)
         {
             for (int i = 0; i < FingerPrints.size(); ++i)

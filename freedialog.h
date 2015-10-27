@@ -22,7 +22,11 @@ public:
     explicit CFreeDialog(QWidget *parent = 0);
     ~CFreeDialog();
     void setVisible(bool visible);
-    static QString GetVersion(){return QString("0.0.2");};
+#ifndef WIN32
+    static QString GetVersion(){return QString("0.0.2L");};
+#else
+    static QString GetVersion(){return QString("0.0.2W");};
+#endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
 protected:
