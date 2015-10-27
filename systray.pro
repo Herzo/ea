@@ -1,25 +1,25 @@
 unix:!macx: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
 win32:RC_ICONS += emc2icon.ico
-RC_FILE = myapp.rc
+RC_FILE = einstein.rc
 QT += core gui network widgets
 HEADERS       = \
     changeuserdialog.h \
     freedialog.h \
     listgames.h \
     idwindowdialog.h \
-    xdo.h \
-    xdo_util.h \
-    xdo_version.h \
     mainwindow.h \
     json.h
+unix:!macx: HEADERS += xdo.h \
+    xdo_util.h \
+    xdo_version.h
 SOURCES       = main.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
     listgames.cpp \
     idwindowdialog.cpp \
-    xdo.c \
     mainwindow.cpp \
     json.cpp
+unix:!macx: SOURCES += xdo.c
 RESOURCES     = systray.qrc
 QT           += xml svg
 
