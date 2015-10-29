@@ -57,7 +57,7 @@ ui(new Ui::CFreeDialog)
                                           "of speed bonus remaining on this question. </p><p>More challenging questions "
                                           "start with a greater time bonus.</p></body></html>"));
     InitIconStore();
-    setIcon("Idle");
+    setIcon("Emc2");
     // ui->GameMinutesCounter->display(qRound(Settings.value("gamemilliseconds",0).toDouble()/100)*10);
     DisplayGameMinutes();
     ui->DifficultySlider->setValue(Settings.value("difficulty", 10).toInt());
@@ -68,7 +68,7 @@ ui(new Ui::CFreeDialog)
     m_pTimer->start(500);
     InitSkin();
     QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
-    QTimer::singleShot(4000, this, SLOT(on_FetchGameFingerPrints()));
+    QTimer::singleShot(500, this, SLOT(on_FetchGameFingerPrints()));
     // pressing Enter activates the slots only when list widget has focus
     //    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->Answer);
     //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
@@ -117,6 +117,7 @@ bool CFreeDialog::eventFilter(QObject *watched, QEvent *event)
 void CFreeDialog::InitIconStore()
 {
     // FIXME: We still need to activate the appropriate icon according to the state that we are in.
+    m_IconStore.insert("Emc2", std::pair< QIcon, QString>(QIcon(":/images/emc2icon.ico"), "Einstein's Agent"));
     m_IconStore.insert("Idle", std::pair< QIcon, QString>(QIcon(":/images/idle.svg"), "No running games"));
     m_IconStore.insert("Running", std::pair< QIcon, QString>(QIcon(":/images/running.svg"), "Using game minutes"));
     m_IconStore.insert("Warning", std::pair< QIcon, QString>(QIcon(":/images/warning.svg"), "Game minutes are running low"));
@@ -548,9 +549,15 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
     //    "solitaire"
     //  ]
     // }
-
+    QVariantList ExistingGamesList;
     QSettings settings;
     int iSize = settings.beginReadArray("games"); //Get the current size
+    for (int i = 0; i < iSize; ++i)
+    {
+        settings.setArrayIndex(i);
+        QString sGameWindowTitle = settings.value("windowtitle").toString();
+        ExistingGamesList.append(sGameWindowTitle);
+    }
     settings.endArray();
     settings.beginWriteArray("games");
     // QtJson::parse parser;
@@ -568,8 +575,11 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
             for (int i = 0; i < FingerPrints.size(); ++i)
             {
                 QString sFingerPrint = FingerPrints[i].toString();
-                settings.setArrayIndex(iSize + i);
-                settings.setValue("windowtitle", sFingerPrint);
+                if(!ExistingGamesList.contains(sFingerPrint))
+                {
+                    settings.setArrayIndex(iSize + i);
+                    settings.setValue("windowtitle", sFingerPrint);
+                }
             }
         }
     }
@@ -689,6 +699,7 @@ void CFreeDialog::on_ControlGames()
 #else
         ShowWindow(hwnd, SW_FORCEMINIMIZE);
 #endif
+        // FIXME: must auto-close dialog, as leaving it open blocks.
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setText("Oops - No game minutes remaining.");
