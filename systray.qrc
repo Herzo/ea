@@ -20,5 +20,7 @@
         <file>images/gameselectionherzo.png</file>
         <file>images/emc2icon.svg</file>
         <file>images/emc2icon.ico</file>
+        <file>images/davelike.png</file>
+        <file>images/hellooo.png</file>
     </qresource>
 </RCC>

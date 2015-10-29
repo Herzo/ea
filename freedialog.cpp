@@ -66,7 +66,7 @@ ui(new Ui::CFreeDialog)
     m_pTimer = new QTimer(this);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(on_Update()));
     m_pTimer->start(500);
-    InitSkin();
+    on_InitSkin();
     QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
     QTimer::singleShot(500, this, SLOT(on_FetchGameFingerPrints()));
     // pressing Enter activates the slots only when list widget has focus
@@ -207,6 +207,7 @@ void CFreeDialog::ChangeSkin()
 {
     QString sSkin;
     QString sSkinGameSelection;
+    QString sMinutesWarning;
     QSettings Settings;
     sSkin = Settings.value("skin", ":/images/davesaveworld.png").toString();
     sSkinGameSelection = Settings.value("skinlistgames", ":/images/gameselectionherzo.png").toString();
@@ -214,14 +215,17 @@ void CFreeDialog::ChangeSkin()
     {
         sSkin = ":/images/rainboxworld.png";
         sSkinGameSelection = ":/images/gameselectionherzoine.png";
+        sMinutesWarning = ":/images/hellooo.png";
     } else
     {
         sSkin = ":/images/davesaveworld.png";
         sSkinGameSelection = ":/images/gameselectionherzo.png";
+        sMinutesWarning = ":/images/davelike.png";
     }
     Settings.setValue("skin", sSkin);
     Settings.setValue("skinlistgames", sSkinGameSelection);
-    InitSkin();
+    Settings.setValue("minuteswarning", sMinutesWarning);
+    on_InitSkin();
 }
 
 void CFreeDialog::IdentifyGames()
@@ -230,12 +234,16 @@ void CFreeDialog::IdentifyGames()
     dl.exec();
 }
 
-void CFreeDialog::InitSkin()
+void CFreeDialog::on_InitSkin()
 {
     QSettings Settings;
     QPixmap img(Settings.value("skin", ":/images/davesaveworld.png").toString());
     ui->Skin->setPixmap(img);
     ui->ClosedEye->hide();
+    QPixmap imgMinutesWarning(Settings.value("minuteswarning", ":/images/davelike.png").toString());
+    ui->MinutesWarning->setPixmap(imgMinutesWarning);
+    ui->MinutesWarning->hide();
+    ui->pushButtonGameMinOK->hide();
 }
 
 void CFreeDialog::createTrayIcon()
@@ -559,7 +567,6 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
         ExistingGamesList.append(sGameWindowTitle);
     }
     settings.endArray();
-    settings.beginWriteArray("games");
     // QtJson::parse parser;
     // QtJson::JsonObject result = QtJson::parse(data, ok).toMap();
 
@@ -577,13 +584,14 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
                 QString sFingerPrint = FingerPrints[i].toString();
                 if(!ExistingGamesList.contains(sFingerPrint))
                 {
+                    settings.beginWriteArray("games");
                     settings.setArrayIndex(iSize + i);
                     settings.setValue("windowtitle", sFingerPrint);
+                    settings.endArray();
                 }
             }
         }
     }
-    settings.endArray();
     // QDateTime::currentTime().toString("yyyy-MM-dd%20hh:mm:ss");
 }
 
@@ -700,16 +708,19 @@ void CFreeDialog::on_ControlGames()
         ShowWindow(hwnd, SW_FORCEMINIMIZE);
 #endif
         // FIXME: must auto-close dialog, as leaving it open blocks.
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setText("Oops - No game minutes remaining.");
-        msgBox.setInformativeText("Time to earn some more game minutes.");
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
+//        QMessageBox msgBox;
+//        msgBox.setIcon(QMessageBox::Critical);
+//        msgBox.setText("Oops - No game minutes remaining.");
+//        msgBox.setInformativeText("Time to earn some more game minutes.");
+//        msgBox.setStandardButtons(QMessageBox::Ok);
+//        msgBox.setDefaultButton(QMessageBox::Ok);
+//        msgBox.exec();
         this->raise();
         this->activateWindow();
         this->showNormal();
+        ui->MinutesWarning->show();
+        ui->pushButtonGameMinOK->show();
+        QTimer::singleShot(12500, this, SLOT(on_InitSkin()));
     }
     m_GamingTimer.invalidate();
     setIcon("Idle");
@@ -737,4 +748,9 @@ void CFreeDialog::on_actionAbout_Einstein_s_Agent_triggered()
     QMessageBox::about(this, "Einstein's Agent", "Einstein's Agent 0.0.2 (opensource)\n\nCopyright 2015 Geobytes, inc. All rights reserved.\n\n"\
                        "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.");
 
+}
+
+void CFreeDialog::on_pushButtonGameMinOK_clicked()
+{
+    on_InitSkin();
 }

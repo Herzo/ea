@@ -615,6 +615,46 @@ color:yellow;</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="MinutesWarning">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>130</y>
+      <width>382</width>
+      <height>245</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="systray.qrc">:/images/hellooo.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonGameMinOK">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>320</y>
+      <width>51</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Comic Sans MS</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>OK</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <zorder>pushButtonGameMinOK</zorder>
+   <zorder>MinutesWarning</zorder>
    <zorder>Skin</zorder>
    <zorder>QuestionBackground</zorder>
    <zorder>CloseButton</zorder>

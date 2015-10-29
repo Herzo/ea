@@ -61,6 +61,9 @@ private slots:
     void on_actionAbout_Einstein_s_Agent_triggered();
 
     void on_FetchGameFingerPrints();
+    void on_InitSkin();
+    void on_pushButtonGameMinOK_clicked();
+
 private:
     void setIcon(QString sMode);
     QElapsedTimer m_GamingTimer;
@@ -89,7 +92,6 @@ private:
     QTimer *m_pTimer;
     void DisplayGameMinutes();
     uint GetQuestionsGameMilliseconds();
-    void InitSkin();
     void DisplayQuestionGameMinutes();
 };
 
