@@ -354,7 +354,7 @@ text-align: right;</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="systray.qrc">:/images/rainboxworld.png</pixmap>
+     <pixmap resource="systray.qrc">:/images/davesaveworld.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
@@ -653,6 +653,7 @@ color:yellow;</string>
      <bool>false</bool>
     </property>
    </widget>
+   <zorder>ClosedEye</zorder>
    <zorder>pushButtonGameMinOK</zorder>
    <zorder>MinutesWarning</zorder>
    <zorder>Skin</zorder>
@@ -664,7 +665,6 @@ color:yellow;</string>
    <zorder>QuestionMinutesBackground</zorder>
    <zorder>QuestionsGameMinutes</zorder>
    <zorder>GameMinutesCounter</zorder>
-   <zorder>ClosedEye</zorder>
    <zorder>toolButton</zorder>
    <zorder>lableSeconds</zorder>
    <zorder>groupBox</zorder>

@@ -817,9 +817,10 @@ void CFreeDialog::on_actionChange_Skin_triggered()
 void CFreeDialog::on_actionAbout_Einstein_s_Agent_triggered()
 {
     // Use https://iconverticons.com/online/ to convert svg to ioc format
-    QMessageBox::about(this, "Einstein's Agent", "Einstein's Agent 0.0.2 (opensource)\n\nCopyright 2015 Geobytes, inc. All rights reserved.\n\n"\
-                       "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.");
-
+    QMessageBox::about(this, "Einstein's Agent", QString("Einstein's Agent %1 (opensource)\n\n"\
+        "Copyright 2015 Geobytes, inc. All rights reserved.\n\n"\
+        "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF "\
+        "DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.").arg(CFreeDialog::GetVersion()));
 }
 
 void CFreeDialog::on_pushButtonGameMinOK_clicked()
