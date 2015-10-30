@@ -653,7 +653,6 @@ color:yellow;</string>
      <bool>false</bool>
     </property>
    </widget>
-   <zorder>ClosedEye</zorder>
    <zorder>pushButtonGameMinOK</zorder>
    <zorder>MinutesWarning</zorder>
    <zorder>Skin</zorder>
@@ -670,6 +669,7 @@ color:yellow;</string>
    <zorder>groupBox</zorder>
    <zorder>SecondsRemaining</zorder>
    <zorder>lableSeconds_2</zorder>
+   <zorder>ClosedEye</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -677,7 +677,7 @@ color:yellow;</string>
      <x>0</x>
      <y>0</y>
      <width>648</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuIdGames">
