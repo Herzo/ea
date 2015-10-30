@@ -684,6 +684,7 @@ color:yellow;</string>
     <property name="title">
      <string>Configuration</string>
     </property>
+    <addaction name="actionManage_Educationals"/>
     <addaction name="actionID_Games"/>
     <addaction name="actionChange_Skin"/>
    </widget>
@@ -714,6 +715,11 @@ color:yellow;</string>
    </property>
    <property name="text">
     <string>About Einstein's Agent</string>
+   </property>
+  </action>
+  <action name="actionManage_Educationals">
+   <property name="text">
+    <string>Manage Educationals</string>
    </property>
   </action>
  </widget>

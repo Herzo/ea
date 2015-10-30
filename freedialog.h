@@ -23,9 +23,9 @@ public:
     ~CFreeDialog();
     void setVisible(bool visible);
 #ifndef WIN32
-    static QString GetVersion(){return QString("0.0.2L");};
+    static QString GetVersion(){return QString("0.0.3L");};
 #else
-    static QString GetVersion(){return QString("0.0.2W");};
+    static QString GetVersion(){return QString("0.0.3W");};
 #endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
@@ -36,6 +36,7 @@ protected:
 protected slots:
     void ChangeSkin();
     void IdentifyGames();
+    void IdentifyEducationals();
     void on_CloseEye();
     void on_ControlGames();
 
@@ -59,10 +60,12 @@ private slots:
     void on_actionChange_Skin_triggered();
 
     void on_actionAbout_Einstein_s_Agent_triggered();
-
+    void on_FetchEducationalFingerPrints();
     void on_FetchGameFingerPrints();
     void on_InitSkin();
     void on_pushButtonGameMinOK_clicked();
+
+    void on_actionManage_Educationals_triggered();
 
 private:
     void setIcon(QString sMode);
@@ -74,14 +77,13 @@ private:
     Ui::CFreeDialog *ui;
     void createActions();
     void createTrayIcon();
-    void createAppMenu();
     QAction *m_pMinimizeAction;
     QAction *m_pMaximizeAction;
     QAction *m_pRestoreAction;
     QAction *m_pQuitAction;
     QAction *m_pChangeSkin;
     QAction *m_pIdentifyGames;
-
+    QAction *m_pIdentifyEducationals;
     QSystemTrayIcon *m_pTrayIcon;
     QMenu *m_pTrayIconMenu;
     QMenu *m_pMenu;

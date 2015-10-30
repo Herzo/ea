@@ -6,6 +6,7 @@ HEADERS       = \
     changeuserdialog.h \
     freedialog.h \
     listgames.h \
+    listeducationals.h \
     idwindowdialog.h \
     mainwindow.h \
     json.h
@@ -16,6 +17,7 @@ SOURCES       = main.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
     listgames.cpp \
+    listeducationals.cpp \
     idwindowdialog.cpp \
     mainwindow.cpp \
     json.cpp
@@ -54,6 +56,7 @@ FORMS += \
     changeuserdialog.ui \
     freedialog.ui \
     listgames.ui \
+    listeducationals.ui \
     idwindowdialog.ui \
     mainwindow.ui
 

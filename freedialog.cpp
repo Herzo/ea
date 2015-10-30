@@ -20,6 +20,7 @@
 #include "json.h"
 #include "freedialog.h"
 #include "listgames.h"
+#include "listeducationals.h"
 #include "ui_freedialog.h"
 
 #ifndef WIN32
@@ -46,9 +47,9 @@ ui(new Ui::CFreeDialog)
     QSettings Settings;
     qsrand(QTime::currentTime().msec());
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/images/emc2icon.ico"));
     createActions();
     createTrayIcon();
-    createAppMenu();
     connect(m_pTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
@@ -68,7 +69,8 @@ ui(new Ui::CFreeDialog)
     m_pTimer->start(500);
     on_InitSkin();
     QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
-    QTimer::singleShot(500, this, SLOT(on_FetchGameFingerPrints()));
+    QTimer::singleShot(200, this, SLOT(on_FetchGameFingerPrints()));
+    QTimer::singleShot(600, this, SLOT(on_FetchEducationalFingerPrints()));
     // pressing Enter activates the slots only when list widget has focus
     //    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->Answer);
     //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
@@ -201,6 +203,9 @@ void CFreeDialog::createActions()
 
     m_pIdentifyGames = new QAction(tr("&Identify Games"), this);
     connect(m_pIdentifyGames, SIGNAL(triggered()), this, SLOT(IdentifyGames()));
+
+    m_pIdentifyEducationals = new QAction(tr("&Identify Educationals"), this);
+    connect(m_pIdentifyEducationals, SIGNAL(triggered()), this, SLOT(IdentifyEducationals()));
 }
 
 void CFreeDialog::ChangeSkin()
@@ -224,6 +229,7 @@ void CFreeDialog::ChangeSkin()
     }
     Settings.setValue("skin", sSkin);
     Settings.setValue("skinlistgames", sSkinGameSelection);
+    Settings.setValue("skinlisteducationals", sSkinGameSelection);
     Settings.setValue("minuteswarning", sMinutesWarning);
     on_InitSkin();
 }
@@ -231,6 +237,12 @@ void CFreeDialog::ChangeSkin()
 void CFreeDialog::IdentifyGames()
 {
     CListGames dl;
+    dl.exec();
+}
+
+void CFreeDialog::IdentifyEducationals()
+{
+    CListEducationals dl;
     dl.exec();
 }
 
@@ -255,25 +267,12 @@ void CFreeDialog::createTrayIcon()
     m_pTrayIconMenu->addSeparator();
     m_pTrayIconMenu->addAction(m_pChangeSkin);
     m_pTrayIconMenu->addAction(m_pIdentifyGames);
+    m_pTrayIconMenu->addAction(m_pIdentifyEducationals);
     m_pTrayIconMenu->addSeparator();
     m_pTrayIconMenu->addAction(m_pQuitAction);
 
     m_pTrayIcon = new QSystemTrayIcon(this);
     m_pTrayIcon->setContextMenu(m_pTrayIconMenu);
-}
-
-void CFreeDialog::createAppMenu()
-{
-    /*
-        QMenuBar* pMenuBar = new QMenuBar(this);
-        QMenu *pMenu=pMenuBar->addMenu(tr("&Options"));
-
-        pMenu->addAction(m_pChangeSkin);
-        pMenu->addAction(m_pIdentifyGames);
-        QLayout *pLayout = layout();
-        pLayout->setMenuBar(pMenuBar);
-     */
-
 }
 
 void CFreeDialog::on_NextButton_clicked()
@@ -520,7 +519,7 @@ uint CFreeDialog::GetQuestionsGameMilliseconds()
 void CFreeDialog::on_FetchGameFingerPrints()
 {
     QSettings Settings;
-    QString sAfter = Settings.value("MaxFingerPrintId", "0").toString();
+    QString sAfter = Settings.value("MaxGamesFingerPrintId", "0").toString();
     QString sUuId = Settings.value("UuId", "notset").toString();
     sUuId.replace("{","");
     sUuId.replace("}","");
@@ -531,7 +530,7 @@ void CFreeDialog::on_FetchGameFingerPrints()
         Settings.setValue("UuId", sUuId);
     }
     // Get the highest game id that we know of
-    QString sMaxGameId = Settings.value("MaxGameId").toString();
+    // QString sMaxGameId = Settings.value("MaxGameId").toString();
     QNetworkAccessManager *p_NetworkAccessManager = new QNetworkAccessManager(this);
     connect(p_NetworkAccessManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(on_ServerReply(QNetworkReply*)));
@@ -542,11 +541,36 @@ void CFreeDialog::on_FetchGameFingerPrints()
         .arg(sAfter);
     p_NetworkAccessManager->get(QNetworkRequest(QUrl(sUrl)));
 }
+void CFreeDialog::on_FetchEducationalFingerPrints()
+{
+    QSettings Settings;
+    QString sAfter = Settings.value("MaxEducationalsFingerPrintId", "0").toString();
+    QString sUuId = Settings.value("UuId", "notset").toString();
+    sUuId.replace("{","");
+    sUuId.replace("}","");
+    if (sUuId == "notset")
+    {
+        // generate a new UUID and save it in settings.
+        sUuId = QUuid::createUuid().toString();
+        Settings.setValue("UuId", sUuId);
+    }
+    // Get the highest game id that we know of
+   // QString sMaxGameId = Settings.value("MaxGameId").toString();
+    QNetworkAccessManager *p_NetworkAccessManager = new QNetworkAccessManager(this);
+    connect(p_NetworkAccessManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(on_ServerReply(QNetworkReply*)));
+
+    QString sUrl = QString("http://einstein.geobytes.com/GetEducationalFingerPrints?ver=%1&uuid=%2&afterid=%3")
+        .arg(CFreeDialog::GetVersion())
+        .arg(sUuId)
+        .arg(sAfter);
+    p_NetworkAccessManager->get(QNetworkRequest(QUrl(sUrl)));
+}
 
 void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
 {
-//    if (pReply->error() != QNetworkReply::NoError)
-//        return;
+    if (pReply->error() != QNetworkReply::NoError)
+        return;
     QString data = (QString) pReply->readAll();
     // data should look something like
     // {
@@ -557,16 +581,7 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
     //    "solitaire"
     //  ]
     // }
-    QVariantList ExistingGamesList;
-    QSettings settings;
-    int iSize = settings.beginReadArray("games"); //Get the current size
-    for (int i = 0; i < iSize; ++i)
-    {
-        settings.setArrayIndex(i);
-        QString sGameWindowTitle = settings.value("windowtitle").toString();
-        ExistingGamesList.append(sGameWindowTitle);
-    }
-    settings.endArray();
+
     // QtJson::parse parser;
     // QtJson::JsonObject result = QtJson::parse(data, ok).toMap();
 
@@ -574,8 +589,27 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
     QVariantMap ResponseMap = QtJson::parse(data, ok).toMap();
     if (ok)
     {
+        QSettings settings;
         QString sRequest=ResponseMap["Request"].toString();
         QString sMaxFingerPrintId=ResponseMap["MaxFingerPrintId"].toString();
+        QString sArrayName="educationals";
+        if(sRequest=="GetGameFingerPrints")
+        {
+            sArrayName="games";
+        }else
+        {
+            sArrayName="educationals";
+        }
+        settings.setValue(QString("Max%1FingerPrintId").arg(sArrayName),sMaxFingerPrintId);
+        QVariantList ExistingGamesList;
+        int iSize = settings.beginReadArray(sArrayName); //Get the current size
+        for (int i = 0; i < iSize; ++i)
+        {
+            settings.setArrayIndex(i);
+            QString sWindowTitle = settings.value("windowtitle").toString();
+            ExistingGamesList.append(sWindowTitle);
+        }
+        settings.endArray();
         QVariantList FingerPrints=ResponseMap["FingerPrints"].toList();
         if (ok)
         {
@@ -584,7 +618,7 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
                 QString sFingerPrint = FingerPrints[i].toString();
                 if(!ExistingGamesList.contains(sFingerPrint))
                 {
-                    settings.beginWriteArray("games");
+                    settings.beginWriteArray(sArrayName);
                     settings.setArrayIndex(iSize + i);
                     settings.setValue("windowtitle", sFingerPrint);
                     settings.endArray();
@@ -647,10 +681,29 @@ void CFreeDialog::on_ControlGames()
 #endif
 
     // qDebug() << ulWindowId << sName;
+
+    // Is the currently actitive window an educational?
+    bool bPlayingEducational = false;
+    int iSize = Settings.beginReadArray("educationals");
+    for (int i = 0; i < iSize; ++i)
+    {
+        Settings.setArrayIndex(i);
+        QString sEducationalWindowTitle = Settings.value("windowtitle").toString();
+        // remove non alpha charaters
+        // sName.simplified()
+        if (sName.contains(sEducationalWindowTitle, Qt::CaseInsensitive))
+        {
+            // They are playing a Educational
+            bPlayingEducational = true;
+        }
+    }
+    Settings.endArray();
+
+
     // Is the currently actitive window a game?
     bool bPlayingGame = false;
-    int size = Settings.beginReadArray("games");
-    for (int i = 0; i < size; ++i)
+    iSize = Settings.beginReadArray("games");
+    for (int i = 0; i < iSize; ++i)
     {
         Settings.setArrayIndex(i);
         QString sGameWindowTitle = Settings.value("windowtitle").toString();
@@ -663,6 +716,25 @@ void CFreeDialog::on_ControlGames()
         }
     }
     Settings.endArray();
+
+    if (bPlayingEducational == true)
+    {
+        uint uiGameMillisecondsAvalable = Settings.value("gamemilliseconds", 0).toUInt();
+        if (!m_GamingTimer.isValid())
+        {
+            m_GamingTimer.start();
+            setIcon("Emc2");
+            return;
+        }
+        uint ulGamingMilliseconds = m_GamingTimer.elapsed();
+        uiGameMillisecondsAvalable = uiGameMillisecondsAvalable + (ulGamingMilliseconds*2);
+        Settings.setValue("gamemilliseconds", uiGameMillisecondsAvalable);
+        DisplayGameMinutes();
+        m_GamingTimer.restart();
+        setIcon("Emc2");
+        return;
+    }
+
 
     if (bPlayingGame == true)
     {
@@ -753,4 +825,9 @@ void CFreeDialog::on_actionAbout_Einstein_s_Agent_triggered()
 void CFreeDialog::on_pushButtonGameMinOK_clicked()
 {
     on_InitSkin();
+}
+
+void CFreeDialog::on_actionManage_Educationals_triggered()
+{
+    IdentifyEducationals();
 }
