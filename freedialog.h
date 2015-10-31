@@ -25,9 +25,9 @@ public:
     ~CFreeDialog();
     void setVisible(bool visible);
 #ifndef WIN32
-    static QString GetVersion(){return QString("0.0.3L");};
+    static QString GetVersion(){return QString("0.0.4L");};
 #else
-    static QString GetVersion(){return QString("0.0.3W");};
+    static QString GetVersion(){return QString("0.0.4W");};
 #endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);

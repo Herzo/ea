@@ -790,6 +790,8 @@ void CFreeDialog::on_ControlGames()
         this->raise();
         this->activateWindow();
         this->showNormal();
+        ui->MinutesWarning->raise();
+        ui->pushButtonGameMinOK->raise();
         ui->MinutesWarning->show();
         ui->pushButtonGameMinOK->show();
         QTimer::singleShot(12500, this, SLOT(on_InitSkin()));
