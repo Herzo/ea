@@ -832,3 +832,20 @@ void CFreeDialog::on_actionManage_Educationals_triggered()
 {
     IdentifyEducationals();
 }
+
+
+void CFreeDialog::on_checkBoxMultiplication_clicked(bool checked)
+{
+    if(checked)
+        m_MultiplicationDialog.show();
+    else
+        m_MultiplicationDialog.hide();
+}
+
+void CFreeDialog::on_checkBoxAddition_clicked(bool checked)
+{
+    if(checked)
+        m_AdditionDialog.show();
+    else
+        m_AdditionDialog.hide();
+}

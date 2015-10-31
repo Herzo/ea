@@ -653,6 +653,80 @@ color:yellow;</string>
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QCheckBox" name="checkBoxAddition">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>450</y>
+      <width>51</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#FFF;
+background-color: rgba(0, 51, 51,90);</string>
+    </property>
+    <property name="text">
+     <string>+</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxMultiplication">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>430</y>
+      <width>51</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#FFF;
+background-color: rgba(0, 51, 51,90);</string>
+    </property>
+    <property name="text">
+     <string>X</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelCheats">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>400</y>
+      <width>66</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:yellow;</string>
+    </property>
+    <property name="text">
+     <string>Cheats</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>400</y>
+      <width>71</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(0, 51, 51,190);
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+color:yellow;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>pushButtonGameMinOK</zorder>
    <zorder>MinutesWarning</zorder>
    <zorder>Skin</zorder>
@@ -670,6 +744,10 @@ color:yellow;</string>
    <zorder>SecondsRemaining</zorder>
    <zorder>lableSeconds_2</zorder>
    <zorder>ClosedEye</zorder>
+   <zorder>label_2</zorder>
+   <zorder>labelCheats</zorder>
+   <zorder>checkBoxAddition</zorder>
+   <zorder>checkBoxMultiplication</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -677,7 +755,7 @@ color:yellow;</string>
      <x>0</x>
      <y>0</y>
      <width>648</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuIdGames">

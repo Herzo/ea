@@ -22,5 +22,7 @@
         <file>images/emc2icon.ico</file>
         <file>images/davelike.png</file>
         <file>images/hellooo.png</file>
+        <file>images/addition.svg</file>
+        <file>images/multiplication.svg</file>
     </qresource>
 </RCC>

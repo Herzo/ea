@@ -9,7 +9,9 @@ HEADERS       = \
     listeducationals.h \
     idwindowdialog.h \
     mainwindow.h \
-    json.h
+    json.h \
+    additiondialog.h \
+    multiplicationdialog.h
 unix:!macx: HEADERS += xdo.h \
     xdo_util.h \
     xdo_version.h
@@ -20,7 +22,9 @@ SOURCES       = main.cpp \
     listeducationals.cpp \
     idwindowdialog.cpp \
     mainwindow.cpp \
-    json.cpp
+    json.cpp \
+    additiondialog.cpp \
+    multiplicationdialog.cpp
 unix:!macx: SOURCES += xdo.c
 RESOURCES     = systray.qrc
 QT           += xml svg
@@ -58,7 +62,9 @@ FORMS += \
     listgames.ui \
     listeducationals.ui \
     idwindowdialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    additiondialog.ui \
+    multiplicationdialog.ui
 
 DISTFILES += \
     images/gameselectionherzo.png \

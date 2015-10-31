@@ -5,6 +5,8 @@
 // #include <QDialog>
 #include <QMainWindow>
 #include <QNetworkReply>
+#include "additiondialog.h"
+#include "multiplicationdialog.h"
 
 #include <QMap>
 #include <QElapsedTimer>
@@ -67,7 +69,13 @@ private slots:
 
     void on_actionManage_Educationals_triggered();
 
+    void on_checkBoxMultiplication_clicked(bool checked);
+
+    void on_checkBoxAddition_clicked(bool checked);
+
 private:
+    CAdditionDialog m_AdditionDialog;
+    CMultiplicationDialog m_MultiplicationDialog;
     void setIcon(QString sMode);
     QElapsedTimer m_GamingTimer;
     // unsigned long m_ulLastGamingTime;
