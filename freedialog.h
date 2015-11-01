@@ -24,6 +24,7 @@ public:
     explicit CFreeDialog(QWidget *parent = 0);
     ~CFreeDialog();
     void setVisible(bool visible);
+    QString GetUuId();
 #ifndef WIN32
     static QString GetVersion(){return QString("0.0.4L");};
 #else
@@ -103,6 +104,8 @@ private:
     void DisplayGameMinutes();
     uint GetQuestionsGameMilliseconds();
     void DisplayQuestionGameMinutes();
+    QPoint m_pointLastMousePos;
+    int m_iMouseIdleCounter;
 };
 
 

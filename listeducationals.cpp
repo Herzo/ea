@@ -5,6 +5,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QWidget>
+#include <set>
 #include "listeducationals.h"
 #include "ui_listeducationals.h"
 
@@ -143,13 +144,25 @@ void CListEducationals::on_bnIdentifyEducationals_clicked()
 
 void CListEducationals::on_buttonBox_accepted()
 {
-    QSettings settings;
-    settings.beginWriteArray("educationals");
+    // Write the list in to a set first to remove the dups
+    std::set<QString> Items;
     for (int i = 0; i < ui->listEducationals->count(); ++i)
     {
-        ui->listEducationals->setCurrentRow(i);
-        settings.setArrayIndex(i);
-        settings.setValue("windowtitle", ui->listEducationals->currentItem()->text());
+        QString sItem=ui->listEducationals->currentItem()->text();
+        Items.insert(sItem.trimmed());
+    }
+
+    QSettings settings;
+    settings.beginWriteArray("educationals");
+    int iElement=0;
+    std::set<QString>::const_iterator it;
+    while (it!=Items.end())
+    {
+        ui->listEducationals->setCurrentRow(iElement);
+        settings.setArrayIndex(iElement);
+        settings.setValue("windowtitle", (*it));
+        iElement++;
+        it++;
     }
     settings.endArray();
 }

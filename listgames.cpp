@@ -5,6 +5,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QWidget>
+#include <set>
 #include "listgames.h"
 #include "ui_listgames.h"
 
@@ -168,13 +169,25 @@ void CListGames::on_bnIdentifyGame_clicked()
 
 void CListGames::on_buttonBox_accepted()
 {
-    QSettings settings;
-    settings.beginWriteArray("games");
+    // Write the list in to a set first to remove the dups
+    std::set<QString> Items;
     for (int i = 0; i < ui->listGames->count(); ++i)
     {
-        ui->listGames->setCurrentRow(i);
-        settings.setArrayIndex(i);
-        settings.setValue("windowtitle", ui->listGames->currentItem()->text());
+        QString sItem=ui->listGames->currentItem()->text();
+        Items.insert(sItem.trimmed());
+    }
+
+    QSettings settings;
+    settings.beginWriteArray("games");
+    int iElement=0;
+    std::set<QString>::const_iterator it;
+    while (it!=Items.end())
+    {
+        ui->listGames->setCurrentRow(iElement);
+        settings.setArrayIndex(iElement);
+        settings.setValue("windowtitle", (*it));
+        iElement++;
+        it++;
     }
     settings.endArray();
 }

@@ -42,6 +42,7 @@ CFreeDialog::CFreeDialog(QWidget *parent) :
 QMainWindow(parent),
 ui(new Ui::CFreeDialog)
 {
+    m_iMouseIdleCounter=0;
     m_GamingTimer.invalidate();
     // m_ulLastGamingTime=0;
     QSettings Settings;
@@ -520,15 +521,6 @@ void CFreeDialog::on_FetchGameFingerPrints()
 {
     QSettings Settings;
     QString sAfter = Settings.value("MaxGamesFingerPrintId", "0").toString();
-    QString sUuId = Settings.value("UuId", "notset").toString();
-    sUuId.replace("{","");
-    sUuId.replace("}","");
-    if (sUuId == "notset")
-    {
-        // generate a new UUID and save it in settings.
-        sUuId = QUuid::createUuid().toString();
-        Settings.setValue("UuId", sUuId);
-    }
     // Get the highest game id that we know of
     // QString sMaxGameId = Settings.value("MaxGameId").toString();
     QNetworkAccessManager *p_NetworkAccessManager = new QNetworkAccessManager(this);
@@ -537,23 +529,29 @@ void CFreeDialog::on_FetchGameFingerPrints()
 
     QString sUrl = QString("http://einstein.geobytes.com/GetGameFingerPrints?ver=%1&uuid=%2&afterid=%3")
         .arg(CFreeDialog::GetVersion())
-        .arg(sUuId)
+        .arg(GetUuId())
         .arg(sAfter);
     p_NetworkAccessManager->get(QNetworkRequest(QUrl(sUrl)));
+}
+QString CFreeDialog::GetUuId()
+{
+    QSettings Settings;
+    QString sUuId = Settings.value("UuId", "notset").toString();
+
+    if (sUuId == "notset"||sUuId.contains("{"))
+    {
+        // generate a new UUID and save it in settings.
+        sUuId = QUuid::createUuid().toString();
+        sUuId.replace("{","");
+        sUuId.replace("}","");
+        Settings.setValue("UuId", sUuId);
+    }
+    return sUuId;
 }
 void CFreeDialog::on_FetchEducationalFingerPrints()
 {
     QSettings Settings;
     QString sAfter = Settings.value("MaxEducationalsFingerPrintId", "0").toString();
-    QString sUuId = Settings.value("UuId", "notset").toString();
-    sUuId.replace("{","");
-    sUuId.replace("}","");
-    if (sUuId == "notset")
-    {
-        // generate a new UUID and save it in settings.
-        sUuId = QUuid::createUuid().toString();
-        Settings.setValue("UuId", sUuId);
-    }
     // Get the highest game id that we know of
    // QString sMaxGameId = Settings.value("MaxGameId").toString();
     QNetworkAccessManager *p_NetworkAccessManager = new QNetworkAccessManager(this);
@@ -562,7 +560,7 @@ void CFreeDialog::on_FetchEducationalFingerPrints()
 
     QString sUrl = QString("http://einstein.geobytes.com/GetEducationalFingerPrints?ver=%1&uuid=%2&afterid=%3")
         .arg(CFreeDialog::GetVersion())
-        .arg(sUuId)
+        .arg(GetUuId())
         .arg(sAfter);
     p_NetworkAccessManager->get(QNetworkRequest(QUrl(sUrl)));
 }
@@ -639,6 +637,14 @@ void CFreeDialog::on_ControlGames()
     // Deduce the game minutes used since the last check
     // Check if we have any game minutes avalible
     // if we are out of game minutes then minimise the game
+    if(m_pointLastMousePos==QCursor::pos())
+    {
+        m_iMouseIdleCounter++;
+    }else
+    {
+        m_iMouseIdleCounter=0;
+        m_pointLastMousePos=QCursor::pos();
+    }
     QSettings Settings;
     QString sName;
 #ifndef WIN32
@@ -717,7 +723,7 @@ void CFreeDialog::on_ControlGames()
     }
     Settings.endArray();
 
-    if (bPlayingEducational == true)
+    if (bPlayingEducational == true&&m_iMouseIdleCounter<3)
     {
         uint uiGameMillisecondsAvalable = Settings.value("gamemilliseconds", 0).toUInt();
         if (!m_GamingTimer.isValid())
@@ -779,14 +785,7 @@ void CFreeDialog::on_ControlGames()
 #else
         ShowWindow(hwnd, SW_FORCEMINIMIZE);
 #endif
-        // FIXME: must auto-close dialog, as leaving it open blocks.
-//        QMessageBox msgBox;
-//        msgBox.setIcon(QMessageBox::Critical);
-//        msgBox.setText("Oops - No game minutes remaining.");
-//        msgBox.setInformativeText("Time to earn some more game minutes.");
-//        msgBox.setStandardButtons(QMessageBox::Ok);
-//        msgBox.setDefaultButton(QMessageBox::Ok);
-//        msgBox.exec();
+        // must auto-close dialog, as leaving it open blocks.
         this->raise();
         this->activateWindow();
         this->showNormal();
