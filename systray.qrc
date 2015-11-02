@@ -24,5 +24,10 @@
         <file>images/hellooo.png</file>
         <file>images/addition.svg</file>
         <file>images/multiplication.svg</file>
+        <file>images/crosshair.svg</file>
+        <file>images/KidAtPc320x240.png</file>
+        <file>images/narniethumb.png</file>
+        <file>images/narniethumb101x161.png</file>
+        <file>images/splash.png</file>
     </qresource>
 </RCC>

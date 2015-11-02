@@ -26,6 +26,10 @@ private slots:
     void deleteItem();
 
 
+    void on_toolButtonAddGame_clicked();
+
+    void on_bnAddGameManually_clicked();
+
 private:
     Ui::CListGames *ui;
     void DeleteItem();

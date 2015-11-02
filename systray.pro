@@ -11,7 +11,9 @@ HEADERS       = \
     mainwindow.h \
     json.h \
     additiondialog.h \
-    multiplicationdialog.h
+    multiplicationdialog.h \
+    getwindowtitledialog.h \
+    splashdialog.h
 unix:!macx: HEADERS += xdo.h \
     xdo_util.h \
     xdo_version.h
@@ -24,7 +26,9 @@ SOURCES       = main.cpp \
     mainwindow.cpp \
     json.cpp \
     additiondialog.cpp \
-    multiplicationdialog.cpp
+    multiplicationdialog.cpp \
+    getwindowtitledialog.cpp \
+    splashdialog.cpp
 unix:!macx: SOURCES += xdo.c
 RESOURCES     = systray.qrc
 QT           += xml svg
@@ -64,7 +68,9 @@ FORMS += \
     idwindowdialog.ui \
     mainwindow.ui \
     additiondialog.ui \
-    multiplicationdialog.ui
+    multiplicationdialog.ui \
+    getwindowtitledialog.ui \
+    splashdialog.ui
 
 DISTFILES += \
     images/gameselectionherzo.png \

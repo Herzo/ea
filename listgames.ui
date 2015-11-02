@@ -29,27 +29,33 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="bnIdentifyGame">
+  <widget class="QPushButton" name="bnAddGameManually">
    <property name="geometry">
     <rect>
      <x>390</x>
      <y>410</y>
-     <width>98</width>
+     <width>151</width>
      <height>31</height>
     </rect>
    </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this button to manually add games to the above list by entering the applications title into a text field on a form.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
-    <string>Add Game</string>
+    <string>Add Game Manually</string>
    </property>
   </widget>
   <widget class="QListWidget" name="listGames">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>110</x>
      <y>120</y>
      <width>371</width>
      <height>281</height>
     </rect>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This list contains the Window Titles of Games - that is the text that appears in the title bar of the game's window. When Einstein's Agent sees one of these applications being used, then it will add minutes to the total game minutes available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(0, 51, 51,90);
@@ -79,10 +85,10 @@ color:yellow;</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>100</x>
      <y>10</y>
-     <width>611</width>
-     <height>91</height>
+     <width>390</width>
+     <height>101</height>
     </rect>
    </property>
    <property name="font">
@@ -100,17 +106,37 @@ text-align: right;
 color:yellow;</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To tell Einstein's Agent about the games that it should regulate. Start the game that you wish to add as you usually do and then return to this window and click Add Game. Your mouse cursor will then turn into a cross which you can use to click on the game's window, and the game will be added to the list below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Games&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Einstein's Agent will use the following Window Titles to identify games.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QToolButton" name="toolButtonAddGame">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>410</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To add games to the above list automatically:&lt;/p&gt;&lt;p&gt;1. Start the game as you usually would. &lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;NOTE: The game that you wish to add must be both running and visible before you proceed to step 2.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;2. Return to this window and click the Add Game button with the crosshairs on it.&lt;/p&gt;&lt;p&gt;3. Use the cross hairs to clicking on the title bar of the game's window. The text in the title bar of game's window will be added to the list. That is how Einstein's Agent will identify this application's window in future.&lt;/p&gt;&lt;p&gt;4. Click the OK button to save your changes and close this window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="text">
+    <string>Add Game</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+  </widget>
   <zorder>skin</zorder>
   <zorder>buttonBox</zorder>
-  <zorder>bnIdentifyGame</zorder>
+  <zorder>bnAddGameManually</zorder>
   <zorder>listGames</zorder>
   <zorder>label</zorder>
+  <zorder>toolButtonAddGame</zorder>
  </widget>
  <resources>
   <include location="systray.qrc"/>

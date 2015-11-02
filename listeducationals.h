@@ -20,11 +20,14 @@ protected slots:
     void InitSkin();
 
 private slots:
-    void on_bnIdentifyEducationals_clicked();
 
     void on_buttonBox_accepted();
     void deleteItem();
 
+
+    void on_bnAddEducationalManually_clicked();
+
+    void on_toolButtonAddEducational_clicked();
 
 private:
     Ui::CListEducationals *ui;

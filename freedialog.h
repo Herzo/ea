@@ -26,9 +26,9 @@ public:
     void setVisible(bool visible);
     QString GetUuId();
 #ifndef WIN32
-    static QString GetVersion(){return QString("0.0.4L");};
+    static QString GetVersion(){return QString("0.0.5L");};
 #else
-    static QString GetVersion(){return QString("0.0.4W");};
+    static QString GetVersion(){return QString("0.0.5W");};
 #endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
@@ -74,6 +74,7 @@ private slots:
 
     void on_checkBoxAddition_clicked(bool checked);
 
+    void on_ShowSplash();
 private:
     CAdditionDialog m_AdditionDialog;
     CMultiplicationDialog m_MultiplicationDialog;

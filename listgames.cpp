@@ -5,7 +5,10 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QWidget>
+#include <QToolButton>
 #include <set>
+#include "getwindowtitledialog.h"
+
 #include "listgames.h"
 #include "ui_listgames.h"
 
@@ -59,6 +62,7 @@ void CListGames::InitSkin()
     QSettings Settings;
     QPixmap img(Settings.value("skinlistgames",":/images/gameselectionherzo.png").toString());
     ui->skin->setPixmap(img);
+    ui->toolButtonAddGame->setIcon(QIcon(":/images/crosshair.svg"));
 }
 /*
 bool CListGames::eventFilter(QObject *watched, QEvent *event)
@@ -88,6 +92,36 @@ void CListGames::deleteItem()
     delete ui->listGames->currentItem();
 }
 void CListGames::on_bnIdentifyGame_clicked()
+{
+}
+
+void CListGames::on_buttonBox_accepted()
+{
+    // Write the list in to a set first to remove the dups
+    std::set<QString> Items;
+    for (int i = 0; i < ui->listGames->count(); ++i)
+    {
+        ui->listGames->setCurrentRow(i);
+        QString sItem=ui->listGames->currentItem()->text();
+        Items.insert(sItem.trimmed());
+    }
+
+    QSettings settings;
+    settings.beginWriteArray("games");
+    int iElement=0;
+    std::set<QString>::const_iterator it=Items.begin();
+    while (it!=Items.end())
+    {
+        settings.setArrayIndex(iElement);
+        settings.setValue("windowtitle", (*it));
+        iElement++;
+        it++;
+    }
+    settings.endArray();
+}
+
+
+void CListGames::on_toolButtonAddGame_clicked()
 {
     QSettings Settings;
     QString sName;
@@ -165,30 +199,16 @@ void CListGames::on_bnIdentifyGame_clicked()
         ui->listGames->addItem(sName);
     }
     QApplication::setActiveWindow(this);
+
 }
 
-void CListGames::on_buttonBox_accepted()
+void CListGames::on_bnAddGameManually_clicked()
 {
-    // Write the list in to a set first to remove the dups
-    std::set<QString> Items;
-    for (int i = 0; i < ui->listGames->count(); ++i)
+    CGetWindowTitleDialog dlg;
+    dlg.SetHeading("Add Game");
+    dlg.exec();
+    if(dlg.m_sTitle!="")
     {
-        QString sItem=ui->listGames->currentItem()->text();
-        Items.insert(sItem.trimmed());
+        ui->listGames->addItem(dlg.m_sTitle);
     }
-
-    QSettings settings;
-    settings.beginWriteArray("games");
-    int iElement=0;
-    std::set<QString>::const_iterator it;
-    while (it!=Items.end())
-    {
-        ui->listGames->setCurrentRow(iElement);
-        settings.setArrayIndex(iElement);
-        settings.setValue("windowtitle", (*it));
-        iElement++;
-        it++;
-    }
-    settings.endArray();
 }
-

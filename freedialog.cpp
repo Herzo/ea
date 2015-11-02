@@ -17,6 +17,7 @@
 #include <QVariantList>
 #include <QJsonArray>
 
+#include "splashdialog.h"
 #include "json.h"
 #include "freedialog.h"
 #include "listgames.h"
@@ -72,11 +73,21 @@ ui(new Ui::CFreeDialog)
     QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
     QTimer::singleShot(200, this, SLOT(on_FetchGameFingerPrints()));
     QTimer::singleShot(600, this, SLOT(on_FetchEducationalFingerPrints()));
-    // pressing Enter activates the slots only when list widget has focus
+    if(Settings.value("showsplash").toBool()==true,true)
+        QTimer::singleShot(50, this, SLOT(on_ShowSplash()));
+
+        // pressing Enter activates the slots only when list widget has focus
     //    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->Answer);
     //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
     //    QShortcut* shortcut1 = new QShortcut(QKeySequence(Qt::Key_Return), ui->Answer);
     //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
+
+}
+void CFreeDialog::on_ShowSplash()
+{
+    CSplashDialog* pDlg=new CSplashDialog(this);
+    pDlg->show();
+    pDlg->raise();
 
 }
 
@@ -214,6 +225,7 @@ void CFreeDialog::ChangeSkin()
     QString sSkin;
     QString sSkinGameSelection;
     QString sMinutesWarning;
+    QString sSkinGetWindowTitle;
     QSettings Settings;
     sSkin = Settings.value("skin", ":/images/davesaveworld.png").toString();
     sSkinGameSelection = Settings.value("skinlistgames", ":/images/gameselectionherzo.png").toString();
@@ -222,16 +234,19 @@ void CFreeDialog::ChangeSkin()
         sSkin = ":/images/rainboxworld.png";
         sSkinGameSelection = ":/images/gameselectionherzoine.png";
         sMinutesWarning = ":/images/hellooo.png";
+        sSkinGetWindowTitle = ":/images/narniethumb101x161.png";
     } else
     {
         sSkin = ":/images/davesaveworld.png";
         sSkinGameSelection = ":/images/gameselectionherzo.png";
         sMinutesWarning = ":/images/davelike.png";
+        sSkinGetWindowTitle = ":/images/Dave_106x150.png";
     }
     Settings.setValue("skin", sSkin);
     Settings.setValue("skinlistgames", sSkinGameSelection);
     Settings.setValue("skinlisteducationals", sSkinGameSelection);
     Settings.setValue("minuteswarning", sMinutesWarning);
+    Settings.setValue("skingetwindowtitle",sSkinGetWindowTitle);
     on_InitSkin();
 }
 

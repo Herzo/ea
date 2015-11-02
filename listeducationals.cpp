@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QWidget>
 #include <set>
+#include "getwindowtitledialog.h"
 #include "listeducationals.h"
 #include "ui_listeducationals.h"
 
@@ -59,13 +60,51 @@ void CListEducationals::InitSkin()
     QSettings Settings;
     QPixmap img(Settings.value("skinlisteducationals",":/images/gameselectionherzo.png").toString());
     ui->skin->setPixmap(img);
+    ui->toolButtonAddEducational->setIcon(QIcon(":/images/crosshair.svg"));
 }
 
 void CListEducationals::deleteItem()
 {
     delete ui->listEducationals->currentItem();
 }
-void CListEducationals::on_bnIdentifyEducationals_clicked()
+
+void CListEducationals::on_buttonBox_accepted()
+{
+    // Write the list in to a set first to remove the dups
+    std::set<QString> Items;
+    for (int i = 0; i < ui->listEducationals->count(); ++i)
+    {
+        ui->listEducationals->setCurrentRow(i);
+        QString sItem=ui->listEducationals->currentItem()->text();
+        Items.insert(sItem.trimmed());
+    }
+
+    QSettings settings;
+    settings.beginWriteArray("educationals");
+    int iElement=0;
+    std::set<QString>::const_iterator it=Items.begin();
+    while (it!=Items.end())
+    {
+        settings.setArrayIndex(iElement);
+        settings.setValue("windowtitle", (*it));
+        iElement++;
+        it++;
+    }
+    settings.endArray();
+}
+
+void CListEducationals::on_bnAddEducationalManually_clicked()
+{
+    CGetWindowTitleDialog dlg;
+    dlg.SetHeading("Add Educational");
+    dlg.exec();
+    if(dlg.m_sTitle!="")
+    {
+        ui->listEducationals->addItem(dlg.m_sTitle);
+    }
+}
+
+void CListEducationals::on_toolButtonAddEducational_clicked()
 {
     QSettings Settings;
     QString sName;
@@ -141,29 +180,3 @@ void CListEducationals::on_bnIdentifyEducationals_clicked()
     }
     QApplication::setActiveWindow(this);
 }
-
-void CListEducationals::on_buttonBox_accepted()
-{
-    // Write the list in to a set first to remove the dups
-    std::set<QString> Items;
-    for (int i = 0; i < ui->listEducationals->count(); ++i)
-    {
-        QString sItem=ui->listEducationals->currentItem()->text();
-        Items.insert(sItem.trimmed());
-    }
-
-    QSettings settings;
-    settings.beginWriteArray("educationals");
-    int iElement=0;
-    std::set<QString>::const_iterator it;
-    while (it!=Items.end())
-    {
-        ui->listEducationals->setCurrentRow(iElement);
-        settings.setArrayIndex(iElement);
-        settings.setValue("windowtitle", (*it));
-        iElement++;
-        it++;
-    }
-    settings.endArray();
-}
-
