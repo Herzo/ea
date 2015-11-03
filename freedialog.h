@@ -2,8 +2,8 @@
 #define FREEDIALOG_H
 
 #include <QSystemTrayIcon>
-// #include <QDialog>
-#include <QMainWindow>
+#include <QDialog>
+//#include <QMainWindow>
 #include <QNetworkReply>
 #include "additiondialog.h"
 #include "multiplicationdialog.h"
@@ -16,7 +16,7 @@ namespace Ui {
 class CFreeDialog;
 }
 
-class CFreeDialog : public QMainWindow
+class CFreeDialog : public QDialog
 {
     Q_OBJECT
 

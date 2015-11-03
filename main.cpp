@@ -10,7 +10,7 @@
  #include <QMessageBox>
 #include <QSharedMemory>
 #include <QtGui>
-
+// #include "mainwindow.h"
 
 
 
@@ -23,14 +23,35 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("geobytes.com");
     QCoreApplication::setApplicationName("Einstein's Agent");
     QApplication app(argc, argv);
-/*
+
     QSharedMemory mem("einstein");
-    if(!mem.create(1))
+    if(!mem.create(sizeof( quint64 )))
     {
-       // Attempt to activate window on the instance of ourself that is alreay running
-       exit(0);
+        // It appears that we may be already running in another instance.
+        // Attempt to activate window on the instance of ourself that is alreay running
+        // Signal the other instance, and wait 15 sceonds for it to reply.
+        // If it replies then we terminate, if not then we reset the signal and continue.
+        mem.attach();
+        void* pData=mem.data();
+        quint64 &uiData = *(quint64*)(pData);
+        uiData=1;
+        uint uiSleepFor=15000;
+    #ifdef Q_OS_WIN
+        Sleep(uiSleepFor);
+    #else
+        struct timespec ts = { uiSleepFor / 1000, (uiSleepFor % 1000) * 1000 * 1000 };
+        nanosleep(&ts, NULL);
+    #endif
+      // If the other instance of ourself got the signal then it will have set it back to zero
+        if(uiData==0)
+        {
+            exit(0);
+        }else
+        {
+            uiData=0;
+        }
     }
-*/
+
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         QMessageBox::critical(0, QCoreApplication::applicationName(),
                               QObject::tr("I couldn't detect any system tray "
@@ -38,7 +59,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     QApplication::setQuitOnLastWindowClosed(false);
-
+    // CMainWindow window;
     CFreeDialog window;
     // COptionsDialog window;
     window.show();

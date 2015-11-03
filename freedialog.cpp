@@ -16,6 +16,7 @@
 #include <QVariantMap>
 #include <QVariantList>
 #include <QJsonArray>
+#include <QSharedMemory>
 
 #include "splashdialog.h"
 #include "json.h"
@@ -40,7 +41,7 @@ extern "C"
 #endif
 
 CFreeDialog::CFreeDialog(QWidget *parent) :
-QMainWindow(parent),
+QDialog(parent),
 ui(new Ui::CFreeDialog)
 {
     m_iMouseIdleCounter=0;
@@ -146,7 +147,7 @@ void CFreeDialog::setVisible(bool visible)
     m_pMaximizeAction->setEnabled(!isMaximized());
     m_pRestoreAction->setEnabled(isMaximized() || !visible);
     m_pTrayIcon->setVisible(true);
-    QMainWindow::setVisible(visible);
+    QDialog::setVisible(visible);
 }
 
 void CFreeDialog::closeEvent(QCloseEvent *event)
@@ -644,6 +645,20 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
 
 void CFreeDialog::on_ControlGames()
 {
+    // Check for a singal from a new instance of ourselves
+    QSharedMemory mem("einstein");
+    if(mem.attach())
+    {
+        void* pData=mem.data();
+        quint64 &uiData = *(quint64*)(pData);
+        if(uiData==1)
+        {
+            uiData=0;  // signal back that we are already here
+            this->raise();
+            this->activateWindow();
+            this->showNormal();
+        }
+    }
     /*
      *
  // link against libX11

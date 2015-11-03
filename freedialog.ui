@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CFreeDialog</class>
- <widget class="QMainWindow" name="CFreeDialog">
+ <widget class="QDialog" name="CFreeDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,9 +13,17 @@
   <property name="windowTitle">
    <string>Einstein's Agent</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <property name="toolTipDuration">
-    <number>10</number>
+  <widget class="QWidget" name="centralwidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>26</y>
+     <width>651</width>
+     <height>490</height>
+    </rect>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::ActionsContextMenu</enum>
    </property>
    <widget class="QLCDNumber" name="GameMinutesCounter">
     <property name="geometry">
@@ -29,12 +37,11 @@
     <property name="toolTip">
      <string extracomment="Game minutes avalible">Game minutes avalible</string>
     </property>
+    <property name="statusTip">
+     <string>The current balance of your game minutes.</string>
+    </property>
     <property name="whatsThis">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;docs-internal-guid-a0884f8f-c8bb-3f68-4814-2f25eb73baea&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Arial'; color:#000000; background-color:transparent;&quot;&gt;T&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; color:#000000; background-color:transparent;&quot;&gt;his is the current balance of your game minutes.  As you complete educational activities you will receive more game minutes, which you can use to play games.  Once your game minutes falls to zero then any active games with be minimised, and it will be time to earn more minutes.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>This is the current balance of your game minutes.  As you complete educational activities you will receive more game minutes, which you can use to play games.  Once your game minutes falls to zero then any active games with be minimised, and it will be time to earn more minutes.</string>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -357,6 +364,9 @@ text-align: right;</string>
       <height>630</height>
      </rect>
     </property>
+    <property name="statusTip">
+     <string>Try Right Clicking on things and then selecting &quot;What is this&quot; for more info.</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -399,8 +409,11 @@ border-color: beige;</string>
       <height>201</height>
      </rect>
     </property>
+    <property name="statusTip">
+     <string>The challenge increases as you earn more points, but so does the rewared per correct answer.</string>
+    </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This slider will automatically adjust the difficulty level based on your skill level to maximize the difficulty bonus you receive for each questions.&lt;/p&gt;&lt;p&gt;However, if you wish to try questions at a different level then use your mouse to move the slide to a different level, but remember the more difficult questions, give a much higher difficulty bonus for each questions - meaning that you can get more minutes in less time when you work at the highest level that you are comfortable with. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This slider will automatically adjust the difficulty level based on your skill level to maximize the difficulty bonus you receive for each question. However, if you wish to try questions at a different level then you can move the slide to a different level, but remember the more difficult questions give a much higher difficulty bonus - meaning that you can get more minutes in less time when you work at the highest level that you are comfortable with.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="minimum">
      <number>10</number>
@@ -466,8 +479,11 @@ color:yellow;</string>
     <property name="toolTip">
      <string extracomment="Speed bonus - the faster you answer the more game minutes earned">Speed bonus - the faster you answer the more game minutes earned</string>
     </property>
+    <property name="statusTip">
+     <string>The amont of speed bonus remaining on this question.</string>
+    </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the amont of speed bonus remaining on this question. &lt;/p&gt;&lt;p&gt;More challenging questions start with a greater time bonus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>This is the amont of speed bonus remaining on this question. More challenging questions start with a greater speed bonus.</string>
     </property>
     <property name="maximum">
      <number>100</number>
@@ -498,7 +514,7 @@ color:yellow;</string>
      <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
     </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the value of answering this question in Game Minutes, including difficulty and speed bonuses.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
     </property>
     <property name="inputMethodHints">
      <set>Qt::ImhNone</set>
@@ -672,6 +688,9 @@ color:yellow;</string>
       <height>26</height>
      </rect>
     </property>
+    <property name="whatsThis">
+     <string>This opens the addition table in another window.</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">color:#FFF;
 background-color: rgba(0, 51, 51,90);</string>
@@ -688,6 +707,9 @@ background-color: rgba(0, 51, 51,90);</string>
       <width>51</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="whatsThis">
+     <string>This opens the multiplication table in another window.</string>
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
@@ -709,9 +731,6 @@ background-color: rgba(0, 51, 51,90);</string>
       <height>30</height>
      </rect>
     </property>
-    <property name="whatsThis">
-     <string/>
-    </property>
     <property name="styleSheet">
      <string notr="true">color:yellow;</string>
     </property>
@@ -728,8 +747,11 @@ background-color: rgba(0, 51, 51,90);</string>
       <height>81</height>
      </rect>
     </property>
+    <property name="statusTip">
+     <string>Opens windows containing addition and multiplication tables.</string>
+    </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgba(0, 51, 51,190);
@@ -752,7 +774,6 @@ color:yellow;</string>
    <zorder>DifficultySign</zorder>
    <zorder>GameMinutesBackground</zorder>
    <zorder>QuestionMinutesBackground</zorder>
-   <zorder>QuestionsGameMinutes</zorder>
    <zorder>GameMinutesCounter</zorder>
    <zorder>toolButton</zorder>
    <zorder>lableSeconds</zorder>
@@ -764,6 +785,7 @@ color:yellow;</string>
    <zorder>labelCheats</zorder>
    <zorder>checkBoxAddition</zorder>
    <zorder>checkBoxMultiplication</zorder>
+   <zorder>QuestionsGameMinutes</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -791,7 +813,16 @@ color:yellow;</string>
    <addaction name="menuIdGames"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>3</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
   <action name="actionID_Games">
    <property name="text">
     <string>Manage Games</string>
