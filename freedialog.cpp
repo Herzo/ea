@@ -57,9 +57,9 @@ ui(new Ui::CFreeDialog)
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
     ui->Answer->installEventFilter(this);
-    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
-                                          "of speed bonus remaining on this question. </p><p>More challenging questions "
-                                          "start with a greater time bonus.</p></body></html>"));
+//    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
+//                                          "of speed bonus remaining on this question. </p><p>More challenging questions "
+//                                          "start with a greater time bonus.</p></body></html>"));
     InitIconStore();
     setIcon("Emc2");
     // ui->GameMinutesCounter->display(qRound(Settings.value("gamemilliseconds",0).toDouble()/100)*10);
@@ -145,7 +145,8 @@ void CFreeDialog::setVisible(bool visible)
 {
     m_pMinimizeAction->setEnabled(visible);
     m_pMaximizeAction->setEnabled(!isMaximized());
-    m_pRestoreAction->setEnabled(isMaximized() || !visible);
+    m_pRestoreAction->setEnabled(true);
+    // m_pRestoreAction->setEnabled(isMaximized() || !visible);
     m_pTrayIcon->setVisible(true);
     QDialog::setVisible(visible);
 }
@@ -439,7 +440,8 @@ void CFreeDialog::on_RemoveMark()
 
 void CFreeDialog::on_DifficultySlider_valueChanged(int value)
 {
-    int iDifficulty = ui->DifficultySlider->value();
+    // int iDifficulty = ui->DifficultySlider->value();
+    int iDifficulty = value;
     QString sDifficultySign = "Legend";
     if (iDifficulty < 85)
     {
@@ -463,6 +465,21 @@ void CFreeDialog::on_DifficultySlider_valueChanged(int value)
 void CFreeDialog::on_Update()
 {
     // Called every half second by a qTimer
+    // Check for a singal from a new instance of ourselves
+    QSharedMemory mem("einstein");
+    if(mem.attach())
+    {
+        void* pData=mem.data();
+        quint64 &uiData = *(quint64*)(pData);
+        if(uiData==1)
+        {
+            uiData=0;  // signal back that we are already here
+            this->raise();
+            this->activateWindow();
+            this->showNormal();
+        }
+    }
+
     int iSecondsRemaining = ui->SecondsRemaining->value() - 1;
     if (iSecondsRemaining < 0)
         iSecondsRemaining = 0;
@@ -645,20 +662,6 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
 
 void CFreeDialog::on_ControlGames()
 {
-    // Check for a singal from a new instance of ourselves
-    QSharedMemory mem("einstein");
-    if(mem.attach())
-    {
-        void* pData=mem.data();
-        quint64 &uiData = *(quint64*)(pData);
-        if(uiData==1)
-        {
-            uiData=0;  // signal back that we are already here
-            this->raise();
-            this->activateWindow();
-            this->showNormal();
-        }
-    }
     /*
      *
  // link against libX11
@@ -831,7 +834,7 @@ void CFreeDialog::on_ControlGames()
 
 void CFreeDialog::on_toolButton_clicked()
 {
-    IdentifyGames();
+    ChangeSkin();
 }
 
 void CFreeDialog::on_actionID_Games_triggered()
@@ -879,4 +882,9 @@ void CFreeDialog::on_checkBoxAddition_clicked(bool checked)
         m_AdditionDialog.show();
     else
         m_AdditionDialog.hide();
+}
+
+void CFreeDialog::on_actionHelp_triggered()
+{
+    emit on_ShowSplash();
 }

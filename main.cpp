@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         void* pData=mem.data();
         quint64 &uiData = *(quint64*)(pData);
         uiData=1;
-        uint uiSleepFor=15000;
+        uint uiSleepFor=2000; // two seconds
     #ifdef Q_OS_WIN
         Sleep(uiSleepFor);
     #else
