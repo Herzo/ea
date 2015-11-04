@@ -9,10 +9,13 @@ CSplashDialog::CSplashDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     QTimer::singleShot(12000, this, SLOT(on_pushButton_clicked()));
-    move(
-        parentWidget()->window()->frameGeometry().topLeft() +
-        parentWidget()->window()->rect().center() -
-        rect().center());
+//    move(
+//        parentWidget()->window()->frameGeometry().topLeft() +
+//        parentWidget()->window()->rect().center() -
+//        rect().center());
+    QSettings Settings;
+    ui->checkBoxShowSplash->setChecked(Settings.value("showsplash",true).toBool());
+
 }
 
 CSplashDialog::~CSplashDialog()
