@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>Einstein's Agent</DisplayName>
     <Description>Install Einstein's Agent.</Description>
-    <Version>0.0.1</Version>
-    <ReleaseDate>2015-10-21</ReleaseDate>
+    <Version>0.0.5</Version>
+    <ReleaseDate>2015-11-04</ReleaseDate>
     <Licenses>
         <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt" />
     </Licenses>

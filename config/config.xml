@@ -7,4 +7,9 @@
     <StartMenuDir>Einstein's Agent</StartMenuDir>
     <TargetDir>@HomeDir@/Einstein</TargetDir>
     <AllowSpaceInPath>true</AllowSpaceInPath>
+    <ProductUrl>http://www.einsteinsagent.com/</ProductUrl>
+    <InstallerWindowIcon>emc2icon</InstallerWindowIcon>
+    <InstallerApplicationIcon>emc2icon</InstallerApplicationIcon>
+    <Logo>logo.png</Logo>
+    <RunProgram>@TargetDir@/einstein</RunProgram>
 </Installer>
