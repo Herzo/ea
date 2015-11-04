@@ -75,6 +75,8 @@ private slots:
     void on_checkBoxAddition_clicked(bool checked);
 
     void on_ShowSplash();
+    void on_actionHelp_triggered();
+
 private:
     CAdditionDialog m_AdditionDialog;
     CMultiplicationDialog m_MultiplicationDialog;

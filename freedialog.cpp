@@ -57,9 +57,9 @@ ui(new Ui::CFreeDialog)
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
     ui->Answer->installEventFilter(this);
-    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
-                                          "of speed bonus remaining on this question. </p><p>More challenging questions "
-                                          "start with a greater time bonus.</p></body></html>"));
+//    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
+//                                          "of speed bonus remaining on this question. </p><p>More challenging questions "
+//                                          "start with a greater time bonus.</p></body></html>"));
     InitIconStore();
     setIcon("Emc2");
     // ui->GameMinutesCounter->display(qRound(Settings.value("gamemilliseconds",0).toDouble()/100)*10);
@@ -879,4 +879,9 @@ void CFreeDialog::on_checkBoxAddition_clicked(bool checked)
         m_AdditionDialog.show();
     else
         m_AdditionDialog.hide();
+}
+
+void CFreeDialog::on_actionHelp_triggered()
+{
+    emit on_ShowSplash();
 }

@@ -199,6 +199,9 @@ text-align: right;</string>
      <property name="toolTip">
       <string extracomment="Careful - incorrect answers cost you game minutes">Careful - incorrect answers cost you game minutes</string>
      </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this button to submit your answer.  If correct, then the game minutes for this question will be added to your total above, and you will receive a big green tick.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: red;
     border-style: outset;
@@ -350,6 +353,9 @@ text-align: right;</string>
       <width>98</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closes this window, but Einstein's Agent will keep running in the systray. If you want to re-open it, then you can either restart Einstein's Agent via the desktop icon, or use the icon in the systray (program notification area - ussally in the startbar near the time).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Close</string>
@@ -809,6 +815,7 @@ color:yellow;</string>
      <string>Help</string>
     </property>
     <addaction name="actionAbout_Einstein_s_Agent"/>
+    <addaction name="actionHelp"/>
    </widget>
    <addaction name="menuIdGames"/>
    <addaction name="menuHelp"/>
@@ -845,6 +852,11 @@ color:yellow;</string>
   <action name="actionManage_Educationals">
    <property name="text">
     <string>Manage Educationals</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
    </property>
   </action>
  </widget>
