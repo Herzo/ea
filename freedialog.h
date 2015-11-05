@@ -46,36 +46,24 @@ protected slots:
 private slots:
 
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
-
-
     void on_CloseButton_clicked();
-
     void on_NextButton_clicked();
     void on_RemoveMark();
-
     void on_DifficultySlider_valueChanged(int value);
-
     void on_Update();
-    void on_toolButton_clicked();
-
     void on_actionID_Games_triggered();
-
     void on_actionChange_Skin_triggered();
-
     void on_actionAbout_Einstein_s_Agent_triggered();
     void on_FetchEducationalFingerPrints();
     void on_FetchGameFingerPrints();
     void on_InitSkin();
     void on_pushButtonGameMinOK_clicked();
-
     void on_actionManage_Educationals_triggered();
-
     void on_checkBoxMultiplication_clicked(bool checked);
-
     void on_checkBoxAddition_clicked(bool checked);
-
     void on_ShowSplash();
     void on_actionHelp_triggered();
+    void on_btnChangeSkin_clicked();
 
 private:
     CAdditionDialog m_AdditionDialog;

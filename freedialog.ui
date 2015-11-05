@@ -41,7 +41,7 @@
      <string>The current balance of your game minutes.</string>
     </property>
     <property name="whatsThis">
-     <string>This is the current balance of your game minutes.  As you complete educational activities you will receive more game minutes, which you can use to play games.  Once your game minutes falls to zero then any active games with be minimised, and it will be time to earn more minutes.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the current balance of your game minutes.  As you complete educational activities you will receive more game minutes, which you can use to play games.  Once your game minutes falls to zero then any active games will be minimised, and it will be time to earn more minutes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -355,7 +355,7 @@ text-align: right;</string>
      </rect>
     </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closes this window, but Einstein's Agent will keep running in the systray. If you want to re-open it, then you can either restart Einstein's Agent via the desktop icon, or use the icon in the systray (program notification area - ussally in the startbar near the time).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closes this window, but Einstein's Agent will keep running in the systray. If you want to re-open it, then you can either restart Einstein's Agent via the desktop icon, or use the icon in the systray (program notification area - usually in the startbar near the time).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Close</string>
@@ -416,7 +416,7 @@ border-color: beige;</string>
      </rect>
     </property>
     <property name="statusTip">
-     <string>The challenge increases as you earn more points, but so does the rewared per correct answer.</string>
+     <string>The challenge increases as you earn more points, but so does the reward per correct answer.</string>
     </property>
     <property name="whatsThis">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This slider will automatically adjust the difficulty level based on your skill level to maximize the difficulty bonus you receive for each question. However, if you wish to try questions at a different level then you can move the slide to a different level, but remember the more difficult questions give a much higher difficulty bonus - meaning that you can get more minutes in less time when you work at the highest level that you are comfortable with.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -486,10 +486,10 @@ color:yellow;</string>
      <string extracomment="Speed bonus - the faster you answer the more game minutes earned">Speed bonus - the faster you answer the more game minutes earned</string>
     </property>
     <property name="statusTip">
-     <string>The amont of speed bonus remaining on this question.</string>
+     <string>The amount of speed bonus remaining on this question.</string>
     </property>
     <property name="whatsThis">
-     <string>This is the amont of speed bonus remaining on this question. More challenging questions start with a greater speed bonus.</string>
+     <string>This is the amount of speed bonus remaining on this question. More challenging questions start with a greater speed bonus.</string>
     </property>
     <property name="maximum">
      <number>100</number>
@@ -510,7 +510,7 @@ color:yellow;</string>
    <widget class="QLCDNumber" name="QuestionsGameMinutes">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>517</x>
       <y>10</y>
       <width>91</width>
       <height>31</height>
@@ -586,19 +586,6 @@ color:yellow;</string>
     </property>
     <property name="pixmap">
      <pixmap resource="systray.qrc">:/images/closedeye.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="toolButton">
-    <property name="geometry">
-     <rect>
-      <x>614</x>
-      <y>10</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
     </property>
    </widget>
    <widget class="QLabel" name="lableSeconds">
@@ -737,6 +724,12 @@ background-color: rgba(0, 51, 51,90);</string>
       <height>30</height>
      </rect>
     </property>
+    <property name="statusTip">
+     <string>Opens windows containing addition and multiplication tables.</string>
+    </property>
+    <property name="whatsThis">
+     <string>Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">color:yellow;</string>
     </property>
@@ -771,6 +764,22 @@ color:yellow;</string>
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnChangeSkin">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>10</y>
+      <width>33</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="whatsThis">
+     <string>This is a shortcut to switch skins. Click it and it will change to the alternate skin, click it again and it will switch back.</string>
+    </property>
+    <property name="text">
+     <string>Skin</string>
+    </property>
+   </widget>
    <zorder>pushButtonGameMinOK</zorder>
    <zorder>MinutesWarning</zorder>
    <zorder>Skin</zorder>
@@ -781,7 +790,6 @@ color:yellow;</string>
    <zorder>GameMinutesBackground</zorder>
    <zorder>QuestionMinutesBackground</zorder>
    <zorder>GameMinutesCounter</zorder>
-   <zorder>toolButton</zorder>
    <zorder>lableSeconds</zorder>
    <zorder>groupBox</zorder>
    <zorder>SecondsRemaining</zorder>
@@ -792,6 +800,7 @@ color:yellow;</string>
    <zorder>checkBoxAddition</zorder>
    <zorder>checkBoxMultiplication</zorder>
    <zorder>QuestionsGameMinutes</zorder>
+   <zorder>btnChangeSkin</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

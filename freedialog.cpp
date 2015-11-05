@@ -17,6 +17,7 @@
 #include <QVariantList>
 #include <QJsonArray>
 #include <QSharedMemory>
+#include <set>
 
 #include "splashdialog.h"
 #include "json.h"
@@ -46,7 +47,6 @@ ui(new Ui::CFreeDialog)
 {
     m_iMouseIdleCounter=0;
     m_GamingTimer.invalidate();
-    // m_ulLastGamingTime=0;
     QSettings Settings;
     qsrand(QTime::currentTime().msec());
     ui->setupUi(this);
@@ -57,16 +57,11 @@ ui(new Ui::CFreeDialog)
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
     ui->Answer->installEventFilter(this);
-//    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
-//                                          "of speed bonus remaining on this question. </p><p>More challenging questions "
-//                                          "start with a greater time bonus.</p></body></html>"));
     InitIconStore();
     setIcon("Emc2");
-    // ui->GameMinutesCounter->display(qRound(Settings.value("gamemilliseconds",0).toDouble()/100)*10);
     DisplayGameMinutes();
     ui->DifficultySlider->setValue(Settings.value("difficulty", 10).toInt());
     InitQuestion();
-    //ui->groupBox->installEventFilter(this);
     m_pTimer = new QTimer(this);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(on_Update()));
     m_pTimer->start(500);
@@ -77,11 +72,9 @@ ui(new Ui::CFreeDialog)
     if(Settings.value("showsplash").toBool()==true,true)
         QTimer::singleShot(50, this, SLOT(on_ShowSplash()));
 
-        // pressing Enter activates the slots only when list widget has focus
-    //    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), ui->Answer);
-    //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
-    //    QShortcut* shortcut1 = new QShortcut(QKeySequence(Qt::Key_Return), ui->Answer);
-    //    connect(shortcut, SIGNAL(activated()), this, SLOT(on_NextButton_clicked()));
+    //    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
+    //                                          "of speed bonus remaining on this question. </p><p>More challenging questions "
+    //                                          "start with a greater time bonus.</p></body></html>"));
 
 }
 void CFreeDialog::on_ShowSplash()
@@ -180,6 +173,10 @@ void CFreeDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
     {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
+        this->raise();
+        this->activateWindow();
+        this->showNormal();
+
         break;
     case QSystemTrayIcon::MiddleClick:
 
@@ -195,7 +192,7 @@ void CFreeDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void CFreeDialog::on_CloseButton_clicked()
 {
-    hide();
+   m_pMinimizeAction->trigger();
 }
 
 void CFreeDialog::createActions()
@@ -620,6 +617,7 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
     QVariantMap ResponseMap = QtJson::parse(data, ok).toMap();
     if (ok)
     {
+        // Read the existing list from settings
         QSettings settings;
         QString sRequest=ResponseMap["Request"].toString();
         QString sMaxFingerPrintId=ResponseMap["MaxFingerPrintId"].toString();
@@ -632,31 +630,44 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
             sArrayName="educationals";
         }
         settings.setValue(QString("Max%1FingerPrintId").arg(sArrayName),sMaxFingerPrintId);
-        QVariantList ExistingGamesList;
+        // Read the existing list from settings, and append them to ExistingGamesList
+        // Write the list in to a set first to remove the dups
+        std::set<QString> Items;
         int iSize = settings.beginReadArray(sArrayName); //Get the current size
         for (int i = 0; i < iSize; ++i)
         {
             settings.setArrayIndex(i);
             QString sWindowTitle = settings.value("windowtitle").toString();
-            ExistingGamesList.append(sWindowTitle);
+            if(sWindowTitle.trimmed()!="")
+                Items.insert(sWindowTitle);
         }
         settings.endArray();
+        // Read the new titles list from the server's response, and append them to ExistingGamesList
         QVariantList FingerPrints=ResponseMap["FingerPrints"].toList();
         if (ok)
         {
             for (int i = 0; i < FingerPrints.size(); ++i)
             {
-                QString sFingerPrint = FingerPrints[i].toString();
-                if(!ExistingGamesList.contains(sFingerPrint))
-                {
-                    settings.beginWriteArray(sArrayName);
-                    settings.setArrayIndex(iSize + i);
-                    settings.setValue("windowtitle", sFingerPrint);
-                    settings.endArray();
-                }
+                QString sWindowTitle = FingerPrints[i].toString();
+                if(sWindowTitle.trimmed()!="")
+                        Items.insert(sWindowTitle);
             }
         }
+        // Write the combined list to settings
+        settings.beginWriteArray(sArrayName);
+        int iElement=0;
+        std::set<QString>::const_iterator it=Items.begin();
+        while (it!=Items.end())
+        {
+            settings.setArrayIndex(iElement);
+            settings.setValue("windowtitle", (*it));
+            iElement++;
+            it++;
+        }
+        settings.endArray();
     }
+
+
     // QDateTime::currentTime().toString("yyyy-MM-dd%20hh:mm:ss");
 }
 
@@ -832,10 +843,6 @@ void CFreeDialog::on_ControlGames()
     setIcon("Idle");
 }
 
-void CFreeDialog::on_toolButton_clicked()
-{
-    ChangeSkin();
-}
 
 void CFreeDialog::on_actionID_Games_triggered()
 {
@@ -887,4 +894,9 @@ void CFreeDialog::on_checkBoxAddition_clicked(bool checked)
 void CFreeDialog::on_actionHelp_triggered()
 {
     emit on_ShowSplash();
+}
+
+void CFreeDialog::on_btnChangeSkin_clicked()
+{
+    ChangeSkin();
 }

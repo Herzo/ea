@@ -55,7 +55,7 @@
     </rect>
    </property>
    <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This list contains the Window Titles of Games - that is the text that appears in the title bar of the game's window. When Einstein's Agent sees one of these applications being used, then it will add minutes to the total game minutes available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This list contains the Window Titles of Games - that is the text that appears in the title bar of the game's window. When Einstein's Agent sees one of these applications being used, then it will take minutes from the total game minutes available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(0, 51, 51,90);
