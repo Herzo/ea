@@ -69,7 +69,7 @@ ui(new Ui::CFreeDialog)
     QTimer::singleShot(3000, this, SLOT(on_ControlGames()));
     QTimer::singleShot(200, this, SLOT(on_FetchGameFingerPrints()));
     QTimer::singleShot(600, this, SLOT(on_FetchEducationalFingerPrints()));
-    if(Settings.value("showsplash").toBool()==true,true)
+    if(Settings.value("showsplash",true).toBool()==true)
         QTimer::singleShot(50, this, SLOT(on_ShowSplash()));
 
     //    ui->SecondsRemaining->setWhatsThis(tr("<html><head/><body><p>This is the amont "
@@ -777,7 +777,7 @@ void CFreeDialog::on_ControlGames()
             return;
         }
         uint ulGamingMilliseconds = m_GamingTimer.elapsed();
-        uiGameMillisecondsAvalable = uiGameMillisecondsAvalable + (ulGamingMilliseconds*Settings.value("educationalminutesmultiplier",1).toString());
+        uiGameMillisecondsAvalable = uiGameMillisecondsAvalable + (ulGamingMilliseconds*Settings.value("educationalminutesmultiplier",1).toInt());
         Settings.setValue("gamemilliseconds", uiGameMillisecondsAvalable);
         DisplayGameMinutes();
         m_GamingTimer.restart();
