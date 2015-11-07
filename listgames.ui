@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this button to manually add games to the above list by entering the applications title into a text field on a form.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Use this button to manually add games to the above list by entering the applications title into a text field on a form.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Add Game Manually</string>
@@ -55,7 +55,7 @@
     </rect>
    </property>
    <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This list contains the Window Titles of Games - that is the text that appears in the title bar of the game's window. When Einstein's Agent sees one of these applications being used, then it will take minutes from the total game minutes available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This list contains the Window Titles of Games - that is the text that appears in the title bar of the game's window. When Einstein's Agent sees one of these applications being used, then it will take minutes from the total game minutes available.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(0, 51, 51,90);
@@ -122,7 +122,7 @@ color:yellow;</string>
     </rect>
    </property>
    <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To add games to the above list automatically:&lt;/p&gt;&lt;p&gt;1. Start the game as you usually would. &lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;NOTE: The game that you wish to add must be both running and visible before you proceed to step 2.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;2. Return to this window and click the Add Game button with the crosshairs on it.&lt;/p&gt;&lt;p&gt;3. Use the cross hairs to clicking on the title bar of the game's window. The text in the title bar of game's window will be added to the list. That is how Einstein's Agent will identify this application's window in future.&lt;/p&gt;&lt;p&gt;4. Click the OK button to save your changes and close this window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;To add games to the above list automatically:&lt;/p&gt;&lt;p&gt;1. Start the game as you usually would. &lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;NOTE: The game that you wish to add must be both running and visible before you proceed to step 2.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;2. Return to this window and click the Add Game button with the crosshairs on it.&lt;/p&gt;&lt;p&gt;3. Use the cross hairs to clicking on the title bar of the game's window. The text in the title bar of game's window will be added to the list. That is how Einstein's Agent will identify this application's window in future.&lt;/p&gt;&lt;p&gt;4. Click the OK button to save your changes and close this window.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Add Game</string>

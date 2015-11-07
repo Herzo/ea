@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this button to add educational applications to the above list manually by entering the applications title into a text field on a form.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Use this button to add educational applications to the above list manually by entering the applications title into a text field on a form.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Add Educational</string>
@@ -55,11 +55,7 @@
     </rect>
    </property>
    <property name="whatsThis">
-    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This list contains the Window Titles of Educational Applications. When Einstein's Agent sees one of these applications being used, then it will add minutes to the total game minutes available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This list contains the Window Titles of Educational Applications. When Einstein's Agent sees one of these applications being used, then it will add minutes to the total game minutes available.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(0, 51, 51,90);
@@ -129,7 +125,7 @@ color:yellow;</string>
     <string>Use this button to add educational applications to the above list automatically by clicking on the title bar of the game's window.</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To add educational applications to the above list automatically:&lt;/p&gt;&lt;p&gt;1. Start the educational applications as you usually would. &lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;NOTE: The educational application that you wish to add must be both running and visible before you proceed to step 2.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;2. Return to this window and click the Add Educational button with the crosshairs on it.&lt;/p&gt;&lt;p&gt;3. Use the cross hairs to clicking on the title bar of the educational application's window. The text in the title bar of the educational application's window will be added to the list. That is how Einstein's Agent will identify this application's window in future.&lt;/p&gt;&lt;p&gt;4. Click the OK button to save your changes and close this window.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;To add educational applications to the above list automatically:&lt;/p&gt;&lt;p&gt;1. Start the educational applications as you usually would. &lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;NOTE: The educational application that you wish to add must be both running and visible before you proceed to step 2.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;2. Return to this window and click the Add Educational button with the crosshairs on it.&lt;/p&gt;&lt;p&gt;3. Use the cross hairs to clicking on the title bar of the educational application's window. The text in the title bar of the educational application's window will be added to the list. That is how Einstein's Agent will identify this application's window in future.&lt;/p&gt;&lt;p&gt;4. Click the OK button to save your changes and close this window.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Add Educational</string>
