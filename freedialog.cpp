@@ -173,9 +173,10 @@ void CFreeDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
     {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
-        this->raise();
-        this->activateWindow();
-        this->showNormal();
+        setVisible(true);
+      //  this->raise();
+      //  this->activateWindow();
+      //  this->showNormal();
 
         break;
     case QSystemTrayIcon::MiddleClick:
