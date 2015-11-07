@@ -37,10 +37,10 @@ QT           += xml svg
 INCLUDEPATH += ../qt/o2/src/
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/desktop/systray
-sources.files = $$SOURCES $$HEADERS $$RESOURCES $$FORMS systray.pro resources images
-sources.path = $$[QT_INSTALL_EXAMPLES]/desktop/systray
-INSTALLS += target sources
+#target.path = $$[QT_INSTALL_EXAMPLES]/desktop/systray
+#sources.files = $$SOURCES $$HEADERS $$RESOURCES $$FORMS systray.pro resources images
+#sources.path = $$[QT_INSTALL_EXAMPLES]/desktop/systray
+#INSTALLS += target sources
 
 symbian: include($$QT_SOURCE_TREE/examples/symbianpkgrules.pri)
 

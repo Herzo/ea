@@ -777,7 +777,7 @@ void CFreeDialog::on_ControlGames()
             return;
         }
         uint ulGamingMilliseconds = m_GamingTimer.elapsed();
-        uiGameMillisecondsAvalable = uiGameMillisecondsAvalable + (ulGamingMilliseconds*2);
+        uiGameMillisecondsAvalable = uiGameMillisecondsAvalable + (ulGamingMilliseconds*Settings.value("educationalminutesmultiplier",1).toString());
         Settings.setValue("gamemilliseconds", uiGameMillisecondsAvalable);
         DisplayGameMinutes();
         m_GamingTimer.restart();
