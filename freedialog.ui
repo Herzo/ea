@@ -41,7 +41,7 @@
      <string>The current balance of your game minutes.</string>
     </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the current balance of your game minutes.  As you complete educational activities you will receive more game minutes, which you can use to play games.  Once your game minutes falls to zero then any active games will be minimised, and it will be time to earn more minutes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This is the current balance of your game minutes.  As you complete educational activities you will receive more game minutes, which you can use to play games.  Once your game minutes falls to zero then any active games will be minimised, and it will be time to earn more minutes.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -200,7 +200,7 @@ text-align: right;</string>
       <string extracomment="Careful - incorrect answers cost you game minutes">Careful - incorrect answers cost you game minutes</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this button to submit your answer.  If correct, then the game minutes for this question will be added to your total above, and you will receive a big green tick.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Use this button to submit your answer.  If correct, then the game minutes for this question will be added to your total above, and you will receive a big green tick.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: red;
@@ -355,7 +355,7 @@ text-align: right;</string>
      </rect>
     </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closes this window, but Einstein's Agent will keep running in the systray. If you want to re-open it, then you can either restart Einstein's Agent via the desktop icon, or use the icon in the systray (program notification area - usually in the startbar near the time).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Closes this window, but Einstein's Agent will keep running in the systray. If you want to re-open it, then you can either restart Einstein's Agent via the desktop icon, or use the icon in the systray (program notification area - usually in the startbar near the time).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Close</string>
@@ -419,7 +419,7 @@ border-color: beige;</string>
      <string>The challenge increases as you earn more points, but so does the reward per correct answer.</string>
     </property>
     <property name="whatsThis">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This slider will automatically adjust the difficulty level based on your skill level to maximize the difficulty bonus you receive for each question. However, if you wish to try questions at a different level then you can move the slide to a different level, but remember the more difficult questions give a much higher difficulty bonus - meaning that you can get more minutes in less time when you work at the highest level that you are comfortable with.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This slider will automatically adjust the difficulty level based on your skill level to maximize the difficulty bonus you receive for each question. However, if you wish to try questions at a different level then you can move the slide to a different level, but remember the more difficult questions give a much higher difficulty bonus - meaning that you can get more minutes in less time when you work at the highest level that you are comfortable with.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="minimum">
      <number>10</number>
@@ -489,7 +489,7 @@ color:yellow;</string>
      <string>The amount of speed bonus remaining on this question.</string>
     </property>
     <property name="whatsThis">
-     <string>This is the amount of speed bonus remaining on this question. More challenging questions start with a greater speed bonus.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This is the amount of speed bonus remaining on this question. More challenging questions start with a greater speed bonus.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="maximum">
      <number>100</number>
@@ -520,7 +520,7 @@ color:yellow;</string>
      <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
     </property>
     <property name="whatsThis">
-     <string>Value of answering this question in Game Minutes, including difficulty and speed bonuses</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Value of answering this question in Game Minutes, including difficulty and speed bonuses.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="inputMethodHints">
      <set>Qt::ImhNone</set>
@@ -682,7 +682,7 @@ color:yellow;</string>
      </rect>
     </property>
     <property name="whatsThis">
-     <string>This opens the addition table in another window.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This opens the addition table in another window.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:#FFF;
@@ -702,7 +702,7 @@ background-color: rgba(0, 51, 51,90);</string>
      </rect>
     </property>
     <property name="whatsThis">
-     <string>This opens the multiplication table in another window.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This opens the multiplication table in another window.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
@@ -728,7 +728,7 @@ background-color: rgba(0, 51, 51,90);</string>
      <string>Opens windows containing addition and multiplication tables.</string>
     </property>
     <property name="whatsThis">
-     <string>Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:yellow;</string>
@@ -750,7 +750,7 @@ background-color: rgba(0, 51, 51,90);</string>
      <string>Opens windows containing addition and multiplication tables.</string>
     </property>
     <property name="whatsThis">
-     <string>Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;Trying to recall a fact that you don't know, does not help you learn it, but repeatedly looking up the answer to the same question does. These Addition and Multiplication tables will help you to learn maths facts by giving you access to the answer in a way that will help you learn it.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgba(0, 51, 51,190);
@@ -774,7 +774,7 @@ color:yellow;</string>
      </rect>
     </property>
     <property name="whatsThis">
-     <string>This is a shortcut to switch skins. Click it and it will change to the alternate skin, click it again and it will switch back.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#f51350;&quot;&gt;This is a shortcut to switch skins. Click it and it will change to the alternate skin, click it again and it will switch back.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Skin</string>
