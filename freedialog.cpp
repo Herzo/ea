@@ -199,7 +199,7 @@ void CFreeDialog::on_CloseButton_clicked()
 void CFreeDialog::createActions()
 {
     m_pMinimizeAction = new QAction(tr("Mi&nimize"), this);
-    connect(m_pMinimizeAction, SIGNAL(triggered()), this, SLOT(hide()));
+    connect(m_pMinimizeAction, SIGNAL(triggered()), this, SLOT(showMinimized()));
 
     m_pMaximizeAction = new QAction(tr("Ma&ximize"), this);
     connect(m_pMaximizeAction, SIGNAL(triggered()), this, SLOT(showMaximized()));

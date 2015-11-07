@@ -26,9 +26,9 @@ public:
     void setVisible(bool visible);
     QString GetUuId();
 #ifndef WIN32
-    static QString GetVersion(){return QString("0.0.5L");};
+    static QString GetVersion(){return QString("0.0.6L");};
 #else
-    static QString GetVersion(){return QString("0.0.5W");};
+    static QString GetVersion(){return QString("0.0.6W");};
 #endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
