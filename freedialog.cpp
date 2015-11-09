@@ -193,13 +193,13 @@ void CFreeDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void CFreeDialog::on_CloseButton_clicked()
 {
-   m_pMinimizeAction->trigger();
+   hide();
 }
 
 void CFreeDialog::createActions()
 {
     m_pMinimizeAction = new QAction(tr("Mi&nimize"), this);
-    connect(m_pMinimizeAction, SIGNAL(triggered()), this, SLOT(showMinimized()));
+    connect(m_pMinimizeAction, SIGNAL(triggered()), this, SLOT(hide()));
 
     m_pMaximizeAction = new QAction(tr("Ma&ximize"), this);
     connect(m_pMaximizeAction, SIGNAL(triggered()), this, SLOT(showMaximized()));
