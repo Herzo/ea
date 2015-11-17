@@ -208,7 +208,7 @@ void CFreeDialog::createActions()
     connect(m_pRestoreAction, SIGNAL(triggered()), this, SLOT(showNormal()));
 
     m_pQuitAction = new QAction(tr("&Quit"), this);
-    connect(m_pQuitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(m_pQuitAction, SIGNAL(triggered()), this, SLOT(quit()));
 
     m_pChangeSkin = new QAction(tr("&Change Skin"), this);
     connect(m_pChangeSkin, SIGNAL(triggered()), this, SLOT(ChangeSkin()));
@@ -218,6 +218,25 @@ void CFreeDialog::createActions()
 
     m_pIdentifyEducationals = new QAction(tr("&Identify Educationals"), this);
     connect(m_pIdentifyEducationals, SIGNAL(triggered()), this, SLOT(IdentifyEducationals()));
+}
+void CFreeDialog::quit()
+{
+#ifdef Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+    // on windows pop up the UAC to make sure that the user knows the admin password
+    QString AppToExec = qApp->applicationDirPath() + "/Einstein.exe";
+    // Put any required parameters of App2.exe to AppParams string
+    QString AppParams = "";
+    if (0 != genWin32ShellExecute(AppToExec,
+                                  "",    // default verb: "open" or "exec"
+                                  AppParams,
+                                  false, // run hidden
+                                  true)) // wait to finish
+    {
+        // (...) handle error
+        return; // They probably did not enter the admin password correctly.
+    }
+#endif
+    qApp->quit();
 }
 
 void CFreeDialog::ChangeSkin()
@@ -901,3 +920,57 @@ void CFreeDialog::on_btnChangeSkin_clicked()
 {
     ChangeSkin();
 }
+// Execute/Open the specified Application/Document with the given command
+// line Parameters
+// (if WaitToFinish == true, wait for the spawn process to finish)
+//
+// Verb parameter values:
+// ""           The degault verb for the associated AppFullPath
+// "edit"       Launches an editor and opens the document for editing.
+// "find"       Initiates a search starting from the specified directory.
+// "open"       Launches an application. If this file is not an executable file, its associated application is launched.
+// "print"      Prints the document file.
+// "properties" Displays the object's properties.
+//
+// Ret: 0 = success
+//     <0 = error
+#ifdef Q_OS_WIN
+int CFreeDialog::genWin32ShellExecute(QString AppFullPath,
+                         QString Verb,
+                         QString Params,
+                         bool ShowAppWindow,
+                         bool WaitToFinish)
+{
+    int Result = 0;
+
+    // Setup the required structure
+    SHELLEXECUTEINFO ShExecInfo;
+    memset(&ShExecInfo, 0, sizeof(SHELLEXECUTEINFO));
+    ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+    ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+    ShExecInfo.hwnd = NULL;
+    ShExecInfo.lpVerb = NULL;
+    if (Verb.length() > 0)
+        ShExecInfo.lpVerb = reinterpret_cast<const WCHAR *>(Verb.utf16());
+    ShExecInfo.lpFile = NULL;
+    if (AppFullPath.length() > 0)
+        ShExecInfo.lpFile = reinterpret_cast<const WCHAR *>(AppFullPath.utf16());
+    ShExecInfo.lpParameters = NULL;
+    if (Params.length() > 0)
+        ShExecInfo.lpParameters = reinterpret_cast<const WCHAR *>(Params.utf16());
+    ShExecInfo.lpDirectory = NULL;
+    ShExecInfo.nShow = (ShowAppWindow ? SW_SHOW : SW_HIDE);
+    ShExecInfo.hInstApp = NULL;
+
+    // Spawn the process
+    if (ShellExecuteEx(&ShExecInfo) == FALSE)
+    {
+        Result = -1; // Failed to execute process
+    } else if (WaitToFinish)
+    {
+        WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
+    }
+
+    return Result;
+}
+#endif

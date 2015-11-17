@@ -33,22 +33,25 @@ int main(int argc, char *argv[])
         // If it replies then we terminate, if not then we reset the signal and continue.
         mem.attach();
         void* pData=mem.data();
-        quint64 &uiData = *(quint64*)(pData);
-        uiData=1;
-        uint uiSleepFor=2000; // two seconds
-    #ifdef Q_OS_WIN
-        Sleep(uiSleepFor);
-    #else
-        struct timespec ts = { uiSleepFor / 1000, (uiSleepFor % 1000) * 1000 * 1000 };
-        nanosleep(&ts, NULL);
-    #endif
-      // If the other instance of ourself got the signal then it will have set it back to zero
-        if(uiData==0)
+        if(pData!=NULL)
         {
-            exit(0);
-        }else
-        {
-            uiData=0;
+            quint64 &uiData = *(quint64*)(pData);
+            uiData=1;
+            uint uiSleepFor=2000; // two seconds
+        #ifdef Q_OS_WIN
+            Sleep(uiSleepFor);
+        #else
+            struct timespec ts = { uiSleepFor / 1000, (uiSleepFor % 1000) * 1000 * 1000 };
+            nanosleep(&ts, NULL);
+        #endif
+          // If the other instance of ourself got the signal then it will have set it back to zero
+            if(uiData==0)
+            {
+                exit(0);
+            }else
+            {
+                uiData=0;
+            }
         }
     }
 

@@ -10,6 +10,11 @@
 
 #include <QMap>
 #include <QElapsedTimer>
+#ifdef Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+    #include "qt_windows.h"
+    #include "qwindowdefs_win.h"
+    #include <shellapi.h>
+#endif
 class QMenu;
 
 namespace Ui {
@@ -32,6 +37,7 @@ public:
 #endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
+    void quit();
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
     void closeEvent(QCloseEvent *event);
@@ -97,6 +103,13 @@ private:
     void DisplayQuestionGameMinutes();
     QPoint m_pointLastMousePos;
     int m_iMouseIdleCounter;
+#ifdef Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+    int genWin32ShellExecute(QString AppFullPath,
+                         QString Verb,
+                         QString Params,
+                         bool ShowAppWindow,
+                         bool WaitToFinish);
+#endif
 };
 
 
