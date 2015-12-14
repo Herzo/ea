@@ -30,7 +30,7 @@ public:
     ~CFreeDialog();
     void setVisible(bool visible);
     QString GetUuId();
-#ifndef WIN32
+#ifdef Q_OS_LINUX
     static QString GetVersion(){return QString("0.0.6L");};
 #else
     static QString GetVersion(){return QString("0.0.6W");};

@@ -13,7 +13,7 @@
 #include "ui_listgames.h"
 
 
-#ifndef WIN32
+#ifdef Q_OS_LINUX
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -24,7 +24,7 @@
 extern "C" {
 #include <xdo.h>
 }
-#else
+#elseifdef Q_OS_WIN
 #include <windows.h>
 #include <cassert>
 #endif
@@ -126,7 +126,7 @@ void CListGames::on_toolButtonAddGame_clicked()
     QSettings Settings;
     QString sName;
 
-#ifndef WIN32
+#ifdef Q_OS_LINUX
 
     // x_window_cursor_set
     // x_window_focus
@@ -151,7 +151,7 @@ void CListGames::on_toolButtonAddGame_clicked()
     XFree(name); // need to add -lX11 to LIBS in project
     xdo_free(xdo);
 
-#else
+#elseifdef Q_OS_WIN
     // setOverrideCursor(QCursor(QPixmap("wireless.jpg")));
     QApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
 

@@ -26,7 +26,7 @@
 #include "listeducationals.h"
 #include "ui_freedialog.h"
 
-#ifndef WIN32
+#ifdef Q_OS_LINUX
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -37,7 +37,7 @@ extern "C"
 {
 #include <xdo.h>
 }
-#else
+#elseif Q_OS_WIN
 #include <windows.h>
 #endif
 
@@ -711,7 +711,7 @@ void CFreeDialog::on_ControlGames()
     }
     QSettings Settings;
     QString sName;
-#ifndef WIN32
+#ifdef Q_OS_LINUX
 
     unsigned char *name = 0;
     int name_len = 0;
@@ -742,7 +742,7 @@ void CFreeDialog::on_ControlGames()
     if (sName == "")
         return;
 
-#else
+#elseif Q_OS_WIN
     wchar_t wnd_title[512];
     HWND hwnd = GetForegroundWindow(); // get handle of currently active window
     if (hwnd != NULL)
@@ -834,7 +834,7 @@ void CFreeDialog::on_ControlGames()
         DisplayGameMinutes();
         // xdo_close_window(xdo, ulWindowId);
         // xdo_kill_window(xdo, ulWindowId);
-#ifndef WIN32
+#ifdef Q_OS_LINUX
         xdo = xdo_new(NULL);
         if (xdo == NULL)
         {
@@ -846,7 +846,7 @@ void CFreeDialog::on_ControlGames()
             // XFree(name); // need to add -lX11 to LIBS in project
             xdo_free(xdo);
         }
-#else
+#elseif Q_OS_WIN
         ShowWindow(hwnd, SW_FORCEMINIMIZE);
 #endif
         // must auto-close dialog, as leaving it open blocks.
