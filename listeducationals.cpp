@@ -11,7 +11,7 @@
 #include "ui_listeducationals.h"
 
 
-#ifdef Q_OS_LINUX
+#if defined Q_OS_LINUX
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -22,7 +22,7 @@
 extern "C" {
 #include <xdo.h>
 }
-#elseifdef Q_OS_WIN
+#elif defined Q_OS_WIN
 #include <windows.h>
 #include <cassert>
 #endif
@@ -109,7 +109,7 @@ void CListEducationals::on_toolButtonAddEducational_clicked()
     QSettings Settings;
     QString sName;
 
-#ifdef Q_OS_LINUX
+#if defined Q_OS_LINUX
 
     xdo_t* xdo;
     XID ulWindowId=0;
@@ -131,7 +131,7 @@ void CListEducationals::on_toolButtonAddEducational_clicked()
     XFree(name); // need to add -lX11 to LIBS in project
     xdo_free(xdo);
 
-#elseifdef Q_OS_WIN
+#elif defined Q_OS_WIN
     // setOverrideCursor(QCursor(QPixmap("wireless.jpg")));
     QApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
 

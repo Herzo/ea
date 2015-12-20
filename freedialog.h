@@ -1,7 +1,9 @@
 #ifndef FREEDIALOG_H
 #define FREEDIALOG_H
 
+// #if not defined Q_OS_IOS
 #include <QSystemTrayIcon>
+// #endif
 #include <QDialog>
 //#include <QMainWindow>
 #include <QNetworkReply>
@@ -10,7 +12,7 @@
 
 #include <QMap>
 #include <QElapsedTimer>
-#ifdef Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+#if defined Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
     #include "qt_windows.h"
     #include "qwindowdefs_win.h"
     #include <shellapi.h>
@@ -30,10 +32,14 @@ public:
     ~CFreeDialog();
     void setVisible(bool visible);
     QString GetUuId();
-#ifdef Q_OS_LINUX
+#if defined Q_OS_LINUX
     static QString GetVersion(){return QString("0.0.6L");};
-#else
+#elif defined Q_OS_WIN
     static QString GetVersion(){return QString("0.0.6W");};
+#elif defined Q_OS_MACX
+    static QString GetVersion(){return QString("0.0.6M");};
+#elif defined Q_OS_IOS
+    static QString GetVersion(){return QString("0.0.6I");};
 #endif
 public slots:
     void on_ServerReply(QNetworkReply *pReply);
@@ -51,7 +57,9 @@ protected slots:
 
 private slots:
 
+//#if not defined Q_OS_IOS
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
+//#endif
     void on_CloseButton_clicked();
     void on_NextButton_clicked();
     void on_RemoveMark();
@@ -82,7 +90,9 @@ private:
     int m_iAnswer;
     Ui::CFreeDialog *ui;
     void createActions();
+#if not defined Q_OS_IOS
     void createTrayIcon();
+#endif
     QAction *m_pMinimizeAction;
     QAction *m_pMaximizeAction;
     QAction *m_pRestoreAction;
@@ -91,7 +101,9 @@ private:
     QAction *m_pIdentifyGames;
     QAction *m_pIdentifyEducationals;
     QSystemTrayIcon *m_pTrayIcon;
+#if not defined Q_OS_IOS
     QMenu *m_pTrayIconMenu;
+#endif
     QMenu *m_pMenu;
     QMap<QString, std::pair< QIcon, QString> > m_IconStore;
     void InitIconStore();
@@ -103,7 +115,7 @@ private:
     void DisplayQuestionGameMinutes();
     QPoint m_pointLastMousePos;
     int m_iMouseIdleCounter;
-#ifdef Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+#if defined Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
     int genWin32ShellExecute(QString AppFullPath,
                          QString Verb,
                          QString Params,

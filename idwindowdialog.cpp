@@ -1,4 +1,4 @@
-#ifdef WIN32
+#if defined Q_OS_WIN
 #include <windows.h>
 #endif
 #include <QTimer>
@@ -34,7 +34,7 @@ bool CIdWindowDialog::eventFilter(QObject *watched, QEvent *event)
     // qDebug() << "Event Type: "<< event->type();
      if (event->type() == QEvent::MouseMove)  // QEvent::KeyPress==6 namespace clash with xdo
      {
-#ifdef WIN32
+#if defined Q_OS_WIN
          // Keep our invisible dialog under the mouse pointer
          // QApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
 
@@ -49,7 +49,7 @@ bool CIdWindowDialog::eventFilter(QObject *watched, QEvent *event)
 #endif
      }else if (event->type() == QEvent::ApplicationDeactivated)  // QEvent::KeyPress==6 namespace clash with xdo
      {
-#ifdef WIN32
+#if defined Q_OS_WIN
          GetCursorPos (&m_ScreenPoint);
          /*
          wchar_t wnd_title[512];

@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
             quint64 &uiData = *(quint64*)(pData);
             uiData=1;
             uint uiSleepFor=2000; // two seconds
-        #ifdef Q_OS_WIN
+        #if defined Q_OS_WIN
             Sleep(uiSleepFor);
-        #else
-            struct timespec ts = { uiSleepFor / 1000, (uiSleepFor % 1000) * 1000 * 1000 };
+        #elif defined Q_OS_MACX
+            struct timespec ts = { static_cast<__darwin_time_t>(uiSleepFor / 1000), (uiSleepFor % 1000) * 1000 * 1000 };
             nanosleep(&ts, NULL);
         #endif
           // If the other instance of ourself got the signal then it will have set it back to zero
@@ -54,13 +54,15 @@ int main(int argc, char *argv[])
             }
         }
     }
-
+#if not defined Q_OS_IOS
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         QMessageBox::critical(0, QCoreApplication::applicationName(),
                               QObject::tr("I couldn't detect any system tray "
                                           "on this system."));
         return 1;
     }
+#endif
+
     QApplication::setQuitOnLastWindowClosed(false);
     // CMainWindow window;
     CFreeDialog window;

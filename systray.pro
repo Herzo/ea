@@ -1,5 +1,7 @@
-unix:!macx: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
+unix:!mac: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
 win32:RC_ICONS += emc2icon.ico
+macx: LIBS += -framework Cocoa
+mac: QMAKE_CXXFLAGS += -x objective-c++
 RC_FILE = einstein.rc
 QT += core gui network widgets
 HEADERS       = \
@@ -14,7 +16,7 @@ HEADERS       = \
     multiplicationdialog.h \
     getwindowtitledialog.h \
     splashdialog.h
-unix:!macx: HEADERS += xdo.h \
+unix:!mac: HEADERS += xdo.h \
     xdo_util.h \
     xdo_version.h
 SOURCES       = main.cpp \
@@ -29,7 +31,7 @@ SOURCES       = main.cpp \
     multiplicationdialog.cpp \
     getwindowtitledialog.cpp \
     splashdialog.cpp
-unix:!macx: SOURCES += xdo.c
+unix:!mac: SOURCES += xdo.c
 RESOURCES     = systray.qrc
 QT           += xml svg
 

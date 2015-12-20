@@ -26,7 +26,7 @@
 #include "listeducationals.h"
 #include "ui_freedialog.h"
 
-#ifdef Q_OS_LINUX
+#if defined Q_OS_LINUX   // &&Q_OS_ANDROID
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -37,8 +37,12 @@ extern "C"
 {
 #include <xdo.h>
 }
-#elseif Q_OS_WIN
+#elif defined Q_OS_WIN
 #include <windows.h>
+#elif defined Q_OS_MACX
+    #import "Cocoa/Cocoa.h"
+#elif defined Q_OS_IOS
+    #import "UIKit/UIKit.h"
 #endif
 
 CFreeDialog::CFreeDialog(QWidget *parent) :
@@ -52,10 +56,12 @@ ui(new Ui::CFreeDialog)
     ui->setupUi(this);
     setWindowIcon(QIcon(":/images/emc2icon.ico"));
     createActions();
+#if not defined Q_OS_IOS
     createTrayIcon();
     connect(m_pTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     m_pTrayIcon->show();
+#endif
     ui->Answer->installEventFilter(this);
     InitIconStore();
     setIcon("Emc2");
@@ -140,12 +146,15 @@ void CFreeDialog::setVisible(bool visible)
     m_pMaximizeAction->setEnabled(!isMaximized());
     m_pRestoreAction->setEnabled(true);
     // m_pRestoreAction->setEnabled(isMaximized() || !visible);
+#if not defined Q_OS_IOS
     m_pTrayIcon->setVisible(true);
+#endif
     QDialog::setVisible(visible);
 }
 
 void CFreeDialog::closeEvent(QCloseEvent *event)
 {
+#if not defined Q_OS_IOS
     if (m_pTrayIcon->isVisible())
     {
         //        QMessageBox::information(this, tr("Einstein's Agent"),
@@ -156,15 +165,18 @@ void CFreeDialog::closeEvent(QCloseEvent *event)
         hide();
         event->ignore();
     }
+#endif
 }
 
 void CFreeDialog::setIcon(QString sMode)
 {
+#if not defined Q_OS_IOS
     QIcon icon = m_IconStore[sMode].first;
     m_pTrayIcon->setIcon(icon);
     setWindowIcon(icon);
 
     m_pTrayIcon->setToolTip(m_IconStore[sMode].second);
+#endif
 }
 
 void CFreeDialog::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -221,7 +233,7 @@ void CFreeDialog::createActions()
 }
 void CFreeDialog::quit()
 {
-#ifdef Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+#if defined Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
     // on windows pop up the UAC to make sure that the user knows the admin password
     QString AppToExec = qApp->applicationDirPath() + "/Einstein.exe";
     // Put any required parameters of App2.exe to AppParams string
@@ -292,6 +304,7 @@ void CFreeDialog::on_InitSkin()
     ui->MinutesWarning->hide();
     ui->pushButtonGameMinOK->hide();
 }
+#if not defined Q_OS_IOS
 
 void CFreeDialog::createTrayIcon()
 {
@@ -309,7 +322,7 @@ void CFreeDialog::createTrayIcon()
     m_pTrayIcon = new QSystemTrayIcon(this);
     m_pTrayIcon->setContextMenu(m_pTrayIconMenu);
 }
-
+#endif
 void CFreeDialog::on_NextButton_clicked()
 {
     // Check if they have answered correctly
@@ -690,7 +703,22 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
 
     // QDateTime::currentTime().toString("yyyy-MM-dd%20hh:mm:ss");
 }
+#if defined Q_OS_MACX
 
+QString qt_mac_NSStringToQString(const NSString *nsstr)
+{
+    NSRange range;
+    range.location = 0;
+    range.length = [nsstr length];
+    QString result(range.length, QChar(0));
+
+    unichar *chars = new unichar[range.location];
+    [nsstr getCharacters:chars range:range];
+    result = QString::fromUtf16(chars, range.length);
+    delete  chars;
+    return result;
+}
+#endif
 void CFreeDialog::on_ControlGames()
 {
     /*
@@ -711,7 +739,7 @@ void CFreeDialog::on_ControlGames()
     }
     QSettings Settings;
     QString sName;
-#ifdef Q_OS_LINUX
+#if defined Q_OS_LINUX
 
     unsigned char *name = 0;
     int name_len = 0;
@@ -742,12 +770,42 @@ void CFreeDialog::on_ControlGames()
     if (sName == "")
         return;
 
-#elseif Q_OS_WIN
+#elif defined Q_OS_WIN
     wchar_t wnd_title[512];
     HWND hwnd = GetForegroundWindow(); // get handle of currently active window
     if (hwnd != NULL)
         GetWindowText(hwnd, wnd_title, sizeof (wnd_title));
     sName = QString::fromStdWString(std::wstring(wnd_title));
+#elif defined Q_OS_MACX
+    // https://forum.qt.io/topic/7761/getting-the-window-title-of-a-non-qt-application/8
+    int i =0;
+ //   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSMutableArray *windows = (NSMutableArray *)CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+
+    for (NSDictionary *window in windows)
+    {
+        NSString *owner = [window objectForKey:@"kCGWindowOwnerName" ];
+        NSString *name = [window objectForKey:@"kCGWindowName" ];
+        NSNumber *layer = [window objectForKey:@"kCGWindowLayer"];
+
+        if([layer intValue] == 0 && i == 0)
+        {
+            /* only returns the first window title.
+            Window titles are returned are in order from front to back and i only want the
+            frontmost active window title.*/
+            NSString *title = [owner stringByAppendingString:@" - "];
+            title = [title stringByAppendingString:name];
+            sName = qt_mac_NSStringToQString(title);
+            qDebug() << sName;
+            i++;
+        }
+    }
+   // [windows release];
+#elif defined Q_OS_IOS
+   id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
+   UIWindow * mainWindow = [[[UIApplication sharedApplication] windows] firstObject];
+
+
 #endif
 
     // qDebug() << ulWindowId << sName;
@@ -834,7 +892,7 @@ void CFreeDialog::on_ControlGames()
         DisplayGameMinutes();
         // xdo_close_window(xdo, ulWindowId);
         // xdo_kill_window(xdo, ulWindowId);
-#ifdef Q_OS_LINUX
+#if defined Q_OS_LINUX
         xdo = xdo_new(NULL);
         if (xdo == NULL)
         {
@@ -846,8 +904,12 @@ void CFreeDialog::on_ControlGames()
             // XFree(name); // need to add -lX11 to LIBS in project
             xdo_free(xdo);
         }
-#elseif Q_OS_WIN
+#elif defined Q_OS_WIN
         ShowWindow(hwnd, SW_FORCEMINIMIZE);
+#elif defined Q_OS_MACX
+//        setWindowState((windowState() & -Qt::WindowMinimized) |Qt::WindowActive);
+//        raise();
+//        activateWindow();
 #endif
         // must auto-close dialog, as leaving it open blocks.
         this->raise();
@@ -934,7 +996,7 @@ void CFreeDialog::on_btnChangeSkin_clicked()
 //
 // Ret: 0 = success
 //     <0 = error
-#ifdef Q_OS_WIN
+#if defined Q_OS_WIN
 int CFreeDialog::genWin32ShellExecute(QString AppFullPath,
                          QString Verb,
                          QString Params,

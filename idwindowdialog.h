@@ -1,6 +1,6 @@
 #ifndef IDWINDOWDIALOG_H
 #define IDWINDOWDIALOG_H
-#ifdef WIN32
+#if defined Q_OS_WIN
 #include <windows.h>
 #endif
 #include <QDialog>
@@ -16,7 +16,7 @@ class CIdWindowDialog : public QDialog
 public:
     // QString m_sWindowName;
 
-#ifdef WIN32
+#if defined Q_OS_WIN
     POINT m_ScreenPoint;
 #endif
     explicit CIdWindowDialog(QWidget *parent = 0);
