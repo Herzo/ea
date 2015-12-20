@@ -1,7 +1,7 @@
 #ifndef FREEDIALOG_H
 #define FREEDIALOG_H
 
-// #if not defined Q_OS_IOS
+// #if not defined Q_OS_IOS && not defined Q_OS_ANDROID
 #include <QSystemTrayIcon>
 // #endif
 #include <QDialog>
@@ -32,7 +32,9 @@ public:
     ~CFreeDialog();
     void setVisible(bool visible);
     QString GetUuId();
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+    static QString GetVersion(){return QString("0.0.6A");};
+#elif defined Q_OS_LINUX
     static QString GetVersion(){return QString("0.0.6L");};
 #elif defined Q_OS_WIN
     static QString GetVersion(){return QString("0.0.6W");};
@@ -57,7 +59,7 @@ protected slots:
 
 private slots:
 
-//#if not defined Q_OS_IOS
+//#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 //#endif
     void on_CloseButton_clicked();
@@ -90,7 +92,7 @@ private:
     int m_iAnswer;
     Ui::CFreeDialog *ui;
     void createActions();
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     void createTrayIcon();
 #endif
     QAction *m_pMinimizeAction;
@@ -101,7 +103,7 @@ private:
     QAction *m_pIdentifyGames;
     QAction *m_pIdentifyEducationals;
     QSystemTrayIcon *m_pTrayIcon;
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     QMenu *m_pTrayIconMenu;
 #endif
     QMenu *m_pMenu;

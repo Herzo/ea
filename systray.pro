@@ -1,4 +1,4 @@
-unix:!mac: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
+unix:!mac:!android: LIBS += -lX11 -lXtst -lXext -lXinerama -lxkbcommon
 win32:RC_ICONS += emc2icon.ico
 macx: LIBS += -framework Cocoa
 mac: QMAKE_CXXFLAGS += -x objective-c++
@@ -16,9 +16,10 @@ HEADERS       = \
     multiplicationdialog.h \
     getwindowtitledialog.h \
     splashdialog.h
-unix:!mac: HEADERS += xdo.h \
-    xdo_util.h \
-    xdo_version.h
+unix:!macx:!android: HEADERS += xdo.h \
+        xdo_util.h \
+        xdo_version.h
+#unix:!mac:
 SOURCES       = main.cpp \
     changeuserdialog.cpp \
     freedialog.cpp \
@@ -31,7 +32,9 @@ SOURCES       = main.cpp \
     multiplicationdialog.cpp \
     getwindowtitledialog.cpp \
     splashdialog.cpp
-unix:!mac: SOURCES += xdo.c
+#unix:!mac: SOURCES += xdo.c
+unix:!macx:!android: SOURCES += xdo.c
+
 RESOURCES     = systray.qrc
 QT           += xml svg
 

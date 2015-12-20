@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         QMessageBox::critical(0, QCoreApplication::applicationName(),
                               QObject::tr("I couldn't detect any system tray "

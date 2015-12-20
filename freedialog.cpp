@@ -26,7 +26,8 @@
 #include "listeducationals.h"
 #include "ui_freedialog.h"
 
-#if defined Q_OS_LINUX   // &&Q_OS_ANDROID
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -56,7 +57,7 @@ ui(new Ui::CFreeDialog)
     ui->setupUi(this);
     setWindowIcon(QIcon(":/images/emc2icon.ico"));
     createActions();
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     createTrayIcon();
     connect(m_pTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
@@ -146,7 +147,7 @@ void CFreeDialog::setVisible(bool visible)
     m_pMaximizeAction->setEnabled(!isMaximized());
     m_pRestoreAction->setEnabled(true);
     // m_pRestoreAction->setEnabled(isMaximized() || !visible);
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     m_pTrayIcon->setVisible(true);
 #endif
     QDialog::setVisible(visible);
@@ -154,7 +155,7 @@ void CFreeDialog::setVisible(bool visible)
 
 void CFreeDialog::closeEvent(QCloseEvent *event)
 {
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     if (m_pTrayIcon->isVisible())
     {
         //        QMessageBox::information(this, tr("Einstein's Agent"),
@@ -170,7 +171,7 @@ void CFreeDialog::closeEvent(QCloseEvent *event)
 
 void CFreeDialog::setIcon(QString sMode)
 {
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
     QIcon icon = m_IconStore[sMode].first;
     m_pTrayIcon->setIcon(icon);
     setWindowIcon(icon);
@@ -304,7 +305,7 @@ void CFreeDialog::on_InitSkin()
     ui->MinutesWarning->hide();
     ui->pushButtonGameMinOK->hide();
 }
-#if not defined Q_OS_IOS
+#if not defined Q_OS_IOS && not defined Q_OS_ANDROID
 
 void CFreeDialog::createTrayIcon()
 {
@@ -739,7 +740,8 @@ void CFreeDialog::on_ControlGames()
     }
     QSettings Settings;
     QString sName;
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
 
     unsigned char *name = 0;
     int name_len = 0;
@@ -892,7 +894,8 @@ void CFreeDialog::on_ControlGames()
         DisplayGameMinutes();
         // xdo_close_window(xdo, ulWindowId);
         // xdo_kill_window(xdo, ulWindowId);
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
         xdo = xdo_new(NULL);
         if (xdo == NULL)
         {

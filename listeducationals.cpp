@@ -11,7 +11,8 @@
 #include "ui_listeducationals.h"
 
 
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -109,7 +110,8 @@ void CListEducationals::on_toolButtonAddEducational_clicked()
     QSettings Settings;
     QString sName;
 
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
 
     xdo_t* xdo;
     XID ulWindowId=0;

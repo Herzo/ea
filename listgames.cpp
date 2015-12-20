@@ -13,7 +13,8 @@
 #include "ui_listgames.h"
 
 
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
@@ -126,7 +127,8 @@ void CListGames::on_toolButtonAddGame_clicked()
     QSettings Settings;
     QString sName;
 
-#if defined Q_OS_LINUX
+#if defined Q_OS_ANDROID
+#elif defined Q_OS_LINUX
 
     // x_window_cursor_set
     // x_window_focus
