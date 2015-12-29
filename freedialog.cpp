@@ -43,6 +43,18 @@ extern "C"
 #elif defined Q_OS_MACX
     #import "Cocoa/Cocoa.h"
 #elif defined Q_OS_IOS
+// #include <dlfcn.h>
+// #import <sys/sysctl.h>
+// #import <CGWindow.h>
+   // #import <Cocoa.h>
+   // #import "ApplicationServices/CGWindow.h"
+// #import <Foundation/Foundation.h>
+// #import "QuartzCore/QuartzCore.h"
+// #import <CoreFoundation/CoreFoundation.h>
+// #import <Carbon/Carbon.h>
+// #import <Quartz/Quartz.h>
+
+// #import "ApplicationServices/ApplicationServices.h"
     #import "UIKit/UIKit.h"
 #endif
 
@@ -234,7 +246,9 @@ void CFreeDialog::createActions()
 }
 void CFreeDialog::quit()
 {
-#if defined Q_OS_WIN  // Implement genWin32ShellExecute() especially for UAC
+#if defined Q_OS_WIN
+    /*
+    // Implement genWin32ShellExecute() especially for UAC
     // on windows pop up the UAC to make sure that the user knows the admin password
     QString AppToExec = qApp->applicationDirPath() + "/Einstein.exe";
     // Put any required parameters of App2.exe to AppParams string
@@ -248,6 +262,7 @@ void CFreeDialog::quit()
         // (...) handle error
         return; // They probably did not enter the admin password correctly.
     }
+    */
 #endif
     qApp->quit();
 }
@@ -704,7 +719,7 @@ void CFreeDialog::on_ServerReply(QNetworkReply* pReply)
 
     // QDateTime::currentTime().toString("yyyy-MM-dd%20hh:mm:ss");
 }
-#if defined Q_OS_MACX
+#if defined Q_OS_MACX || defined Q_OS_IOS
 
 QString qt_mac_NSStringToQString(const NSString *nsstr)
 {
@@ -719,6 +734,71 @@ QString qt_mac_NSStringToQString(const NSString *nsstr)
     delete  chars;
     return result;
 }
+// #elif defined Q_OS_IOS
+/*
+ NSArray* getActiveApps()
+ {
+     int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
+     size_t miblen = 4;
+
+     size_t size;
+     int st = sysctl(mib, miblen, NULL, &size, NULL, 0);
+
+     struct kinfo_proc * process = NULL;
+     struct kinfo_proc * newprocess = NULL;
+
+     do {
+
+         size += size / 10;
+         newprocess = (struct kinfo_proc *) realloc(process, size);
+
+         if (!newprocess){
+
+             if (process){
+                 free(process);
+             }
+
+             return nil;
+         }
+
+         process = newprocess;
+         st = sysctl(mib, miblen, process, &size, NULL, 0);
+
+     } while (st == -1 && errno == ENOMEM);
+
+     if (st == 0){
+
+         if (size % sizeof(struct kinfo_proc) == 0){
+             int nprocess = size / sizeof(struct kinfo_proc);
+
+             if (nprocess){
+
+                 NSMutableArray * array = [[NSMutableArray alloc] init];
+
+                 for (int i = nprocess - 1; i >= 0; i--){
+
+                     NSString * processID = [[NSString alloc] initWithFormat:@"%d", process[i].kp_proc.p_pid];
+                     NSString * processName = [[NSString alloc] initWithFormat:@"%s", process[i].kp_proc.p_comm];
+
+                     NSDictionary * dict = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:processID, processName, nil]
+                                                                         forKeys:[NSArray arrayWithObjects:@"ProcessID", @"ProcessName", nil]];
+                     QString sName = qt_mac_NSStringToQString(processName);
+                     qDebug() << sName;
+                     [processID release];
+                     [processName release];
+                     [array addObject:dict];
+                     [dict release];
+                 }
+
+                 free(process);
+                 return [array autorelease];
+             }
+         }
+     }
+
+     return nil;
+ }
+ */
 #endif
 void CFreeDialog::on_ControlGames()
 {
@@ -741,6 +821,7 @@ void CFreeDialog::on_ControlGames()
     QSettings Settings;
     QString sName;
 #if defined Q_OS_ANDROID
+
 #elif defined Q_OS_LINUX
 
     unsigned char *name = 0;
@@ -804,9 +885,58 @@ void CFreeDialog::on_ControlGames()
     }
    // [windows release];
 #elif defined Q_OS_IOS
-   id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
-   UIWindow * mainWindow = [[[UIApplication sharedApplication] windows] firstObject];
+    // On iOS we can't see what other apps are running.
+    // So we asume that other apps are all games.
+    // However we should be able to tell when the device is asleep.
+    //getActiveApps();
+//   id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
+//   UIWindow * mainWindow = [[[UIApplication sharedApplication] windows] firstObject];
 
+   //if the process of the current window in the list matches our process, get the front window number
+   //    if(myPSN.lowLongOfPSN == currentAppPSN.lowLongOfPSN && myPSN.highLongOfPSN == currentAppPSN.highLongOfPSN)
+     //  {
+   // CGWindowListOption option=0,
+    // CGWindowID relativeToWindow=0;
+    /*
+     * You can detect when your app stops being the active application with:
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+in the app delegate.
+
+Also, you can detect when it comes back into view with:
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+
+    enum
+    {
+       kCGWindowListOptionAll                 = 0,
+       kCGWindowListOptionOnScreenOnly        = (1 << 0),
+       kCGWindowListOptionOnScreenAboveWindow = (1 << 1),
+       kCGWindowListOptionOnScreenBelowWindow = (1 << 2),
+       kCGWindowListOptionIncludingWindow     = (1 << 3),
+       kCGWindowListExcludeDesktopElements    = (1 << 4)
+    };
+   CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, 0);
+   for (NSMutableDictionary* entry in (NSArray*)windowList)
+   {
+       NSString* ownerName = [entry objectForKey:(id)kCGWindowOwnerName];
+       NSInteger ownerPID = [[entry objectForKey:(id)kCGWindowOwnerPID] integerValue];
+       NSLog(@"%@:%ld", ownerName, (long)ownerPID);
+   }
+   CFRelease(windowList);
+
+   */
+/*           NSNumber* windowNumber    = [mainWindow objectForKey:(id)kCGWindowNumber];
+           NSString* applicationName = [mainWindow objectForKey:(id)kCGWindowOwnerName];
+           NSLog(@"The current app is %@ and the window number of its front window is %@.",applicationName,windowNumber);
+           CGRect bounds;
+           CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[entry objectForKey:(id)kCGWindowBounds], &bounds);
+           NSLog(@"WINDOW RECT BOUNDS; (x,y,width, height) = (%d,%d, %d, %d)", bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
+
+
+           break;
+           */
+       //}
 
 #endif
 

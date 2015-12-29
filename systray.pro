@@ -33,7 +33,7 @@ SOURCES       = main.cpp \
     getwindowtitledialog.cpp \
     splashdialog.cpp
 #unix:!mac: SOURCES += xdo.c
-unix:!macx:!android: SOURCES += xdo.c
+unix:!mac:!android: SOURCES += xdo.c
 
 RESOURCES     = systray.qrc
 QT           += xml svg
