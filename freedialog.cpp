@@ -240,7 +240,7 @@ void CFreeDialog::quit()
     // Put any required parameters of App2.exe to AppParams string
     QString AppParams = "";
     if (0 != genWin32ShellExecute(AppToExec,
-                                  "",    // default verb: "open" or "exec"
+                                  "runas",    // default verb: "open" or "exec"
                                   AppParams,
                                   false, // run hidden
                                   true)) // wait to finish
